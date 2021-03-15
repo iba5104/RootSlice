@@ -366,12 +366,24 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
 # BeatPulse healthcheck temp database
 healthchecksdb
 
+# Fortran module files
+*.mod
+*.smod
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
