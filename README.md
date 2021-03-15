@@ -1,1 +1,6 @@
-# RootSlice
+# RootSlice : Root anatomy modeling
+The anatomical structure of roots has been shown to have effects on plant physiological processes but root anatomy has not been explicitly considered in functional-structural root models... until now.
+# Background
+Root phenes, such as architectural, morphological and anatomical phenes, affect the metabolic cost of soil exploration. Though the anatomical structure of roots has been shown to have effects on plant physiological processes, root anatomy has not been explicitly considered in functional-structural root models. Cortical tissue occupies a large proportion of the cross-sectional area of a root segment and determines its diameter. Properties of the root cortex show a large degree of variation among genotypes and are influenced by the environment
+# Objective
+We wish to measure the effect of anatomical variation of root cortex, including variation in cell size, number of cell files in the radial direction, percentage of aerenchyma, cell wall thickness, amount of cytoplasm and vacuole size, on the efficiency of soil exploration. Exploration and acquisition efficiency will be influenced by root anatomy through respiration and construction costs and radial water transport.
