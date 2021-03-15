@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{6D88FC83-B8B8-4341-A378-76C066E58B99}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\VSProjects\RootSlice_code\git\include;C:\Program Files %28x86%29\VTK\include\vtk-9.0;C:\Program Files %28x86%29\VTK\include\vtk-9.0\vtkogg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="code_files\main.cpp" />
+    <ClCompile Include="code_files\rsBaseGeometry.cpp" />
+    <ClCompile Include="code_files\rsBaseGeometryMX.cpp" />
+    <ClCompile Include="code_files\rsBaseGeometryPX.cpp" />
+    <ClCompile Include="code_files\rsDataOutput.cpp" />
+    <ClCompile Include="code_files\rsDynamicDataOutput.cpp" />
+    <ClCompile Include="code_files\rsEpiCortexEndoWaterPathDB.cpp" />
+    <ClCompile Include="code_files\rsEpiCortexEndoWaterPathDBVisual.cpp" />
+    <ClCompile Include="code_files\rsMXBoundaryDB.cpp" />
+    <ClCompile Include="code_files\rsMXBoundaryOutDB.cpp" />
+    <ClCompile Include="code_files\rsMXBoundaryOutVisual.cpp" />
+    <ClCompile Include="code_files\rsMXBoundaryVisual.cpp" />
+    <ClCompile Include="code_files\rsMXCoreDB.cpp" />
+    <ClCompile Include="code_files\rsMXCoreVisual.cpp" />
+    <ClCompile Include="code_files\rsPhloemDB.cpp" />
+    <ClCompile Include="code_files\rsPhloemVisual.cpp" />
+    <ClCompile Include="code_files\rsPXBoundaryDB.cpp" />
+    <ClCompile Include="code_files\rsPXBoundaryVisual.cpp" />
+    <ClCompile Include="code_files\rsPXCoreDB.cpp" />
+    <ClCompile Include="code_files\rsPXCoreVisual.cpp" />
+    <ClCompile Include="code_files\rsRcaDB.cpp" />
+    <ClCompile Include="code_files\rsSourceCorticalDB.cpp" />
+    <ClCompile Include="code_files\rsSourceCorticalVisual.cpp" />
+    <ClCompile Include="code_files\rsSourceEpidermisDB.cpp" />
+    <ClCompile Include="code_files\rsSourceEpidermisVisual.cpp" />
+    <ClCompile Include="code_files\rsSteleInnerDB.cpp" />
+    <ClCompile Include="code_files\rsSteleInnerVisual.cpp" />
+    <ClCompile Include="code_files\tinystr.cpp" />
+    <ClCompile Include="code_files\tinyxml.cpp" />
+    <ClCompile Include="code_files\tinyxmlerror.cpp" />
+    <ClCompile Include="code_files\tinyxmlparser.cpp" />
+    <ClCompile Include="code_files\viStringTokenizer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\rsBaseGeometry.h" />
+    <ClInclude Include="include\rsBaseGeometryMX.h" />
+    <ClInclude Include="include\rsBaseGeometryPX.h" />
+    <ClInclude Include="include\rsDataOutput.h" />
+    <ClInclude Include="include\rsDynamicDataOutput.h" />
+    <ClInclude Include="include\rsEpiCortexEndoWaterPathDB.h" />
+    <ClInclude Include="include\rsEpiCortexEndoWaterPathDBVisual.h" />
+    <ClInclude Include="include\rsMXBoundaryDB.h" />
+    <ClInclude Include="include\rsMXBoundaryOutDB.h" />
+    <ClInclude Include="include\rsMXBoundaryOutVisual.h" />
+    <ClInclude Include="include\rsMXBoundaryVisual.h" />
+    <ClInclude Include="include\rsMXCoreDB.h" />
+    <ClInclude Include="include\rsMXCoreVisual.h" />
+    <ClInclude Include="include\rsPhloemDB.h" />
+    <ClInclude Include="include\rsPhloemVisual.h" />
+    <ClInclude Include="include\rsPXBoundaryDB.h" />
+    <ClInclude Include="include\rsPXBoundaryVisual.h" />
+    <ClInclude Include="include\rsPXCoreDB.h" />
+    <ClInclude Include="include\rsPXCoreVisual.h" />
+    <ClInclude Include="include\rsRcaDB.h" />
+    <ClInclude Include="include\rsSourceCorticalDB.h" />
+    <ClInclude Include="include\rsSourceCorticalVisual.h" />
+    <ClInclude Include="include\rsSourceEpidermisDB.h" />
+    <ClInclude Include="include\rsSourceEpidermisVisual.h" />
+    <ClInclude Include="include\rsSteleInnerDB.h" />
+    <ClInclude Include="include\rsSteleInnerVisual.h" />
+    <ClInclude Include="include\tinystr.h" />
+    <ClInclude Include="include\tinyxml.h" />
+    <ClInclude Include="include\viStringTokenizer.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
