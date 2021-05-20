@@ -8,9 +8,10 @@
  * \return double steleInnerBoundRadius;
  *
  */
-void rsSteleInnerDB::SteleInnerBoundRadius( rsMXBoundaryOutDB *RsMXBoundaryOutDB)
-{  steleInnerBoundRadius = RsMXBoundaryOutDB->innerRingRadius;
-cout << "stele test line 13" << endl;
+void rsSteleInnerDB::SteleInnerBoundRadius(rsMXBoundaryOutDB* RsMXBoundaryOutDB)
+{
+	steleInnerBoundRadius = RsMXBoundaryOutDB->innerRingRadius;
+	cout << "stele test line 13" << endl;
 }
 
 /** \brief SteleInnestCellRadius
@@ -19,8 +20,9 @@ cout << "stele test line 13" << endl;
  * \return double steleInnestCellRadius;
  *
  */
-void rsSteleInnerDB::SteleInnestCellRadius( double steleInnestCellRadiusInput )
-{  steleInnestCellRadius = steleInnestCellRadiusInput;
+void rsSteleInnerDB::SteleInnestCellRadius(double steleInnestCellRadiusInput)
+{
+	steleInnestCellRadius = steleInnestCellRadiusInput;
 }
 
 /** \brief SteleInnerAddRadiusDB
@@ -32,13 +34,15 @@ void rsSteleInnerDB::SteleInnestCellRadius( double steleInnestCellRadiusInput )
  * \return vector<double> steleInnerAddRadiusDB;
  *
  */
-void rsSteleInnerDB::SteleInnerAddRadiusDB( int steleInnerLayerNumInput )
-{  steleInnerLayerNum = steleInnerLayerNumInput;
-   double aveAddRadius = (steleInnerBoundRadius - steleInnestCellRadius) / steleInnerLayerNum;
-   int i;
-   for ( i = 0; i != steleInnerLayerNum; i++ )
-   {  steleInnerAddRadiusDB.push_back( aveAddRadius );
-   }
+void rsSteleInnerDB::SteleInnerAddRadiusDB(int steleInnerLayerNumInput)
+{
+	steleInnerLayerNum = steleInnerLayerNumInput;
+	double aveAddRadius = (steleInnerBoundRadius - steleInnestCellRadius) / steleInnerLayerNum;
+	int i;
+	for (i = 0; i != steleInnerLayerNum; i++)
+	{
+		steleInnerAddRadiusDB.push_back(aveAddRadius);
+	}
 }
 
 /** \brief
@@ -48,12 +52,14 @@ void rsSteleInnerDB::SteleInnerAddRadiusDB( int steleInnerLayerNumInput )
  *
  */
 void rsSteleInnerDB::SteleInnerAppendRadiusDB()
-{  vector<double>::iterator itVec;
-   double temp = 0;
-   for ( itVec = steleInnerAddRadiusDB.begin(); itVec != steleInnerAddRadiusDB.end(); itVec++ )
-   {  steleInnerAppendRadiusDB.push_back( temp );
-      temp += (*itVec);
-   }
+{
+	vector<double>::iterator itVec;
+	double temp = 0;
+	for (itVec = steleInnerAddRadiusDB.begin(); itVec != steleInnerAddRadiusDB.end(); itVec++)
+	{
+		steleInnerAppendRadiusDB.push_back(temp);
+		temp += (*itVec);
+	}
 }
 
 
@@ -66,19 +72,21 @@ void rsSteleInnerDB::SteleInnerAppendRadiusDB()
  *
  */
 void rsSteleInnerDB::SteleInnerRingRadiusDB()
-{  int iRingNum;
-   /// declare iterator;
-   vector<double>::iterator itVecAdd;
+{
+	int iRingNum;
+	/// declare iterator;
+	vector<double>::iterator itVecAdd;
 
-   for ( iRingNum = 0, itVecAdd = steleInnerAddRadiusDB.begin();
-         itVecAdd != steleInnerAddRadiusDB.end();
-         itVecAdd++, iRingNum++ )
-   {  steleInnerRingRadiusDB.push_back( CircleRadius( steleInnestCellRadius,
-                                        steleInnerAppendRadiusDB[iRingNum],
-                                        (*itVecAdd) )
-                                      );
-  
-   }
+	for (iRingNum = 0, itVecAdd = steleInnerAddRadiusDB.begin();
+		itVecAdd != steleInnerAddRadiusDB.end();
+		itVecAdd++, iRingNum++)
+	{
+		steleInnerRingRadiusDB.push_back(CircleRadius(steleInnestCellRadius,
+			steleInnerAppendRadiusDB[iRingNum],
+			(*itVecAdd))
+		);
+
+	}
 }
 
 /** \brief SteleInnerCellNumCalculateData;
@@ -89,21 +97,23 @@ void rsSteleInnerDB::SteleInnerRingRadiusDB()
  *
  */
 void rsSteleInnerDB::SteleInnerCellNumCalculateData()
-{  vector<double>::iterator itVecAdd;
-   vector<double>::iterator itVec;
-   int tempNum;
-   double perimeterLayer;
-   int i;
-   cout << "SteleCellNumCalculateData" << endl;
-   for ( itVecAdd = steleInnerAddRadiusDB.begin(), itVec = steleInnerRingRadiusDB.begin(), i = 0;
-         itVecAdd != steleInnerAddRadiusDB.end();
-         itVecAdd++, itVec++, i++ )
-   {  perimeterLayer = 2 * M_PI * (*itVec);
-      tempNum = int( perimeterLayer / (*itVecAdd) );
-      cout << tempNum << endl;
-      steleInnerCellNumCalculateData.push_back( tempNum );
-   }
-   cout << "done stele 106" << endl;
+{
+	vector<double>::iterator itVecAdd;
+	vector<double>::iterator itVec;
+	int tempNum;
+	double perimeterLayer;
+	int i;
+	cout << "SteleCellNumCalculateData" << endl;
+	for (itVecAdd = steleInnerAddRadiusDB.begin(), itVec = steleInnerRingRadiusDB.begin(), i = 0;
+		itVecAdd != steleInnerAddRadiusDB.end();
+		itVecAdd++, itVec++, i++)
+	{
+		perimeterLayer = 2 * M_PI * (*itVec);
+		tempNum = int(perimeterLayer / (*itVecAdd));
+		cout << tempNum << endl;
+		steleInnerCellNumCalculateData.push_back(tempNum);
+	}
+	cout << "done stele 106" << endl;
 }
 
 
@@ -114,33 +124,37 @@ void rsSteleInnerDB::SteleInnerCellNumCalculateData()
  *
  */
 void rsSteleInnerDB::SteleInnerObjectVerticalDB()
-{  int iRingNum;
-   vector<double>::iterator itVecAdd;
+{
+	int iRingNum;
+	vector<double>::iterator itVecAdd;
 
-   for ( iRingNum = 0, itVecAdd = steleInnerAddRadiusDB.begin();
-         itVecAdd != steleInnerAddRadiusDB.end();
-         itVecAdd++, iRingNum++ )
-   {  steleInnerObjectVerticalDB.push_back( ObjectVertical( *itVecAdd ) );
-   cout << "stele 124" << endl;
-   }
-   cout << "done stele 126" << endl;
+	for (iRingNum = 0, itVecAdd = steleInnerAddRadiusDB.begin();
+		itVecAdd != steleInnerAddRadiusDB.end();
+		itVecAdd++, iRingNum++)
+	{
+		steleInnerObjectVerticalDB.push_back(ObjectVertical(*itVecAdd));
+		cout << "stele 124" << endl;
+	}
+	cout << "done stele 126" << endl;
 }
 
 /******************************************************
 // Create RandomHeightDB;
 *******************************************************/
-void rsSteleInnerDB::RandomHeightDB( double totalHeight, int sliceNum, double initZPosition, int vectorNum )
-{  int temp;
-   srand((unsigned)time(NULL));
-   for ( temp = 0;
-         temp != vectorNum;
-         temp++ )
-   {  RandomHeight( totalHeight, sliceNum, initZPosition );
-      longitudeSegmentHeightDB.insert( pair<int, vector<double> > (temp, longitudeSegmentHeight) );
-      longitudeZPositionAddDB.insert( pair<int, vector<double> > (temp, longitudeZPositionAdd) );
-      cout << "stele 141" << endl;
-   }
-   cout << "done stele 143" << endl;
+void rsSteleInnerDB::RandomHeightDB(double totalHeight, int sliceNum, double initZPosition, int vectorNum)
+{
+	int temp;
+	srand((unsigned)time(NULL));
+	for (temp = 0;
+		temp != vectorNum;
+		temp++)
+	{
+		RandomHeight(totalHeight, sliceNum, initZPosition);
+		longitudeSegmentHeightDB.insert(pair<int, vector<double> >(temp, longitudeSegmentHeight));
+		longitudeZPositionAddDB.insert(pair<int, vector<double> >(temp, longitudeZPositionAdd));
+		cout << "stele 141" << endl;
+	}
+	cout << "done stele 143" << endl;
 }
 
 /** \brief GetRandomCircleSegmentAndCircleXYNonuniformDB
@@ -157,115 +171,124 @@ void rsSteleInnerDB::RandomHeightDB( double totalHeight, int sliceNum, double in
  *
  */
 void rsSteleInnerDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
-( double variationRatio )
-{  int iRingNum;
-   /// declare corticalAddRadiusDB iterator;
-   vector<double>::iterator itVecAdd;
-   vector<int>::iterator itVecCellNum;
+(double variationRatio)
+{
+	int iRingNum;
+	/// declare corticalAddRadiusDB iterator;
+	vector<double>::iterator itVecAdd;
+	vector<int>::iterator itVecCellNum;
 
-   ofstream fout("cortex.txt",ios::app);
-   cout << "circleSegmentRotateAngleDB" << endl;
-   for ( iRingNum = 0, itVecCellNum = steleInnerCellNumCalculateData.begin(),
-         itVecAdd = steleInnerAddRadiusDB.begin();
-         itVecAdd != steleInnerAddRadiusDB.end();
-         itVecAdd++, iRingNum++, itVecCellNum++ )
-   {
-       cout << "stele 173" << endl;
-       CirclePerimeter( steleInnerRingRadiusDB[iRingNum] );
-       cout << "stele 175" << endl;
-       SameSumAndNumberAndRatio( circleSegmentLength,
-                                      circleSegmentLengthAdd,
-                                      circleSegmentLengthSum,
-                                      circlePerimeter,
-                                      *itVecCellNum,
-                                      variationRatio );
-      cout << "stele 182" << endl;
+	ofstream fout("cortex.txt", ios::app);
+	cout << "circleSegmentRotateAngleDB" << endl;
+	for (iRingNum = 0, itVecCellNum = steleInnerCellNumCalculateData.begin(),
+		itVecAdd = steleInnerAddRadiusDB.begin();
+		itVecAdd != steleInnerAddRadiusDB.end();
+		itVecAdd++, iRingNum++, itVecCellNum++)
+	{
+		cout << "stele 173" << endl;
+		CirclePerimeter(steleInnerRingRadiusDB[iRingNum]);
+		cout << "stele 175" << endl;
+		SameSumAndNumberAndRatio(circleSegmentLength,
+			circleSegmentLengthAdd,
+			circleSegmentLengthSum,
+			circlePerimeter,
+			*itVecCellNum,
+			variationRatio);
+		cout << "stele 182" << endl;
 
-      circleSegmentLengthDB.insert( pair<int, vector<double> >(iRingNum, circleSegmentLength) );
-      circleSegmentLengthSumDB.push_back( circleSegmentLengthSum );
+		circleSegmentLengthDB.insert(pair<int, vector<double> >(iRingNum, circleSegmentLength));
+		circleSegmentLengthSumDB.push_back(circleSegmentLengthSum);
 
-      CircleXYNonuniform( *itVecCellNum, steleInnerRingRadiusDB[iRingNum] );
-      circleXDB.insert(pair<int, vector<double> >( iRingNum, circleX) );
-      circleYDB.insert(pair<int, vector<double> >( iRingNum, circleY) );
-      circleSegmentRotateAngleDB.insert(pair<int, vector<double> >( iRingNum, circleSegmentRotateAngle));
-      cout << "stele 187" << endl;
-   }
-   cout << "done stele 189" << endl;
+		CircleXYNonuniform(*itVecCellNum, steleInnerRingRadiusDB[iRingNum]);
+		circleXDB.insert(pair<int, vector<double> >(iRingNum, circleX));
+		circleYDB.insert(pair<int, vector<double> >(iRingNum, circleY));
+		circleSegmentRotateAngleDB.insert(pair<int, vector<double> >(iRingNum, circleSegmentRotateAngle));
+		cout << "stele 187" << endl;
+	}
+	cout << "done stele 189" << endl;
 }
 
 /******************************************************
 // Get circleSegmentLengthAdjustRatioDB;
 *******************************************************/
 void rsSteleInnerDB::CircleSegmentLengthAdjustRatioDB()
-{  map<int, vector<double> >::iterator itMap;
-   vector<double>::iterator itVector;
+{
+	map<int, vector<double> >::iterator itMap;
+	vector<double>::iterator itVector;
 
-   for ( itMap = circleSegmentLengthDB.begin();
-         itMap != circleSegmentLengthDB.end();
-         itMap++ )
-   {  for ( itVector = (*itMap).second.begin(); itVector !=  (*itMap).second.end(); itVector++)
-      {  *itVector = (*itVector) / 2 ;
-      }
-   }
+	for (itMap = circleSegmentLengthDB.begin();
+		itMap != circleSegmentLengthDB.end();
+		itMap++)
+	{
+		for (itVector = (*itMap).second.begin(); itVector != (*itMap).second.end(); itVector++)
+		{
+			*itVector = (*itVector) / 2;
+		}
+	}
 }
 
 /*******************************************
 to get ObjectHeightDB and ObjectZPositionDB;
 ********************************************/
-void rsSteleInnerDB::ObjectHeightAndZPositionDB( int sliceNum )
+void rsSteleInnerDB::ObjectHeightAndZPositionDB(int sliceNum)
 {  /// declare iterator;
-   map<int, vector<double> >::iterator itMap;
-   vector<double>::iterator itVector;
+	map<int, vector<double> >::iterator itMap;
+	vector<double>::iterator itVector;
 
-   vector< vector<double> > objectHeightVec2;
-   vector<double>           objectHeightVec1;
+	vector< vector<double> > objectHeightVec2;
+	vector<double>           objectHeightVec1;
 
-   vector< vector<double> > objectZPositionVec2;
-   vector<double>           objectZPositionVec1;
-   /// declare int;
-   int iRingNum;
-   int i;
-   int sliceTempNum;
-   /// cout << circleSegmentLengthDB;
-   for ( iRingNum = 0, itMap = circleXDB.begin();
-         itMap != circleXDB.end();
-         iRingNum++, itMap++ )
-   {  objectHeightVec2.clear();
-      objectZPositionVec2.clear();
-      for ( i=0, itVector = (*itMap).second.begin(); itVector !=  (*itMap).second.end(); i++, itVector++)
-      {  int randomHeightZPosition = rand() % 200;
-         objectHeightVec1.clear();
-         objectZPositionVec1.clear();
-         for ( sliceTempNum = 0; sliceTempNum != sliceNum; sliceTempNum++  )
-         {  objectHeightVec1.push_back
-            ( longitudeSegmentHeightDB[randomHeightZPosition][sliceTempNum] / 2 );
+	vector< vector<double> > objectZPositionVec2;
+	vector<double>           objectZPositionVec1;
+	/// declare int;
+	int iRingNum;
+	int i;
+	int sliceTempNum;
+	/// cout << circleSegmentLengthDB;
+	for (iRingNum = 0, itMap = circleXDB.begin();
+		itMap != circleXDB.end();
+		iRingNum++, itMap++)
+	{
+		objectHeightVec2.clear();
+		objectZPositionVec2.clear();
+		for (i = 0, itVector = (*itMap).second.begin(); itVector != (*itMap).second.end(); i++, itVector++)
+		{
+			int randomHeightZPosition = rand() % 200;
+			objectHeightVec1.clear();
+			objectZPositionVec1.clear();
+			for (sliceTempNum = 0; sliceTempNum != sliceNum; sliceTempNum++)
+			{
+				objectHeightVec1.push_back
+				(longitudeSegmentHeightDB[randomHeightZPosition][sliceTempNum] / 2);
 
-            objectZPositionVec1.push_back
-            ( longitudeZPositionAddDB[randomHeightZPosition][sliceTempNum] );
-         }
-         objectHeightVec2.push_back( objectHeightVec1 );
-         objectZPositionVec2.push_back( objectZPositionVec1 );
-      }
-      objectHeightDB.insert( pair<int, vector< vector<double> > >( iRingNum, objectHeightVec2 ) );
-      objectZPositionDB.insert( pair<int, vector< vector<double> > >( iRingNum, objectZPositionVec2 ) );
-   }
+				objectZPositionVec1.push_back
+				(longitudeZPositionAddDB[randomHeightZPosition][sliceTempNum]);
+			}
+			objectHeightVec2.push_back(objectHeightVec1);
+			objectZPositionVec2.push_back(objectZPositionVec1);
+		}
+		objectHeightDB.insert(pair<int, vector< vector<double> > >(iRingNum, objectHeightVec2));
+		objectZPositionDB.insert(pair<int, vector< vector<double> > >(iRingNum, objectZPositionVec2));
+	}
 }
 
 vector<double> steleInnestObjectHeightDB;
 vector<double> steleInnestObjectZPositionDB;
-void rsSteleInnerDB::SteleInnestObjectHeightAndZPositionDB( int sliceNum )
-{  int sliceTempNum;
-   int randomHeightZPosition = rand() % 200;
-   for ( sliceTempNum = 0; sliceTempNum != sliceNum; sliceTempNum++  )
-   {  steleInnestObjectHeightDB.push_back
-      ( longitudeSegmentHeightDB[randomHeightZPosition][sliceTempNum] / 2 );
+void rsSteleInnerDB::SteleInnestObjectHeightAndZPositionDB(int sliceNum)
+{
+	int sliceTempNum;
+	int randomHeightZPosition = rand() % 200;
+	for (sliceTempNum = 0; sliceTempNum != sliceNum; sliceTempNum++)
+	{
+		steleInnestObjectHeightDB.push_back
+		(longitudeSegmentHeightDB[randomHeightZPosition][sliceTempNum] / 2);
 
-      steleInnestObjectZPositionDB.push_back
-      ( longitudeZPositionAddDB[randomHeightZPosition][sliceTempNum] );
+		steleInnestObjectZPositionDB.push_back
+		(longitudeZPositionAddDB[randomHeightZPosition][sliceTempNum]);
 
-      cout << "stele 260" << endl;
-   }
-   cout << "done stele 262" << endl;
+		cout << "stele 260" << endl;
+	}
+	cout << "done stele 262" << endl;
 
 }
 
@@ -273,43 +296,44 @@ void rsSteleInnerDB::SteleInnestObjectHeightAndZPositionDB( int sliceNum )
 /*******************************************
 Initialize other Database;
 ********************************************/
-void rsSteleInnerDB::InitAllDB ( rsMXBoundaryOutDB *RsMXBoundaryOutDB,
-                                 double steleInnestCellRadiusInput,
-                                 int steleInnerLayerNumInput,
-                                 double totalHeight,
-                                 double initZPosition,
-                                 int vectorNum,
-                                 double variationRatio,
-                                 int setUResolution,
-                                 int setVResolution,
-                                 int setWResolution,
-                                 int sliceNum )
-{  SteleInnerBoundRadius( RsMXBoundaryOutDB);
+void rsSteleInnerDB::InitAllDB(rsMXBoundaryOutDB* RsMXBoundaryOutDB,
+	double steleInnestCellRadiusInput,
+	int steleInnerLayerNumInput,
+	double totalHeight,
+	double initZPosition,
+	int vectorNum,
+	double variationRatio,
+	int setUResolution,
+	int setVResolution,
+	int setWResolution,
+	int sliceNum)
+{
+	SteleInnerBoundRadius(RsMXBoundaryOutDB);
 
-   SteleInnestCellRadius( steleInnestCellRadiusInput );
+	SteleInnestCellRadius(steleInnestCellRadiusInput);
 
-   SteleInnerAddRadiusDB( steleInnerLayerNumInput );
+	SteleInnerAddRadiusDB(steleInnerLayerNumInput);
 
-   SteleInnerAppendRadiusDB();
+	SteleInnerAppendRadiusDB();
 
-   SteleInnerRingRadiusDB();
+	SteleInnerRingRadiusDB();
 
-   SteleInnerCellNumCalculateData();
+	SteleInnerCellNumCalculateData();
 
-   SteleInnerObjectVerticalDB();
+	SteleInnerObjectVerticalDB();
 
-   RandomHeightDB( totalHeight, sliceNum, initZPosition, vectorNum );
+	RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
 
-   GetRandomCircleSegmentAndCircleXYNonuniformDB( variationRatio );
+	GetRandomCircleSegmentAndCircleXYNonuniformDB(variationRatio);
 
-   CircleSegmentLengthAdjustRatioDB();
+	CircleSegmentLengthAdjustRatioDB();
 
-   ObjectHeightAndZPositionDB( sliceNum );
+	ObjectHeightAndZPositionDB(sliceNum);
 
-   SteleInnestObjectHeightAndZPositionDB( sliceNum );
+	SteleInnestObjectHeightAndZPositionDB(sliceNum);
 
-   SetSuperEllipsoidResolution( setUResolution, setVResolution, setWResolution );
+	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
 
-   SetObjectOpacity();
+	SetObjectOpacity();
 
 }

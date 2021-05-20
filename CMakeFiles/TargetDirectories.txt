@@ -1,0 +1,3 @@
+C:/VSProjects/RootSlice_code/git/CMakeFiles/RootSlice.dir
+C:/VSProjects/RootSlice_code/git/CMakeFiles/ALL_BUILD.dir
+C:/VSProjects/RootSlice_code/git/CMakeFiles/ZERO_CHECK.dir
