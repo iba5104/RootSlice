@@ -1,204 +1,109 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsBaseGeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsBaseGeometryMX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsBaseGeometryPX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsDataOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsDynamicDataOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsEpiCortexEndoWaterPathDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsEpiCortexEndoWaterPathDBVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXBoundaryDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXBoundaryOutDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXBoundaryOutVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXBoundaryVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXCoreDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXCoreVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPXBoundaryDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPXBoundaryVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPXCoreDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPXCoreVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPhloemDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPhloemVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsRcaDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSourceCorticalDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSourceCorticalVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSourceEpidermisDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSourceEpidermisVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSteleInnerDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSteleInnerVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\tinystr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\tinyxml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\tinyxmlerror.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\tinyxmlparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\viStringTokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\VSProjects\RootSlice_code\CMakeLists.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <UniqueIdentifier>{FC2AC8E2-4B9A-3F17-A61D-724EBB36DDBB}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="code_files\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsBaseGeometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsBaseGeometryMX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsBaseGeometryPX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsDataOutput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsDynamicDataOutput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsEpiCortexEndoWaterPathDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsEpiCortexEndoWaterPathDBVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsMXBoundaryDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsMXBoundaryOutDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsMXBoundaryOutVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsMXBoundaryVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsMXCoreDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsMXCoreVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsPhloemDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsPhloemVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsPXBoundaryDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsPXBoundaryVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsPXCoreDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsPXCoreVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsRcaDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsSourceCorticalDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsSourceCorticalVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsSourceEpidermisDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsSourceEpidermisVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsSteleInnerDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\rsSteleInnerVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\tinystr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\tinyxml.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\tinyxmlerror.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\tinyxmlparser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code_files\viStringTokenizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\rsBaseGeometry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsBaseGeometryMX.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsBaseGeometryPX.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsDataOutput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsDynamicDataOutput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsEpiCortexEndoWaterPathDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsEpiCortexEndoWaterPathDBVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsMXBoundaryDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsMXBoundaryOutDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsMXBoundaryOutVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsMXBoundaryVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsMXCoreDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsMXCoreVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsPhloemDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsPhloemVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsPXBoundaryDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsPXBoundaryVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsPXCoreDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsPXCoreVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsRcaDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsSourceCorticalDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsSourceCorticalVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsSourceEpidermisDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsSourceEpidermisVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsSteleInnerDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rsSteleInnerVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tinystr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tinyxml.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\viStringTokenizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

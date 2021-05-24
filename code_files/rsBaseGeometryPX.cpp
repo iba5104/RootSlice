@@ -8,9 +8,10 @@
  * \return double steleBoundaryRingRadius
  *
  */
-double rsBaseGeometryPX::SteleBoundaryRingRadius( double endodermisBaseRadius )
-{  steleBoundaryRingRadius = endodermisBaseRadius;
-   return steleBoundaryRingRadius;
+double rsBaseGeometryPX::SteleBoundaryRingRadius(double endodermisBaseRadius)
+{
+	steleBoundaryRingRadius = endodermisBaseRadius;
+	return steleBoundaryRingRadius;
 }
 
 /** Get pxBoundaryRingRadius;
@@ -19,11 +20,12 @@ double rsBaseGeometryPX::SteleBoundaryRingRadius( double endodermisBaseRadius )
  * \return double pxBoundaryRingRadius
  *
  */
-double rsBaseGeometryPX::PXBoundaryRingRadius( double pxGapRadius )
-{  pxBoundaryRingRadius = steleBoundaryRingRadius - pxGapRadius;
-   ofstream fout( "a.txt", ios::app );
-   fout << "pxBoundaryRingRadius: " << pxBoundaryRingRadius << endl;
-   return pxBoundaryRingRadius;
+double rsBaseGeometryPX::PXBoundaryRingRadius(double pxGapRadius)
+{
+	pxBoundaryRingRadius = steleBoundaryRingRadius - pxGapRadius;
+	ofstream fout("a.txt", ios::app);
+	fout << "pxBoundaryRingRadius: " << pxBoundaryRingRadius << endl;
+	return pxBoundaryRingRadius;
 }
 
 /** Get pxNum;
@@ -32,9 +34,10 @@ double rsBaseGeometryPX::PXBoundaryRingRadius( double pxGapRadius )
  * \return int pxNum;
  *
  */
-int rsBaseGeometryPX::PXNum( int setPXNum )
-{  pxNum = setPXNum;
-   return pxNum;
+int rsBaseGeometryPX::PXNum(int setPXNum)
+{
+	pxNum = setPXNum;
+	return pxNum;
 }
 
 /** Get pxAverageRingRadius;
@@ -43,10 +46,11 @@ int rsBaseGeometryPX::PXNum( int setPXNum )
  * \return double pxAverageRingRadius;
  *
  */
-//double pxAverageRingRadius;
-int rsBaseGeometryPX::PXAverageRingRadius( double setPXAverageRingRadius )
-{  pxAverageRingRadius = setPXAverageRingRadius;
-   return pxAverageRingRadius;
+ //double pxAverageRingRadius;
+int rsBaseGeometryPX::PXAverageRingRadius(double setPXAverageRingRadius)
+{
+	pxAverageRingRadius = setPXAverageRingRadius;
+	return pxAverageRingRadius;
 }
 
 /** Get RandomRange;
@@ -55,10 +59,11 @@ int rsBaseGeometryPX::PXAverageRingRadius( double setPXAverageRingRadius )
  * \return int pxNum;
  *
  */
-//double randomRange;
-int rsBaseGeometryPX::RandomRange( double setRandomRange )
-{  randomRange = setRandomRange;
-   return randomRange;
+ //double randomRange;
+int rsBaseGeometryPX::RandomRange(double setRandomRange)
+{
+	randomRange = setRandomRange;
+	return randomRange;
 }
 
 /** Calculate random data of radius for each ring of metaxylem;
@@ -71,17 +76,18 @@ int rsBaseGeometryPX::RandomRange( double setRandomRange )
  * \return double eachRingDiameterSum;
  *
  */
-void rsBaseGeometryPX::RandomRadius( double variationRatio )
-{  double pxRadiusTotal;
-   double eachRingRadiusSum;
-   pxRadiusTotal = pxAverageRingRadius * pxNum;
-   RandomRatioButSameSumAndNumber( eachRingRadius,
-                                   eachRingRadiusAdd,
-                                   eachRingRadiusSum,
-                                   pxRadiusTotal,
-                                   pxNum,
-                                   variationRatio);
-   eachRingDiameterSum = eachRingRadiusSum * 2;
+void rsBaseGeometryPX::RandomRadius(double variationRatio)
+{
+	double pxRadiusTotal;
+	double eachRingRadiusSum;
+	pxRadiusTotal = pxAverageRingRadius * pxNum;
+	RandomRatioButSameSumAndNumber(eachRingRadius,
+		eachRingRadiusAdd,
+		eachRingRadiusSum,
+		pxRadiusTotal,
+		pxNum,
+		variationRatio);
+	eachRingDiameterSum = eachRingRadiusSum * 2;
 }
 
 /** Get position of X and Y in center circle by random generated in eachRingRadius for metaxylem;
@@ -91,32 +97,36 @@ void rsBaseGeometryPX::RandomRadius( double variationRatio )
  * \return vector<double> centerRingRotateAngle;
  *
  */
-//vector<double> centerRingRotateRadian;
-//vector<double> centerRingRotateAngle;
+ //vector<double> centerRingRotateRadian;
+ //vector<double> centerRingRotateAngle;
 
 void rsBaseGeometryPX::CenterXYRotate()
-{  double temp = 0;
-   double sum = 0;
+{
+	double temp = 0;
+	double sum = 0;
 
-//   ofstream fout("a.txt",ios::app);
-//   fout << "rsBaseGeometryPX.cpp" << endl;
-   for (int i =0; i < pxNum; i++ )
-   {  if ( i == 0 )
-      {  sum = 0;
-         centerRingRotateRadian.push_back( sum );
-         centerRingRotateAngle.push_back( sum );
-//         fout << "centerRingRotateRadian: " << i <<": "<< 0 << endl;
-      }
-      else
-      {  temp = eachRingRadius[i] + eachRingRadius[i-1];
-         sum += temp;
-         centerRingRotateRadian.push_back( 2*M_PI* sum / eachRingDiameterSum );
-         centerRingRotateAngle.push_back (  -360 *  sum / eachRingDiameterSum );
+	//   ofstream fout("a.txt",ios::app);
+	//   fout << "rsBaseGeometryPX.cpp" << endl;
+	for (int i = 0; i < pxNum; i++)
+	{
+		if (i == 0)
+		{
+			sum = 0;
+			centerRingRotateRadian.push_back(sum);
+			centerRingRotateAngle.push_back(sum);
+			//         fout << "centerRingRotateRadian: " << i <<": "<< 0 << endl;
+		}
+		else
+		{
+			temp = eachRingRadius[i] + eachRingRadius[i - 1];
+			sum += temp;
+			centerRingRotateRadian.push_back(2 * M_PI * sum / eachRingDiameterSum);
+			centerRingRotateAngle.push_back(-360 * sum / eachRingDiameterSum);
 
-//         fout << "centerRingRotateRadian: " << i <<": "
-//              << 2*M_PI* sum / eachRingDiameterSum << endl;
-      }
-   }
+			//         fout << "centerRingRotateRadian: " << i <<": "
+			//              << 2*M_PI* sum / eachRingDiameterSum << endl;
+		}
+	}
 }
 
 

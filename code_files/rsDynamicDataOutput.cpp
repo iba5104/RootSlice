@@ -555,6 +555,7 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
    /// Metaxylem visualization
    rsMXBoundaryOutVisual* RsMXBoundaryOutVisualDB = new rsMXBoundaryOutVisual;
 
+//vtk Error ~Sankalp
    RsMXBoundaryOutVisualDB->MXBoundaryInterCellVisual(RsMXBoundaryOutDB, renL);
    RsMXBoundaryOutVisualDB->MXBoundaryUpCellVisual(RsMXBoundaryOutDB, renL);
    
