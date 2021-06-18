@@ -165,7 +165,7 @@ void rsPXBoundaryDB::BoundaryPointXYLeftAndRightHemisphere(int dotNum)
  *
  */
 
-void rsPXBoundaryDB::BoundaryHalfCentralRadianDB()
+void rsPXBoundaryDB::BoundaryHalfCentralRadianDB(rsPXCoreDB* RsPXCoreDB)
 {
 	vector<double>::iterator itVec;
 	double sinHalfCentralRadian;
@@ -173,9 +173,10 @@ void rsPXBoundaryDB::BoundaryHalfCentralRadianDB()
 	int i;
 	ofstream fout("a.txt", ios::app);
 	fout << "BoundaryHalfCentralRadianDB" << endl;
+	vector<double> boundaryRadiusDB = RsPXCoreDB->boundaryRadiusDB;
 	for (itVec = boundaryRadiusDB.begin(), i = 0; itVec != boundaryRadiusDB.end(); itVec++, i++)
 	{
-		sinHalfCentralRadian = *itVec / centerXYRadiusDB[i];
+		sinHalfCentralRadian = *itVec / (RsPXCoreDB->centerXYRadiusDB[i]);
 		asinHalfCentralRadian = asin(sinHalfCentralRadian);
 		boundaryHalfCentralRadianDB.push_back(asinHalfCentralRadian);
 		fout << "i: " << i << "  " << asinHalfCentralRadian << endl;
@@ -215,13 +216,15 @@ void rsPXBoundaryDB::BoundaryRadianStartAndEndDB()
  *
  */
 
-void rsPXBoundaryDB::BoundaryMaxAndMinCenterRadiusDB()
+void rsPXBoundaryDB::BoundaryMaxAndMinCenterRadiusDB(rsPXCoreDB* RsPXCoreDB)
 {
 	vector<double>::iterator itVec;
 	int i;
 	double min;
 	double max;
 	ofstream fout("a.txt", ios::app);
+	centerXYRadiusDB = RsPXCoreDB->centerXYRadiusDB;
+	boundaryRadiusDB = RsPXCoreDB->boundaryRadiusDB;
 	fout << "BoundaryMaxAndMinCenterRadiusDB" << endl;
 	for (itVec = centerXYRadiusDB.begin(), i = 0;
 		itVec != centerXYRadiusDB.end();
@@ -441,8 +444,7 @@ void rsPXBoundaryDB::BoundaryPointRightHemisphereCenterDistanceDB()
 			boundaryPointRightHemisphereCenterDistance.push_back(temp);
 			fout << "i: " << i << "  j: " << j << "  temp: " << temp << " X: " << *itVecX << " Y: " << *itVecY << endl;
 		}
-		boundaryPointRightHemisphereCenterDistanceDB.insert
-		(pair<int, vector<double> >(i, boundaryPointRightHemisphereCenterDistance));
+		boundaryPointRightHemisphereCenterDistanceDB.insert(pair<int, vector<double> >(i, boundaryPointRightHemisphereCenterDistance));
 	}
 }
 
@@ -475,7 +477,7 @@ void rsPXBoundaryDB::BoundaryPointRightUpDownXYHemisphereTargetDB()
 	double best;
 	double tempX;
 	double tempY;
-	int record;
+	int record{};
 	vector<double> boundaryPointRightUpXHemisphereTarget;
 	vector<double> boundaryPointRightUpYHemisphereTarget;
 	vector<double> boundaryPointRightDownXHemisphereTarget;
@@ -1535,11 +1537,13 @@ void rsPXBoundaryDB::BoundaryCellObjectHeightAndZPositionDB(int sliceNum)
 
 
 void rsPXBoundaryDB::InitBoundaryCell
-(int dotNum,
+(	rsPXCoreDB* RsPXCoreDB,
+	int dotNum,
 	int setUpRowNum,
 	int setDownRowNum,
 	int sliceNum)
 {
+
 	this->BoundaryRotateRadian();
 
 	this->RadianUniformDB(dotNum);
@@ -1548,11 +1552,11 @@ void rsPXBoundaryDB::InitBoundaryCell
 
 	this->BoundaryPointXYLeftAndRightHemisphere(dotNum);
 
-	this->BoundaryHalfCentralRadianDB();
+	this->BoundaryHalfCentralRadianDB(RsPXCoreDB);
 
 	this->BoundaryRadianStartAndEndDB();
 
-	this->BoundaryMaxAndMinCenterRadiusDB();
+	this->BoundaryMaxAndMinCenterRadiusDB(RsPXCoreDB);
 
 	this->BoundaryTangentCenterRadiusDB();
 

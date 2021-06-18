@@ -175,7 +175,15 @@ public:
        int steleInnerLayerNumInput,
        double setUpVecticalLengthThresholdRatio,
        double innerTangentRingRadiusRatioTemp,
-       int setInterVerticalNum
+       int setInterVerticalNum,
+       int setMXNum,
+       double setMXAverageRingRadius,
+       double xylemMaxOutRingNum,
+       double pxGapRadius,
+       int setPXNum,
+       double setPXAverageRingRadius,
+       double xylemMaxOutRingCellNum,
+       double xylemMaxOutRingAddRadius
    );
 
 

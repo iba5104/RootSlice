@@ -346,7 +346,17 @@ void rsDynamicDataOutput::InitEpiCortexEndoNonRCADB
 
     double setUpVecticalLengthThresholdRatio,
     double innerTangentRingRadiusRatioTemp,
-    int setInterVerticalNum
+    int setInterVerticalNum,
+    int setMXNum,
+    double setMXAverageRingRadius,
+    double xylemMaxOutRingNum,
+
+    // protoxylem
+    double pxGapRadius,
+    int setPXNum,
+    double setPXAverageRingRadius,
+    double xylemMaxOutRingCellNum,
+    double xylemMaxOutRingAddRadius
 )
 
 {  setUResolution = 12;
@@ -499,19 +509,98 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
     RsSourceEndodermisDB
    );
 
+// Check what happens on uncommenting - Sankalp
 //   rsEpiCortexEndoWaterPathDBVisual *RsEpiCortexEndoWaterPathDBVisual = new rsEpiCortexEndoWaterPathDBVisual;
 //   RsEpiCortexEndoWaterPathDBVisual -> ApoplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
 //   RsEpiCortexEndoWaterPathDBVisual -> SymplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
 
 //RsEpiCortexEndoWaterPathDBVisual -> ApoplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB );
 //RsEpiCortexEndoWaterPathDBVisual -> SymplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB );
+
+   /*************************************
+   PXCore
+   *************************************/
+   cout << "XylemOuterRing" << endl;
+
+   rsPXCoreDB* RsPXCoreDB = new rsPXCoreDB;
+   RsPXCoreDB->RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
+   RsPXCoreDB->InitXylemOutRing(endodermisBaseRadius,
+       pxGapRadius,
+       setPXNum,
+       setPXAverageRingRadius,
+       variationRatio,
+       xylemMaxOutRingCellNum,
+       xylemMaxOutRingAddRadius,
+       setUResolution,
+       setVResolution,
+       setWResolution,
+       sliceNum);
+   RsPXCoreDB->InitPXSamll();
+
+   /*************************************
+   XylemOuterRing
+   *************************************/
+   cout << "XylemOuterRing" << endl;
+
+   rsMXCoreDB* RsMXCoreDB = new rsMXCoreDB;
+   RsMXCoreDB->RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
+   RsMXCoreDB->InitXylemOutRing(RsPXCoreDB,
+       setMXNum,
+       setMXAverageRingRadius,
+       variationRatio,
+       xylemMaxOutRingNum,
+       xylemMaxOutRingCellNum,
+       xylemMaxOutRingAddRadius,
+       setUResolution,
+       setVResolution,
+       setWResolution,
+       sliceNum);
+
+   /*************************************
+   MetaXylum
+   *************************************/
+   cout << "rsMXBoundaryDB" << endl;
+
+   //rsMXBoundaryDB* RSMXBoundaryDB = new rsMXBoundaryDB;
+   int dotNum = 10;
+   int setUpRowNum = 8;
+   int setDownRowNum = 1;
+   double setUpAppendParallelLengthThresholdRatio = 0.5;
+   //RSMXBoundaryDB->InitBoundaryCell(RsMXCoreDB, dotNum, setUpRowNum, setDownRowNum, sliceNum);
+
+
+   cout << "rsMXBoundaryOutDB" << endl;
+
+   rsMXBoundaryOutDB* RSMXBoundaryOutDB = new rsMXBoundaryOutDB;
+   RSMXBoundaryOutDB->RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
+   RSMXBoundaryOutDB->InitXylemOutRing(RsPXCoreDB,
+       setMXNum,
+       setMXAverageRingRadius,
+       variationRatio,
+       xylemMaxOutRingNum,
+       xylemMaxOutRingCellNum,
+       xylemMaxOutRingAddRadius,
+       setUResolution,
+       setVResolution,
+       setWResolution,
+       sliceNum);
+   RSMXBoundaryOutDB->InitBoundaryCell(dotNum, setUpRowNum, setDownRowNum, sliceNum);
+   RSMXBoundaryOutDB->InitBoundaryInterDB(
+       innerTangentRingRadiusRatioTemp,
+       setInterVerticalNum,
+       variationRatio,
+       sliceNum);
+   RSMXBoundaryOutDB->InitBoundaryUpDB(
+       setUpVecticalLengthThresholdRatio,
+       variationRatio,
+       sliceNum);
+
    //////////////////////////////////// Stele Jagdeep 2-3-2021  /////////////////////////////////////////
    /*************************************
    SteleDB
    **************************************/
    cout << "SteleDB" << endl;
 
-   rsMXBoundaryOutDB * RSMXBoundaryOutDB = new rsMXBoundaryOutDB;
    rsSteleInnerDB* RsSteleInnerDB = new rsSteleInnerDB;
 
    RSMXBoundaryOutDB->SetObjectXYZRadiusRatio(1);
@@ -533,6 +622,103 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
    RsSteleInnerDB ->SetObjectOpacity();
 
 
+   /*************************************
+   PXBoundaryDB
+   **************************************/
+   rsPXBoundaryDB* RsPXBoundaryDB = new rsPXBoundaryDB;
+
+   RsPXBoundaryDB->RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
+   RsPXBoundaryDB->InitXylemOutRing(endodermisBaseRadius,
+       pxGapRadius,
+       setPXNum,
+       setPXAverageRingRadius,
+       variationRatio,
+       xylemMaxOutRingCellNum,
+       xylemMaxOutRingAddRadius,
+       setUResolution,
+       setVResolution,
+       setWResolution,
+       sliceNum);
+   RsPXBoundaryDB->InitPXSamll();
+   RsPXBoundaryDB->InitBoundaryCell
+   (RsPXCoreDB,
+       dotNum,
+       setUpRowNum,
+       setDownRowNum,
+       sliceNum);
+
+
+   /*************************************
+   Phloem
+   **************************************/
+   rsPhloemDB* RsPhloemDB = new rsPhloemDB;
+   RsPhloemDB->InitUpCell(
+       RsPXBoundaryDB,
+       setUpAppendParallelLengthThresholdRatio,
+       totalHeight,
+       sliceNum,
+       initZPosition,
+       vectorNum,
+       setUResolution,
+       setVResolution,
+       setWResolution,
+       variationRatio);
+   RsPhloemDB->InitDownCell(RsPXBoundaryDB, variationRatio, sliceNum);
+
+   /************************************
+   PXCore Visualization;
+   *************************************/
+   RsPXCoreDB->RGBTime(2);
+   RsPXCoreDB->RGBStart(4);
+
+   rsPXCoreVisual* RsPXCoreVisualDB = new rsPXCoreVisual;
+   RsPXCoreVisualDB->PXCoreVisual(RsPXBoundaryDB, renL);
+   RsPXCoreVisualDB->PXCenterRingVisual(RsPXBoundaryDB, renL);
+   RsPXCoreVisualDB->PXSmallVisual(RsPXBoundaryDB, renL);
+
+   /************************************
+   PXBoundary Visualization;
+   *************************************/
+   RsPXBoundaryDB->RGBTime(2);
+   RsPXBoundaryDB->RGBStart(4);
+
+   rsPXBoundaryVisual* RsPXBoundaryVisualDB = new rsPXBoundaryVisual;
+   RsPXBoundaryVisualDB->BoundaryCellVisual(RsPXBoundaryDB, renL);
+
+   /************************************
+   MXCore Visualization;
+   *************************************/
+   RsMXCoreDB->RGBTime(2);
+   RsMXCoreDB->RGBStart(4);
+
+   rsMXCoreVisual* RsMXCoreVisualDB = new rsMXCoreVisual;
+   RsMXCoreVisualDB->MXCenterRingVisual(RSMXBoundaryOutDB, renL);
+   RsMXCoreVisualDB->MXVisual(RSMXBoundaryOutDB, renL);
+
+   /************************************
+   MXBoundary Visualization;
+   *************************************/
+   RSMXBoundaryOutDB->RGBTime(2);
+   RSMXBoundaryOutDB->RGBStart(4);
+
+   rsMXBoundaryVisual* RsMXBoundaryVisualDB = new rsMXBoundaryVisual;
+   RsMXBoundaryVisualDB->MXBoundaryCellVisual(RSMXBoundaryOutDB, renL);
+
+   /************************************
+   MXBoundaryOut Visualization;
+   *************************************/
+   rsMXBoundaryOutVisual* RsMXBoundaryOutVisualDB = new rsMXBoundaryOutVisual;
+   RsMXBoundaryOutVisualDB->MXBoundaryInterCellVisual(RSMXBoundaryOutDB, renL);
+   RsMXBoundaryOutVisualDB->MXBoundaryUpCellVisual(RSMXBoundaryOutDB, renL);
+
+   /*************************************
+   Phloem Visualization
+   **************************************/
+   rsPhloemVisual* RsPhloemVisualDB = new rsPhloemVisual;
+   RsPhloemVisualDB->DownCellVisual(RsPhloemDB, renL);
+   RsPhloemVisualDB->UpAppendCellVisual(RsPhloemDB, renL);
+   RsPhloemVisualDB->UpPhloemCellVisual(RsPhloemDB, renL);
+
    /************************************
    stele Visualization;
    *************************************/
@@ -547,17 +733,17 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
    
    /***********************************
    Metaxylemboundary out*************** Jgdp - 2/5/2021*/
-   rsMXBoundaryOutDB* RsMXBoundaryOutDB = new rsMXBoundaryOutDB;
-   RsMXBoundaryOutDB->InitBoundaryUpDB(setUpVecticalLengthThresholdRatio, variationRatio, sliceNum);
+   //rsMXBoundaryOutDB* RsMXBoundaryOutDB = new rsMXBoundaryOutDB;
+   //RsMXBoundaryOutDB->InitBoundaryUpDB(RsMXCoreDB, setUpVecticalLengthThresholdRatio, variationRatio, sliceNum);
    //RsMXBoundaryOutDB->InitBoundaryInterDB(innerTangentRingRadiusRatioTemp, setInterVerticalNum, variationRatio, sliceNum);
 
 
    /// Metaxylem visualization
-   rsMXBoundaryOutVisual* RsMXBoundaryOutVisualDB = new rsMXBoundaryOutVisual;
+   //rsMXBoundaryOutVisual* RsMXBoundaryOutVisualDB = new rsMXBoundaryOutVisual;
 
 //vtk Error ~Sankalp
-   RsMXBoundaryOutVisualDB->MXBoundaryInterCellVisual(RsMXBoundaryOutDB, renL);
-   RsMXBoundaryOutVisualDB->MXBoundaryUpCellVisual(RsMXBoundaryOutDB, renL);
+  // RsMXBoundaryOutVisualDB->MXBoundaryInterCellVisual(RSMXBoundaryOutDB, renL);
+  // RsMXBoundaryOutVisualDB->MXBoundaryUpCellVisual(RSMXBoundaryOutDB, renL);
    
    /***********************************
    rsMXBoundaryDB*************** Jgdp - 2/5/2021*/

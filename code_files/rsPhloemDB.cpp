@@ -362,8 +362,8 @@ void rsPhloemDB::UpFirstSecondAppendParallelStartAndEndRadianTotalDB()
 	double tempSecondStart;
 	double tempFirstEnd;
 	double tempSecondEnd;
-	double ratioFirst;
-	double ratioSecond;
+	int ratioFirst;
+	int ratioSecond;
 	ofstream fout("phloemUpAppendCell.txt", ios::app);
 	fout << "UpFirstSecondAppendParallelStartAndEndRadianTotalDB" << endl;
 	for (itVecFirst = upFirstAppendParallelRadianTotalDB.begin(),
@@ -371,9 +371,9 @@ void rsPhloemDB::UpFirstSecondAppendParallelStartAndEndRadianTotalDB()
 		itVecFirst != upFirstAppendParallelRadianTotalDB.end();
 		itVecFirst++, itVecSecond++)
 	{  //srand(( rand()% (rand()% 1000) ) );
-		ratioFirst = rand() % 3 + 1;
+		ratioFirst = rand() % 3;
 		//srand(( rand()% (rand()% 1000) ) );
-		ratioSecond = rand() % 3 + 1;
+		ratioSecond = rand() % 3;
 		fout << "ratioFirst: " << ratioFirst << "  ratioSecond: " << ratioSecond << endl;
 		tempFirstStart = *itVecFirst * upAppendParallelStartAndEndRadianTotalRatioDB[ratioFirst];
 		tempFirstEnd = *itVecFirst - tempFirstStart;

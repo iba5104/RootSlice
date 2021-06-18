@@ -140,7 +140,7 @@ int main()
 	{
 		baseRadius = 100 * baseRadiusInt;
 
-		for (rcaRatioInt = 0; rcaRatioInt <= 6; rcaRatioInt++)
+		for (rcaRatioInt = 0; rcaRatioInt <= 2; rcaRatioInt++)
 		{
 			rcaRatioInput = 0.1 * rcaRatioInt;
 
@@ -194,9 +194,19 @@ int main()
 							int sliceNum = 3;
 
 							/****************Metaxylem parameters******************/
-							double setUpVecticalLengthThresholdRatio = 1;
-							double innerTangentRingRadiusRatioTemp = 1;
-							int setInterVerticalNum = 1;
+							double setUpVecticalLengthThresholdRatio = 0.3;
+							double innerTangentRingRadiusRatioTemp = 0.4;
+							int setInterVerticalNum = 2;
+							int setMXNum = 5;
+							double setMXAverageRingRadius = 10;
+							double xylemMaxOutRingNum = 2;
+
+							// protoxylem
+							double pxGapRadius = 0.2;
+							int setPXNum = 8;
+							double setPXAverageRingRadius = 1;
+							double xylemMaxOutRingCellNum = 15;
+							double xylemMaxOutRingAddRadius = 0.2;
 							/// Output filename;
 
 							/// steleRadius to string;
@@ -383,7 +393,15 @@ int main()
 									steleInnerLayerNumInput,
 									setUpVecticalLengthThresholdRatio,
 									innerTangentRingRadiusRatioTemp,
-									setInterVerticalNum
+									setInterVerticalNum,
+									setMXNum,
+									setMXAverageRingRadius,
+									xylemMaxOutRingNum,
+									pxGapRadius,
+									setPXNum,
+									setPXAverageRingRadius,
+									xylemMaxOutRingCellNum,
+									xylemMaxOutRingAddRadius
 								);
 							}
 							else

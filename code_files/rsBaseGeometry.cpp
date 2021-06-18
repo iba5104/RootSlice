@@ -308,11 +308,11 @@ void rsBaseGeometry::RandomRatioButSameSumAndNumber
 	double sum = 0;
 	double temp = 0;
 
-
 	/** New */
 	//double standardTotalLength = 2000;
 	double standardTotalLength = int(totalLength);
 	int variationLength;
+	vector<int> randomVals;
 	vector<double> ratioDB;
 	vector<double> ratioAddDB;
 
@@ -342,7 +342,7 @@ void rsBaseGeometry::RandomRatioButSameSumAndNumber
 	//   fout << "aveLength: " << aveLength << endl;
 
 	srand((unsigned)time(NULL));
-	while (sum != standardTotalLength)
+	/*while (sum != standardTotalLength)
 	{
 		ratioDB.clear();
 		ratioAddDB.clear();
@@ -355,6 +355,26 @@ void rsBaseGeometry::RandomRatioButSameSumAndNumber
 			ratioDB.push_back(temp / standardTotalLength);
 			ratioAddDB.push_back((sum - temp) / standardTotalLength);
 		}
+	}*/
+	//Sankalp - Hopefully a faster way:
+	ratioDB.clear();
+	ratioAddDB.clear();
+	sum = 0;
+
+	for (int i = 0; i < cellNum; i++)
+	{
+		temp = (rand() % variationLength) + round(aveLength - variationLength / 2);
+		sum += temp;
+		randomVals.push_back(temp);
+	}
+	double mulCoeff = standardTotalLength / sum;
+	sum = 0;
+	for (int i = 0; i < cellNum; i++)
+	{
+		temp = randomVals[i] * mulCoeff;
+		sum += temp;
+		ratioDB.push_back(temp / standardTotalLength);
+		ratioAddDB.push_back((sum - temp) / standardTotalLength);
 	}
 	vector<double>::iterator itVec;
 	vector<double>::iterator itVecAdd;

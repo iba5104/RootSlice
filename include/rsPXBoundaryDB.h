@@ -28,7 +28,7 @@ public:
 
 /// boundaryHalfCentralRadianDB
    vector<double> boundaryHalfCentralRadianDB;
-   void BoundaryHalfCentralRadianDB();
+   void BoundaryHalfCentralRadianDB(rsPXCoreDB* RsPXCoreDB);
 
 /// boundaryRadianStartDB, boundaryRadianEndDB and boundaryCentralRadianDB;
    vector<double> boundaryRadianStartDB;
@@ -39,7 +39,7 @@ public:
 /// boundaryMaxCenterRadiusDB and boundaryMinCenterRadiusDB
    vector<double> boundaryMaxCenterRadiusDB;
    vector<double> boundaryMinCenterRadiusDB;
-   void BoundaryMaxAndMinCenterRadiusDB();
+   void BoundaryMaxAndMinCenterRadiusDB(rsPXCoreDB* RsPXCoreDB);
 
 /// boundaryTangentCenterRadiusDB
    vector<double> boundaryTangentCenterRadiusDB;
@@ -160,7 +160,8 @@ public:
 
 /// Initialize Boundary Cells
    void InitBoundaryCell
-   ( int dotNum,
+   ( rsPXCoreDB* RsPXCoreDB,
+     int dotNum,
      int setUpRowNum,
      int setDownRowNum,
      int sliceNum );

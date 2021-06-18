@@ -175,7 +175,7 @@ void rsMXBoundaryDB::BoundaryHalfCentralRadianDB()
 	fout << "BoundaryHalfCentralRadianDB" << endl;
 	for (itVec = boundaryRadiusDB.begin(), i = 0; itVec != boundaryRadiusDB.end(); itVec++, i++)
 	{
-		sinHalfCentralRadian = *itVec / centerXYRadiusDB[i];
+		sinHalfCentralRadian = *itVec / (centerXYRadiusDB[i]);
 		asinHalfCentralRadian = asin(sinHalfCentralRadian);
 		boundaryHalfCentralRadianDB.push_back(asinHalfCentralRadian);
 		fout << "i: " << i << "  " << asinHalfCentralRadian << endl;
@@ -380,7 +380,7 @@ void rsMXBoundaryDB::BoundaryTangentUpAndDownLengthSegmentAppendRadiusDB()
 		boundaryTangentUpLengthSegmentAppendRadius.clear();
 		for (j = 0; j != validUpRowNum; j++)
 		{
-			tempUp = boundaryMinCenterRadiusDB[i] + boundaryTangentUpLengthSegmentDB[i] * (j + 1);
+			tempUp = boundaryMinCenterRadiusDB[i] + boundaryTangentUpLengthSegmentDB[i] * (j + 1.0);
 			boundaryTangentUpLengthSegmentAppendRadius.push_back(tempUp);
 			fout << "i: " << i << "  j: " << j << "  tempUp: " << tempUp << endl;
 		}
@@ -396,7 +396,7 @@ void rsMXBoundaryDB::BoundaryTangentUpAndDownLengthSegmentAppendRadiusDB()
 		boundaryTangentDownLengthSegmentAppendRadius.clear();
 		for (j = 0; j != validDownRowNum; j++)
 		{
-			tempDown = boundaryMaxCenterRadiusDB[i] - boundaryTangentDownLengthSegmentDB[i] * (j + 1);
+			tempDown = boundaryMaxCenterRadiusDB[i] - boundaryTangentDownLengthSegmentDB[i] * (j + 1.0);
 			boundaryTangentDownLengthSegmentAppendRadius.push_back(tempDown);
 			fout << "i: " << i << "  j: " << j << "  tempDown: " << tempDown << endl;
 		}
@@ -475,7 +475,7 @@ void rsMXBoundaryDB::BoundaryPointRightUpDownXYHemisphereTargetDB()
 	double best;
 	double tempX;
 	double tempY;
-	int record;
+	int record{};
 	vector<double> boundaryPointRightUpXHemisphereTarget;
 	vector<double> boundaryPointRightUpYHemisphereTarget;
 	vector<double> boundaryPointRightDownXHemisphereTarget;
@@ -1535,10 +1535,12 @@ void rsMXBoundaryDB::BoundaryCellObjectHeightAndZPositionDB(int sliceNum)
 
 
 void rsMXBoundaryDB::InitBoundaryCell
-(int dotNum,
+(
+	int dotNum,
 	int setUpRowNum,
 	int setDownRowNum,
-	int sliceNum)
+	int sliceNum
+)
 {
 	BoundaryRotateRadian();
 

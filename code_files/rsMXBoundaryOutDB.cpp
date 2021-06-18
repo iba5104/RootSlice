@@ -636,7 +636,7 @@ void rsMXBoundaryOutDB::InterCellObjectHeightAndZPositionDB(int sliceNum)
 }
 
 void rsMXBoundaryOutDB::InitBoundaryInterDB
-(double innerTangentRingRadiusRatioTemp,
+(	double innerTangentRingRadiusRatioTemp,
 	int setInterVerticalNum,
 	double variationRatio,
 	int sliceNum)
@@ -736,6 +736,8 @@ void rsMXBoundaryOutDB::UpVerticalNum()
 {
 	vector<double>::iterator itVec;
 	int num;
+	if (upVecticalLengthThreshold == 0)
+		upVecticalLengthThreshold = 1;
 	//ofstream fout("a.txt",ios::app);
 	//cout << "upVerticalNum" << endl;
 	for (itVec = upVerticalLengthTotalDB.begin(); itVec != upVerticalLengthTotalDB.end(); itVec++)
@@ -798,11 +800,18 @@ void rsMXBoundaryOutDB::UpVerticalLengthDB(double variationRatio)
 		itVec++, itVecNum++, i++)
 	{  //cout << "UpVerticalLengthDB: " << "  i: " << i << endl;
 	   //cout << "upVerticalLengthTotalDB: " << *itVec << "  upVerticalNum: " << *itVecNum << endl;
-		RandomRatioButSameSumAndNumber(upVerticalLength,
+		SameSumAndNumberAndRatio(
+			upVerticalLength,
 			upVerticalLengthAdd,
 			*itVec,
 			*itVecNum,
-			variationRatio);
+			variationRatio
+		);
+//		RandomRatioButSameSumAndNumber(upVerticalLength,
+//			upVerticalLengthAdd,
+//			*itVec,
+//			*itVecNum,
+//			variationRatio);
 		upVerticalLengthDB.insert(pair<int, vector<double> >(i, upVerticalLength));
 		upVerticalLengthAddDB.insert(pair<int, vector<double> >(i, upVerticalLengthAdd));
 	}
@@ -1337,7 +1346,8 @@ void rsMXBoundaryOutDB::UpCellObjectHeightAndZPositionDB(int sliceNum)
 }
 
 void rsMXBoundaryOutDB::InitBoundaryUpDB
-(double setUpVecticalLengthThresholdRatio,
+(
+	double setUpVecticalLengthThresholdRatio,
 	double variationRatio,
 	int sliceNum)
 {

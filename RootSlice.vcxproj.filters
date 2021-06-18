@@ -1,105 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsBaseGeometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsBaseGeometryMX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsBaseGeometryPX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsDataOutput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsDynamicDataOutput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsEpiCortexEndoWaterPathDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsEpiCortexEndoWaterPathDBVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXBoundaryDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXBoundaryOutDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXBoundaryOutVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXBoundaryVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXCoreDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsMXCoreVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPXBoundaryDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPXBoundaryVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPXCoreDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPXCoreVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPhloemDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsPhloemVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsRcaDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSourceCorticalDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSourceCorticalVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSourceEpidermisDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSourceEpidermisVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSteleInnerDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\rsSteleInnerVisual.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\tinystr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\tinyxml.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\tinyxmlerror.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\tinyxmlparser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\VSProjects\RootSlice_code\code_files\viStringTokenizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\VSProjects\RootSlice_code\CMakeLists.txt" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\main.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsBaseGeometry.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsBaseGeometryMX.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsBaseGeometryPX.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsDataOutput.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsDynamicDataOutput.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsEpiCortexEndoWaterPathDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsEpiCortexEndoWaterPathDBVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsMXBoundaryDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsMXBoundaryOutDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsMXBoundaryOutVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsMXBoundaryVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsMXCoreDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsMXCoreVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsPXBoundaryDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsPXBoundaryVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsPXCoreDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsPXCoreVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsPhloemDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsPhloemVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsRcaDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceCorticalDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceCorticalVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceEpidermisDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceEpidermisVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSteleInnerDB.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSteleInnerVisual.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinystr.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinyxml.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinyxmlerror.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinyxmlparser.cpp" />
+    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\viStringTokenizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
