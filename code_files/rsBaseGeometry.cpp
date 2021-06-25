@@ -667,14 +667,14 @@ void rsBaseGeometry::RandomHeight
 
 	/// Initialize input;
 	roundLength = round(totalHeight);
-	lengthTemp = roundLength * 100;
+	lengthTemp = roundLength * 100.0;
 	aveLength = round(lengthTemp / sliceNum);
 	/// define the range of random data generate, the bigger the smaller range;
 	randomRange = 1;
 	rangeLength = round(aveLength / randomRange);
 
 	//srand ( time(NULL) );
-	srand((rand() % (rand() % 1000)));
+	srand((rand() % ((rand() % 1000)+1)));
 	//srand((unsigned)time(NULL));
 	while (sum != roundLength)
 	{

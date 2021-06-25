@@ -140,11 +140,11 @@ int main()
 	{
 		baseRadius = 100 * baseRadiusInt;
 
-		for (rcaRatioInt = 0; rcaRatioInt <= 2; rcaRatioInt++)
+		for (rcaRatioInt = 0; rcaRatioInt <= 1; rcaRatioInt++)
 		{
-			rcaRatioInput = 0.1 * rcaRatioInt;
+			rcaRatioInput = 0.6 * rcaRatioInt;
 
-			for (corticalCellAddRadiusMinInput = 10; corticalCellAddRadiusMinInput <= 20; corticalCellAddRadiusMinInput += 5)
+			for (corticalCellAddRadiusMinInput = 10; corticalCellAddRadiusMinInput <= 10; corticalCellAddRadiusMinInput += 5)
 				//corticalCellAddRadiusMinInput = 0;
 			{
 				for (gapCellWallInputInt = 1.0; gapCellWallInputInt <= 1.0; gapCellWallInputInt++)
@@ -189,24 +189,24 @@ int main()
 
 							  /*Stele parameters*/
 							double steleInnestCellRadiusInput = 5;
-							int steleInnerLayerNumInput = 5;
+							int steleInnerLayerNumInput = 10;
 							double variationRatio = 0.2;
 							int sliceNum = 3;
 
 							/****************Metaxylem parameters******************/
 							double setUpVecticalLengthThresholdRatio = 0.3;
 							double innerTangentRingRadiusRatioTemp = 0.4;
-							int setInterVerticalNum = 2;
+							int setInterVerticalNum = 6;
 							int setMXNum = 5;
-							double setMXAverageRingRadius = 10;
-							double xylemMaxOutRingNum = 2;
+							double setMXAverageRingRadius = 40;
+							double xylemMaxOutRingNum = 15;
 
 							// protoxylem
-							double pxGapRadius = 0.2;
-							int setPXNum = 8;
-							double setPXAverageRingRadius = 1;
+							double pxGapRadius = 5;
+							int setPXNum = 10;
+							double setPXAverageRingRadius = 10;
 							double xylemMaxOutRingCellNum = 15;
-							double xylemMaxOutRingAddRadius = 0.2;
+							double xylemMaxOutRingAddRadius = 5;
 							/// Output filename;
 
 							/// steleRadius to string;
