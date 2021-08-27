@@ -27,9 +27,9 @@ void rsEpiCortexEndoWaterPathDB::OutputXMLVtpFileName
 
  /// Combine the epidermal, cortical and endodermal cell X and Y database together;
 void rsEpiCortexEndoWaterPathDB::EpiCortexEndoCellXYDB
-(rsSourceEpidermisDB* RsSourceEpidermisDB,
+(rsSourceDermisDB* RsSourceEpidermisDB,
 	rsSourceCorticalDB* RsSourceCorticalDB,
-	rsSourceEpidermisDB* RsSourceEndodermisDB)
+	rsSourceDermisDB* RsSourceEndodermisDB)
 {
 	map<int, vector<double> >::reverse_iterator itMap;
 	map<int, vector<vector<double> > >::reverse_iterator itMapZHeightReverse;
@@ -138,9 +138,9 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoCellXYDB
 
  /// Combine circleRadiusDB, objectVerticalDB, circleSegmentLengthDB and circleSegmentRotateAngleDB;
 void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
-(rsSourceEpidermisDB* RsSourceEpidermisDB,
+(rsSourceDermisDB* RsSourceEpidermisDB,
 	rsSourceCorticalDB* RsSourceCorticalDB,
-	rsSourceEpidermisDB* RsSourceEndodermisDB)
+	rsSourceDermisDB* RsSourceEndodermisDB)
 {
 	map<int, vector<double> >::reverse_iterator itMap;
 	vector<double>::reverse_iterator itVecRadius;
@@ -268,9 +268,9 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
  */
 
 void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCentreRadiusDB
-(rsSourceEpidermisDB* RsSourceEpidermisDB,
+(rsSourceDermisDB* RsSourceEpidermisDB,
 	rsSourceCorticalDB* RsSourceCorticalDB,
-	rsSourceEpidermisDB* RsSourceEndodermisDB)
+	rsSourceDermisDB* RsSourceEndodermisDB)
 {
 	vector<double>::iterator itVecRadius;
 	vector<double>::iterator itVecVertical;
@@ -1387,9 +1387,9 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoPathTriangleStripXYZDB()
 }
 
 void rsEpiCortexEndoWaterPathDB::InitAllDB
-(rsSourceEpidermisDB* RsSourceEpidermisDB,
+(rsSourceDermisDB* RsSourceEpidermisDB,
 	rsSourceCorticalDB* RsSourceCorticalDB,
-	rsSourceEpidermisDB* RsSourceEndodermisDB
+	rsSourceDermisDB* RsSourceEndodermisDB
 )
 {
 	EpiCortexEndoCellXYDB

@@ -1,11 +1,12 @@
-#include "rsSourceEpidermisVisual.h"
+#include "rsSourceDermisVisual.h"
 
 
 ////////////////////////////////////// Functions ///////////////////////////////////////////
 
-void rsSourceEpidermisVisual::EpidermisVisual
-(rsSourceEpidermisDB* EpidermisDB,
-	vtkSmartPointer<vtkRenderer> renL)
+void rsSourceDermisVisual::EpidermisVisual
+(rsSourceDermisDB* EpidermisDB,
+	vtkSmartPointer<vtkRenderer> renL,
+	int vacuolePlasmaFlag)
 {  /// declare iterator;
 	map<int, vector<double> >::iterator itMap;
 	vector<double>::iterator itVector;
@@ -18,7 +19,13 @@ void rsSourceEpidermisVisual::EpidermisVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName(EpidermisDB->outputXMLVtpFileName);
+	string outputFileName = EpidermisDB->outputXMLVtpFileName;
+	if (vacuolePlasmaFlag == 0)
+		outputFileName = "pureCell_" + outputFileName;
+	if (vacuolePlasmaFlag == 1)
+		outputFileName = "vacuole_" + outputFileName;
+	const char* outputVtp = outputFileName.c_str();
+	writer->SetFileName(outputVtp);
 
 	for (i = 0, itMap = EpidermisDB->objectHeightDB.begin();
 		itMap != EpidermisDB->objectHeightDB.end();
@@ -40,9 +47,21 @@ void rsSourceEpidermisVisual::EpidermisVisual
 			vtkSmartPointer<vtkActor> actor
 				= vtkSmartPointer<vtkActor>::New();
 
-			superEllipsoid->SetXRadius(EpidermisDB->objectVerticalDB);
-			superEllipsoid->SetYRadius(EpidermisDB->circleSegmentLengthDB[i]);
-			superEllipsoid->SetZRadius(EpidermisDB->objectHeightDB[i][sliceTempNum]);
+			if (vacuolePlasmaFlag == 0) {
+				superEllipsoid->SetXRadius(EpidermisDB->pureCellVerticalDB);
+				superEllipsoid->SetYRadius(EpidermisDB->pureCellParallelDB[i]);
+				superEllipsoid->SetZRadius(EpidermisDB->pureCellHeightDB[i][sliceTempNum]);
+			}
+			else if (vacuolePlasmaFlag == 1) {
+				superEllipsoid->SetXRadius(EpidermisDB->vacuoleVerticalDB);
+				superEllipsoid->SetYRadius(EpidermisDB->vacuoleParallelDB[i]);
+				superEllipsoid->SetZRadius(EpidermisDB->vacuoleHeightDB[i][sliceTempNum]);
+			}
+			else {
+				superEllipsoid->SetXRadius(EpidermisDB->objectVerticalDB);
+				superEllipsoid->SetYRadius(EpidermisDB->circleSegmentLengthDB[i]);
+				superEllipsoid->SetZRadius(EpidermisDB->objectHeightDB[i][sliceTempNum]);
+			}
 			superEllipsoid->SetN1(0.2);
 			superEllipsoid->SetN2(0.8);
 

@@ -44,6 +44,10 @@ public:
    ( rsSourceCorticalDB *CorticalDB,
      vtkSmartPointer<vtkRenderer> renL );
 
+   void CorticalPlasmaMembraneVisual
+   ( rsSourceCorticalDB* CorticalDB,
+     vtkSmartPointer<vtkRenderer> renL );
+
 };
 
 #endif // RSSOURCECORTICALVISUAL_H_INCLUDED

@@ -5,10 +5,12 @@
 /// Set OutputXMLVtpFileName;
 void rsSourceCorticalDB::OutputXMLVtpFileName
 (const char* CorticalXMLVtpFileNameInput,
-	const char* CorticalVacuoleXMLVtpFileNameInput)
+	const char* CorticalVacuoleXMLVtpFileNameInput,
+	const char* CorticalPlasmaMembraneVtpFileNameInput)
 {
 	CorticalXMLVtpFileName = CorticalXMLVtpFileNameInput;
 	CorticalVacuoleXMLVtpFileName = CorticalVacuoleXMLVtpFileNameInput;
+	CorticalPlasmaMembraneVtpFileName = CorticalPlasmaMembraneVtpFileNameInput;
 }
 
 

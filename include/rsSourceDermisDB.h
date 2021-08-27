@@ -16,7 +16,7 @@ circleYDB                        vector<double> ;
 ***************************************/
 
 
-class rsSourceEpidermisDB : public rsBaseGeometry
+class rsSourceDermisDB : public rsBaseGeometry
 {
 public:
 
@@ -72,6 +72,20 @@ public:
                     int setVResolution,
                     int setWResolution,
                     int sliceNum );
+
+   /// Initialize pure cell Database;
+   double gapCellWall;
+   double pureCellVerticalDB;
+   vector<double> pureCellParallelDB;
+   map<int, vector<double> > pureCellHeightDB;
+   void InitPureCellDB(double gapCellWallInput);
+
+   /// Initialize vacuole Database;
+   double gapCytoTono;
+   double vacuoleVerticalDB;
+   vector<double> vacuoleParallelDB;
+   map<int, vector<double> > vacuoleHeightDB;
+   void InitVacuoleDB(double gapCytoTonoInput);
 };
 
 

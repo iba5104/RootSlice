@@ -24,8 +24,8 @@
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsRcaDB.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceCorticalDB.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceCorticalVisual.cpp" />
-    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceEpidermisDB.cpp" />
-    <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceEpidermisVisual.cpp" />
+    <ClCompile Include="code_files\rsSourceDermisDB.cpp" />
+    <ClCompile Include="code_files\rsSourceDermisVisual.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSteleInnerDB.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSteleInnerVisual.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinystr.cpp" />

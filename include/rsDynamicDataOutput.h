@@ -25,8 +25,8 @@
 
 #include "rsDataOutput.h"
 
-#include "rsSourceEpidermisDB.h"
-#include "rsSourceEpidermisVisual.h"
+#include "rsSourceDermisDB.h"
+#include "rsSourceDermisVisual.h"
 
 #include "rsEpiCortexEndoWaterPathDB.h"
 #include "rsEpiCortexEndoWaterPathDBVisual.h"
@@ -88,6 +88,13 @@ public:
       /// Cortical Vacuole;
       double gapCytoTono,
 
+      /// Plasma Membrane
+      double plasmaMembraneWidth,
+
+       /// Sclerenchyma
+       int sclerenSliceNum,
+       double sclerenAddRadiusData,
+
       /// Epi;
       int epidermisSliceNum,
       double epidermisAddRadiusData,
@@ -98,15 +105,21 @@ public:
       int endodermisSliceNum,
       double endodermisAddRadiusData,
 //      int endodermisCellNum,
-
+      
+      // Pericycle
+      int pericycleSliceNum,
+      double pericycleAddRadiusData,
 
       /// OutXMLVtpFileName;
       const char* CorticalXMLVtpFileNameInput,
       const char* CorticalVacuoleXMLVtpFileNameInput,
+      const char* CorticalPlasmaMembraneVtpFileNameInput,
+      const char* SclerenXMLVtpFileNameInput,
       const char* EpidermisXMLVtpFileNameInput,
       const char* EndodermisXMLVtpFileNameInput,
       const char* ApoplastXMLVtpFileNameInput,
       const char* SymplastXMLVtpFileNameInput,
+      const char* PericycXMLVtpFileNameInput,
 
       /// DataOutputName;
       const char* dataOutputNameInput,
@@ -145,6 +158,13 @@ public:
       /// Cortical Vacuole;
       double gapCytoTono,
 
+       /// Plasma Membrane
+       double plasmaMembraneWidth,
+
+      /// Sclerenchyma
+      int sclerenSliceNum,
+      double sclerenAddRadiusData,
+
       /// Epi;
       int epidermisSliceNum,
       double epidermisAddRadiusData,
@@ -155,14 +175,21 @@ public:
       int endodermisSliceNum,
       double endodermisAddRadiusData,
 //      int endodermisCellNum,
+      
+       // Pericycle
+       int pericycleSliceNum,
+       double pericycleAddRadiusData,
 
       /// OutXMLVtpFileName;
       const char* CorticalXMLVtpFileNameInput,
       const char* CorticalVacuoleXMLVtpFileNameInput,
+      const char* CorticalPlasmaMembraneVtpFileNameInput,
+      const char* SclerenXMLVtpFileNameInput,
       const char* EpidermisXMLVtpFileNameInput,
       const char* EndodermisXMLVtpFileNameInput,
       const char* ApoplastXMLVtpFileNameInput,
       const char* SymplastXMLVtpFileNameInput,
+      const char* PericycXMLVtpFileNameInput,
 
       /// DataOutputName;
       const char* dataOutputNameInput,

@@ -1,7 +1,7 @@
 #ifndef RSSOURCEEPIDERMISVISUAL_H_INCLUDED
 #define RSSOURCEEPIDERMISVISUAL_H_INCLUDED
 
-#include "rsSourceEpidermisDB.h"
+#include "rsSourceDermisDB.h"
 #include "rsSourceCorticalVisual.h"
 
 //#include "vtkParametricSuperEllipsoid.h"
@@ -16,7 +16,7 @@
 //#include "vtkProperty.h"
 //#include "vtkSmartPointer.h"
 
-class rsSourceEpidermisVisual
+class rsSourceDermisVisual
 {
 public:
 
@@ -26,8 +26,9 @@ public:
    ///////////////// Calculate Cortical Object Total; //////////////////////////
    //
    void EpidermisVisual
-   ( rsSourceEpidermisDB *EpidermisDB,
-     vtkSmartPointer<vtkRenderer> renL );
+   ( rsSourceDermisDB *EpidermisDB,
+     vtkSmartPointer<vtkRenderer> renL,
+     int vacuolePlasmaFlag );
 
 };
 

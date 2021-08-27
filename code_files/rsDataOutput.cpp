@@ -206,7 +206,7 @@ void rsDataOutput::CorticalDataOutputCalculate
 	/******************************************************************************************
 	calculating plasma memembrane volume by adding 0.01 to a, b, and, c radius to pure cell volume
 	**********************************************************************************************///// 1-27-2021 - JGDP
-	double PM_thick = 0.01;
+	double PM_thick = 0.02;
 	double corticalPureCell_plus_PM_Volume = 0;
 	double corticalPureCell_plus_PM_Volume_each_ring = 0;
 
@@ -222,13 +222,13 @@ void rsDataOutput::CorticalDataOutputCalculate
 				itVec1 != (*itVec2).end();
 				sliceTempNum++, itVec1++)
 			{
-				corticalPureCell_plus_PM_Volume += (RsSourceCorticalDB->pureCellVerticalDB[iRingNum] + 0.01) *
-					(RsSourceCorticalDB->pureCellParallelDB[iRingNum][i] + 0.01) *
-					(RsSourceCorticalDB->pureCellHeightDB[iRingNum][i][sliceTempNum] + 0.01) * 8;
+				corticalPureCell_plus_PM_Volume += (RsSourceCorticalDB->pureCellVerticalDB[iRingNum] + PM_thick) *
+					(RsSourceCorticalDB->pureCellParallelDB[iRingNum][i] + PM_thick) *
+					(RsSourceCorticalDB->pureCellHeightDB[iRingNum][i][sliceTempNum] + PM_thick) * 8;
 
-				corticalPureCell_plus_PM_Volume_each_ring = M_PI * (RsSourceCorticalDB->pureCellVerticalDB[iRingNum] + 0.01) *
-					(RsSourceCorticalDB->pureCellVerticalDB[iRingNum] + 0.01) *
-					(RsSourceCorticalDB->pureCellHeightDB[iRingNum][i][sliceTempNum] + 0.01) * 2;
+				corticalPureCell_plus_PM_Volume_each_ring = M_PI * (RsSourceCorticalDB->pureCellVerticalDB[iRingNum] + PM_thick) *
+					(RsSourceCorticalDB->pureCellVerticalDB[iRingNum] + PM_thick) *
+					(RsSourceCorticalDB->pureCellHeightDB[iRingNum][i][sliceTempNum] + PM_thick) * 2;
 			}
 
 		}

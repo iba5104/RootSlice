@@ -1,17 +1,17 @@
 #define _USE_MATH_DEFINES
 #include <cmath> 
-#include "rsSourceEpidermisDB.h"
+#include "rsSourceDermisDB.h"
 
 //////////////////////////////////////// Functions //////////////////////////////////////////////////
 
 /// Set OutputXMLVtpFileName;
-void rsSourceEpidermisDB::OutputXMLVtpFileName(const char* outputXMLVtpFileNameInput)
+void rsSourceDermisDB::OutputXMLVtpFileName(const char* outputXMLVtpFileNameInput)
 {
 	outputXMLVtpFileName = outputXMLVtpFileNameInput;
 }
 
 /// create circleRadiusDB;
-void rsSourceEpidermisDB::CircleRadiusDB
+void rsSourceDermisDB::CircleRadiusDB
 (double epidermisBaseRadius,
 	double epidermisAddRadiusData)
 {
@@ -20,7 +20,7 @@ void rsSourceEpidermisDB::CircleRadiusDB
 }
 
 /// createobjectVerticalDB;
-void rsSourceEpidermisDB::ObjectVerticalDB(double epidermisAddRadius)
+void rsSourceDermisDB::ObjectVerticalDB(double epidermisAddRadius)
 {
 	objectVerticalDB = ObjectVertical(epidermisAddRadius / objectXYZRadiusRatio);
 	cout << "epidermisobjectVerticalDB" << objectVerticalDB << endl;
@@ -29,7 +29,7 @@ void rsSourceEpidermisDB::ObjectVerticalDB(double epidermisAddRadius)
 /******************************************************
 // Create RandomHeightDB; Initialize seperated;
 *******************************************************/
-void rsSourceEpidermisDB::RandomHeightDB(double totalHeight, int sliceNum, double initZPosition, int VectorNum)
+void rsSourceDermisDB::RandomHeightDB(double totalHeight, int sliceNum, double initZPosition, int VectorNum)
 {
 	int temp;
 	for (temp = 0;
@@ -54,7 +54,7 @@ void rsSourceEpidermisDB::RandomHeightDB(double totalHeight, int sliceNum, doubl
  *
  */
 
-void rsSourceEpidermisDB::EpidermisCellNumCalculate(double epidermisAddRadiusData)
+void rsSourceDermisDB::EpidermisCellNumCalculate(double epidermisAddRadiusData)
 {
 	EpidermisCellNumCalculated = int(2 * M_PI * circleRadiusDB / epidermisAddRadiusData);
 
@@ -67,7 +67,7 @@ void rsSourceEpidermisDB::EpidermisCellNumCalculate(double epidermisAddRadiusDat
 // Create GetRandomCircleSegmentAndCircleXYNonuniformDB;
 *******************************************************/
 
-void rsSourceEpidermisDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
+void rsSourceDermisDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
 (double epidermisAddRadiusData,
 	double epidermisBaseRadius,
 	//   int epidermisCellNum,
@@ -102,7 +102,7 @@ void rsSourceEpidermisDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
 /******************************************************
 // Get circleSegmentLengthAdjustRatioDB;
 *******************************************************/
-void rsSourceEpidermisDB::CircleSegmentLengthAdjustRatioDB()
+void rsSourceDermisDB::CircleSegmentLengthAdjustRatioDB()
 {
 	vector<double>::iterator itVector;
 
@@ -125,7 +125,7 @@ map<int, vector<double> > objectHeightDB;
 map<int, vector<double> > objectZPositionDB;
 
 
-void rsSourceEpidermisDB::ObjectHeightAndZPositionDB(int sliceNum)
+void rsSourceDermisDB::ObjectHeightAndZPositionDB(int sliceNum)
 {  /// declare iterator;
 
 	vector<double>::iterator itVector;
@@ -158,7 +158,7 @@ void rsSourceEpidermisDB::ObjectHeightAndZPositionDB(int sliceNum)
 /*******************************************
 Initialize other Database;
 ********************************************/
-void rsSourceEpidermisDB::InitAllDB(const char* outputXMLVtpFileNameInput,
+void rsSourceDermisDB::InitAllDB(const char* outputXMLVtpFileNameInput,
 	double epidermisAddRadiusData,
 	double epidermisBaseRadius,
 	//                                      int epidermisCellNum,
@@ -197,4 +197,114 @@ void rsSourceEpidermisDB::InitAllDB(const char* outputXMLVtpFileNameInput,
 	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
 
 	MapRGB();
+}
+
+/******************************************************************************************************************
+Initialize vacuole Database;
+*******************************************************************************************************************/
+/** \brief
+ *
+ * \param vector<double> objectVerticalDB;
+ * \param map<int, vector<double> > circleSegmentLengthDB;
+ * \param map<int, vector< vector<double> > > objectHeightDB;
+ * \return vector<double> vacuoleVerticalDB;
+ * \return map<int, vector<double> > vacuoleParallelDB;
+ * \return map<int, vector< vector<double> > > vacuoleHeightDB;
+ *
+ */
+
+ /// Pure Cell means the cell without cell wall;
+
+void rsSourceDermisDB::InitPureCellDB(double gapCellWallInput)
+{  // Initialize gapCellWall
+	gapCellWall = gapCellWallInput;
+
+	map<int, vector< vector<double> > >::iterator itMap2;
+	map<int, vector<double> >::iterator itMap1;
+	vector< vector<double> >::iterator itVec2;
+	vector<double>::iterator itVec1;
+
+	vector< vector<double> > vec2;
+	vector<double>           vec1;
+	double temp;
+	int i;
+
+	/// pureCellVerticalDB
+	pureCellVerticalDB = objectVerticalDB;
+
+	/// pureCellParallelDB
+	for (itVec1 = circleSegmentLengthDB.begin(), i = 0;
+		itVec1 != circleSegmentLengthDB.end();
+		itVec1++, i++)
+	{
+		temp = *itVec1 - gapCellWall;
+		pureCellParallelDB.push_back(temp);
+	}
+
+	/// pureCellHeightDB
+	for (itMap1 = objectHeightDB.begin(), i = 0;
+		itMap1 != objectHeightDB.end();
+		itMap1++, i++)
+	{
+		vec1.clear();
+		for (itVec1 = (*itMap1).second.begin(); itVec1 != (*itMap1).second.end(); itVec1++)
+		{
+			temp = *itVec1 - gapCellWall;
+			vec1.push_back(temp);
+		}
+		pureCellHeightDB.insert(pair<int, vector<double> >(i, vec1));
+	}
+
+}
+
+/******************************************************************************************************************
+Initialize vacuole Database;
+*******************************************************************************************************************/
+/** \brief
+ *
+ * \param vector<double> objectVerticalDB;
+ * \param map<int, vector<double> > circleSegmentLengthDB;
+ * \param map<int, vector< vector<double> > > objectHeightDB;
+ * \return vector<double> vacuoleVerticalDB;
+ * \return map<int, vector<double> > vacuoleParallelDB;
+ * \return map<int, vector< vector<double> > > vacuoleHeightDB;
+ *
+ */
+
+void rsSourceDermisDB::InitVacuoleDB(double gapCytoTonoInput)
+{
+	map<int, vector< vector<double> > >::iterator itMap2;
+	map<int, vector<double> >::iterator itMap1;
+	vector< vector<double> >::iterator itVec2;
+	vector<double>::iterator itVec1;
+
+	vector< vector<double> > vec2;
+	vector<double>           vec1;
+	double temp;
+	int i;
+	gapCytoTono = gapCytoTonoInput;
+	/// vacuoleVerticalDB
+	vacuoleVerticalDB = objectVerticalDB;
+	
+	/// vacuoleParallelDB
+	for (itVec1 = circleSegmentLengthDB.begin(), i = 0;
+		itVec1 != circleSegmentLengthDB.end();
+		itVec1++, i++)
+	{
+		temp = *itVec1 - gapCytoTono - gapCellWall;
+		vacuoleParallelDB.push_back(temp);
+	}
+	/// vacuoleHeightDB
+	for (itMap1 = objectHeightDB.begin(), i = 0;
+		itMap1 != objectHeightDB.end();
+		itMap1++, i++)
+	{
+		vec1.clear();
+		for (itVec1 = (*itMap1).second.begin(); itVec1 != (*itMap1).second.end(); itVec1++)
+		{
+			temp = *itVec1 - gapCytoTono - gapCellWall;
+			vec1.push_back(temp);
+		}
+		vacuoleHeightDB.insert(pair<int, vector<double> >(i, vec1));
+	}
 }

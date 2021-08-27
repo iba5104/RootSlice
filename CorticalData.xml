@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Main>
-    <Plant>
-        <DaysAfterEmergence>28</DaysAfterEmergence>
-        <PlantType>IBM</PlantType>
-        <PlantNum>1
-            <NodeRank>
-                <RootRank1 RootRank1Num="3" CoordinateUnit="centimeter">
-                    <RootRank1DAE>20</RootRank1DAE>
-                    <EmergentPointRootRank1>
-                        <x>2</x>
-                        <y>3</y>
-                        <z>2</z>
-                    </EmergentPointRootRank1>
-                    <RootRank2 RootRank2Num="20" CoordinateUnit="centimeter" LengthUnit="centimeter">
-                        <RootRank2DAE>14</RootRank2DAE>
-                        <LengthToBase2>9</LengthToBase2>
-                        <EmergentPointRootRank2>
-                            <x>4</x>
-                            <y>6</y>
-                            <z>-3</z>
-                        </EmergentPointRootRank2>
-                        <RootRank3 RootRank3Num="40" CoordinateUnit="centimeter" LengthUnit="centimeter">
-                            <RootRank3DAE>6</RootRank3DAE>
-                            <LengthToBase3>6</LengthToBase3>
-                            <EmergentPointRootRank3>
-                                <x>9</x>
-                                <y>10</y>
-                                <z>-10</z>
-                            </EmergentPointRootRank3>
-                            <Slice unit="um">
-                                <PositionPointRootRank3>
-                                    <x>12</x>
-                                    <y>15</y>
-                                    <z>-18</z>
-                                </PositionPointRootRank3>
-                                <BaseRadius>300</BaseRadius>
-                                <Thickness>200</Thickness>
-                                <Cortical>
-                                    <RingNum>0</RingNum>
-                                    <AddRadius>18</AddRadius>
-                                    <CellNumber>60</CellNumber>
-                                </Cortical>
-                                <Cortical>
-                                    <RingNum>1</RingNum>
-                                    <AddRadius>21</AddRadius>
-                                    <CellNumber>60</CellNumber>
-                                </Cortical>
-                                <Cortical>
-                                    <RingNum>2</RingNum>
-                                    <AddRadius>20</AddRadius>
-                                    <CellNumber>60</CellNumber>
-                                </Cortical>
-                                <Cortical>
-                                    <RingNum>3</RingNum>
-                                    <AddRadius>30</AddRadius>
-                                    <CellNumber>60</CellNumber>
-                                </Cortical>
-                                <Cortical>
-                                    <RingNum>4</RingNum>
-                                    <AddRadius>28</AddRadius>
-                                    <CellNumber>60</CellNumber>
-                                </Cortical>
-                                <Cortical>
-                                    <RingNum>5</RingNum>
-                                    <AddRadius>25</AddRadius>
-                                    <CellNumber>80</CellNumber>
-                                </Cortical>
-                                <Cortical>
-                                    <RingNum>6</RingNum>
-                                    <AddRadius>20</AddRadius>
-                                    <CellNumber>90</CellNumber>
-                                </Cortical>
-                            </Slice>
-                        </RootRank3>
-                    </RootRank2>
-                </RootRank1>
-            </NodeRank>
-        </PlantNum>
-    </Plant>
+<Main name="PlantName" type="PlantType" height="300">
+    <Cortical unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<BaseRadius>300</BaseRadius>
+		<Thickness>200</Thickness>
+		<CellDiameter>20</CellDiameter>
+		<NumFiles>8</NumFiles>
+		<RCARatio>0.6</RCARatio>
+	</Cortical>
+	<Stele unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<InnestCellDiameer>5</InnestCellDiameer>
+		<InnerLayerNum>10</InnerLayerNum>
+	</Stele>
+	<MetaXylem unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<VerticalLengthThresholdRatio>0.3</VerticalLengthThresholdRatio>
+		<TangentRingRadiusRatio>0.4</TangentRingRadiusRatio>
+		<SteleCellNumBetween>6</SteleCellNumBetween>
+		<MXNum>5</MXNum>
+		<MXAverageRingRadius>20</MXAverageRingRadius>
+		<SurroundingCellRingNum>2</SurroundingCellRingNum>
+	</MetaXylem>
+	<ProtoXylem unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<GapRadius>5</GapRadius>
+		<PXNum>10</PXNum>
+		<PXAverageRingRadius>10</PXAverageRingRadius>
+		<SurroundingCellRingNum>15</SurroundingCellRingNum>
+		<SurroundingCellRingRadius>5</SurroundingCellRingRadius>
+	</ProtoXylem>
+	<Epidermis unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>10</CellDiameter>
+		<CellNum>150</CellNum>
+	</Epidermis>
+	<Endodermis unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>10</CellDiameter>
+	</Endodermis>
+	<Exodermis unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>10</CellDiameter>
+	</Exodermis>
+	<Sclerenchyma unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>10</CellDiameter>
+	</Sclerenchyma>
+	<Pericycle unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>5</CellDiameter>
+	</Pericycle>
 </Main>

@@ -1,8 +1,9 @@
 #include "rsSourceCorticalVisual.h"
 
 void rsSourceCorticalVisual::CorticalVisual
-(rsSourceCorticalDB* CorticalDB,
-	vtkSmartPointer<vtkRenderer> renL)
+(	rsSourceCorticalDB* CorticalDB,
+	vtkSmartPointer<vtkRenderer> renL
+)
 {  /// declare iterator;
 	map<int, vector< vector<double> > >::iterator itMap;
 	vector< vector<double> >::iterator itVec2;
@@ -258,6 +259,130 @@ void rsSourceCorticalVisual::VacuoleVisual
 				//              CorticalDB->mapRGB[(sliceTempNum)*CorticalDB->rgbTime + 1 + CorticalDB->rgbStart][2] );
 
 				actor->GetProperty()->SetOpacity(CorticalDB->vacuoleOpacity);
+
+				renL->AddActor(actor);
+			}
+		}
+	}
+	writer->SetInputConnection(append->GetOutputPort());
+	writer->Write();
+}
+
+void rsSourceCorticalVisual::CorticalPlasmaMembraneVisual
+(rsSourceCorticalDB* CorticalDB,
+	vtkSmartPointer<vtkRenderer> renL
+)
+{  /// declare iterator;
+	map<int, vector< vector<double> > >::iterator itMap;
+	vector< vector<double> >::iterator itVec2;
+	vector<double>::iterator           itVec1;
+	/// declare int;
+	int iRingNum;
+	int i;
+	int sliceTempNum;
+	//   int CorticalCellNum = 0;
+	//   ofstream fout("staticNum.txt",ios::app);
+
+	   /// Create vtkAppendPolyData and vtkXMLPolyDataWriter pointer outside the loop;
+	vtkSmartPointer<vtkAppendPolyData> append =
+		vtkSmartPointer<vtkAppendPolyData>::New();
+	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
+		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+	writer->SetFileName(CorticalDB->CorticalPlasmaMembraneVtpFileName);
+
+	for (iRingNum = 0, itMap = CorticalDB->pureCellHeightDB.begin();
+		itMap != CorticalDB->pureCellHeightDB.end();
+		iRingNum++, itMap++)
+	{
+		for (i = 0, itVec2 = (*itMap).second.begin(); itVec2 != (*itMap).second.end(); i++, itVec2++)
+		{
+			for (sliceTempNum = 0, itVec1 = (*itVec2).begin();
+				itVec1 != (*itVec2).end();
+				sliceTempNum++, itVec1++)
+			{
+				vtkSmartPointer<vtkParametricSuperEllipsoid> superEllipsoid
+					= vtkSmartPointer<vtkParametricSuperEllipsoid>::New();
+
+				vtkSmartPointer<vtkParametricFunctionSource> superEllipsoidFunction
+					= vtkSmartPointer<vtkParametricFunctionSource>::New();
+
+				vtkSmartPointer<vtkPolyDataMapper> polyDataMapper
+					= vtkSmartPointer<vtkPolyDataMapper>::New();
+
+				vtkSmartPointer<vtkActor> actor
+					= vtkSmartPointer<vtkActor>::New();
+
+				superEllipsoid->SetXRadius
+				(CorticalDB->pureCellVerticalDB[iRingNum]);
+
+				superEllipsoid->SetYRadius
+				(CorticalDB->pureCellVerticalDB[iRingNum]);//( CorticalDB->pureCellParallelDB[iRingNum][i] );
+
+				superEllipsoid->SetZRadius
+				(CorticalDB->pureCellHeightDB[iRingNum][i][sliceTempNum]);
+
+				superEllipsoid->SetN1(0.2);
+				superEllipsoid->SetN2(0.8);
+
+				superEllipsoidFunction->SetParametricFunction(superEllipsoid);
+				superEllipsoidFunction->SetUResolution(CorticalDB->uResolution);
+				superEllipsoidFunction->SetVResolution(CorticalDB->vResolution);
+				superEllipsoidFunction->SetWResolution(CorticalDB->wResolution);
+				superEllipsoidFunction->Update();
+
+				/// Set Scalars;
+				// Extract the polydata
+				vtkSmartPointer<vtkPolyData> polydata =
+					vtkSmartPointer<vtkPolyData>::New();
+				polydata = superEllipsoidFunction->GetOutput();
+
+				//declare vtkVector
+				//give it some values 4.5.......4.5
+				//polydata->getCellData()->setVector(...)
+
+				int pointNum;
+				pointNum = polydata->GetNumberOfPoints();
+
+
+				vtkFloatArray* scalars = vtkFloatArray::New();
+				scalars->SetName("Color");
+				int numSequence;
+
+				/// Add scalar to point;
+				for (numSequence = 0; numSequence < pointNum; numSequence++)
+				{
+					scalars->InsertTuple1
+						//               ( numSequence, double(sliceTempNum) / 2 );
+						(numSequence, 0);
+				}
+				polydata->GetPointData()->SetScalars(scalars);
+				scalars->Delete();
+
+
+				/// Set vtkTranform and vtkTransformPloyDataFilter;
+				vtkSmartPointer<vtkTransform> trans =
+					vtkSmartPointer<vtkTransform>::New();
+
+				vtkSmartPointer<vtkTransformPolyDataFilter> transFilter =
+					vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+
+				trans->Translate(CorticalDB->circleXDB[iRingNum][i],
+					CorticalDB->objectZPositionDB[iRingNum][i][sliceTempNum],
+					CorticalDB->circleYDB[iRingNum][i]);
+				trans->RotateY((CorticalDB->circleSegmentRotateAngleDB[iRingNum][i]));
+				trans->RotateX(90);
+
+				transFilter->SetInputData(polydata);
+				transFilter->SetTransform(trans);
+
+				/// Add transFilter to vtkAppendPolyData pointer everytime;
+				append->AddInputConnection(transFilter->GetOutputPort());
+
+				/// vtkPolyDataMapper and vtkActor;
+				polyDataMapper->SetInputConnection(transFilter->GetOutputPort());
+				actor->SetMapper(polyDataMapper);
+
+				actor->GetProperty()->SetOpacity(CorticalDB->objectOpacity);
 
 				renL->AddActor(actor);
 			}

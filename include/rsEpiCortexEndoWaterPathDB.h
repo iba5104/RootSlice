@@ -2,7 +2,7 @@
 #define RSEPICORTEXENDOWATERPATH_H_INCLUDED
 
 #include "rsSourceCorticalDB.h"
-#include "rsSourceEpidermisDB.h"
+#include "rsSourceDermisDB.h"
 
 class rsEpiCortexEndoWaterPathDB : public rsBaseGeometry
 {
@@ -19,25 +19,25 @@ public:
    map<int, vector<double> > epiCortexEndoCellYDB;
    map<int, vector<double> > epiCortexEndoCellZDB;
    void EpiCortexEndoCellXYDB
-   ( rsSourceEpidermisDB *RsSourceEpidermisDB,
+   ( rsSourceDermisDB *RsSourceEpidermisDB,
      rsSourceCorticalDB *RsSourceCorticalDB,
-     rsSourceEpidermisDB *RsSourceEndodermisDB );
+     rsSourceDermisDB *RsSourceEndodermisDB );
 
    vector<double> epiCortexEndoRingMidCentreRadiusDB;
    vector<double> epiCortexEndoRingObjectVerticalDB;
    map<int, vector<double> > epiCortexEndoRingObjectParallelDB;
    map<int, vector<double> > epiCortexEndoCellMidRotateAngleDB;
    void EpiCortexEndoRingCellDimensionDB
-   ( rsSourceEpidermisDB *RsSourceEpidermisDB,
+   ( rsSourceDermisDB *RsSourceEpidermisDB,
      rsSourceCorticalDB *RsSourceCorticalDB,
-     rsSourceEpidermisDB *RsSourceEndodermisDB );
+     rsSourceDermisDB *RsSourceEndodermisDB );
 
    vector<double> epiCortexEndoRingOuterCentreRadiusDB;
    vector<double> epiCortexEndoRingInnerCentreRadiusDB;
    void EpiCortexEndoRingCentreRadiusDB
-   ( rsSourceEpidermisDB *RsSourceEpidermisDB,
+   ( rsSourceDermisDB *RsSourceEpidermisDB,
      rsSourceCorticalDB *RsSourceCorticalDB,
-     rsSourceEpidermisDB *RsSourceEndodermisDB );
+     rsSourceDermisDB *RsSourceEndodermisDB );
 
    vector<double> epiCortexEndoRingOuterPerimeterDB;
    vector<double> epiCortexEndoRingMidPerimeterDB;
@@ -123,9 +123,9 @@ public:
    void EpiCortexEndoPathTriangleStripXYZDB();
 
    void InitAllDB
-   (rsSourceEpidermisDB *RsSourceEpidermisDB,
+   (rsSourceDermisDB *RsSourceEpidermisDB,
     rsSourceCorticalDB *RsSourceCorticalDB,
-    rsSourceEpidermisDB *RsSourceEndodermisDB
+    rsSourceDermisDB *RsSourceEndodermisDB
    );
 
 };

@@ -29,9 +29,11 @@ public:
    /// Set OutputXMLVtpFileName;
    const char* CorticalXMLVtpFileName;
    const char* CorticalVacuoleXMLVtpFileName;
+   const char* CorticalPlasmaMembraneVtpFileName;
    void OutputXMLVtpFileName
    ( const char* CorticalXMLVtpFileNameInput,
-     const char* CorticalVacuoleXMLVtpFileNameInput );
+     const char* CorticalVacuoleXMLVtpFileNameInput,
+     const char* CorticalPlasmaMembraneVtpFileNameInput );
 
    /// CorticalAddRadiusCalculateRatioData;
    vector<double> corticalAddRadiusCalculateSingleRatioData;
@@ -151,9 +153,6 @@ public:
    map<int, vector<double> > vacuoleParallelDB;
    map<int, vector< vector<double> > > vacuoleHeightDB;
    void InitVacuoleDB( double gapCytoTonoInput );
-
-
-
 };
 
 #endif // RSSOURCECORTICALDB_H_INCLUDED
