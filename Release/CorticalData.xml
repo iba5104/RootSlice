@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Main name="PlantName" type="PlantType" height="300">
+    <Cortical unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<BaseRadius>300</BaseRadius>
+		<Thickness>200</Thickness>
+		<CellDiameter>20</CellDiameter>
+		<NumFiles>8</NumFiles>
+		<RCARatio>0.6</RCARatio>
+	</Cortical>
+	<Stele unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<InnestCellDiameer>5</InnestCellDiameer>
+		<InnerLayerNum>10</InnerLayerNum>
+	</Stele>
+	<MetaXylem unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<VerticalLengthThresholdRatio>0.3</VerticalLengthThresholdRatio>
+		<TangentRingRadiusRatio>0.4</TangentRingRadiusRatio>
+		<SteleCellNumBetween>6</SteleCellNumBetween>
+		<MXNum>5</MXNum>
+		<MXAverageRingRadius>20</MXAverageRingRadius>
+		<SurroundingCellRingNum>2</SurroundingCellRingNum>
+	</MetaXylem>
+	<ProtoXylem unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<GapRadius>5</GapRadius>
+		<PXNum>10</PXNum>
+		<PXAverageRingRadius>10</PXAverageRingRadius>
+		<SurroundingCellRingNum>15</SurroundingCellRingNum>
+		<SurroundingCellRingRadius>5</SurroundingCellRingRadius>
+	</ProtoXylem>
+	<Epidermis unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>10</CellDiameter>
+		<CellNum>150</CellNum>
+	</Epidermis>
+	<Endodermis unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>10</CellDiameter>
+	</Endodermis>
+	<Exodermis unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>10</CellDiameter>
+	</Exodermis>
+	<Sclerenchyma unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>10</CellDiameter>
+	</Sclerenchyma>
+	<Pericycle unit="um" variationRatio="0.2">
+		<Slices min=3 max=6 />
+		<CellwallWidth>0.48</CellwallWidth>
+		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
+		<CellDiameter>5</CellDiameter>
+	</Pericycle>
+</Main>
