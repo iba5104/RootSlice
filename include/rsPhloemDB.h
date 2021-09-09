@@ -2,8 +2,9 @@
 #define RSPHLOEMDB_H_INCLUDED
 
 #include "rsPXBoundaryDB.h"
+#include "globals.h"
 
-class rsPhloemDB : public rsBaseGeometry
+class rsPhloemDB : public rsBaseGeometry, public globals
 {
 public:
    /// InterRadianStartAndEndDB

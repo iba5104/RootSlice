@@ -21,7 +21,7 @@ mono_crash.*
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
-//[Rr]elease/
+[Rr]elease/
 [Rr]eleases/
 x64/
 x86/
@@ -398,3 +398,6 @@ MigrationBackup/
 Debug/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/PlantName_2021-09-05_22-26
+/RootSlice.dir/RelWithDebInfo
+/RelWithDebInfo

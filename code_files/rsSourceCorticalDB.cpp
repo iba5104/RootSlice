@@ -40,7 +40,7 @@ void rsSourceCorticalDB::CorticalAddRadiusCalculateRatioData  // Jagdeep 11-8-20
 	vector<double>::iterator itVec;
 	remain = fmod(cortexLayerNum, 2.0);
 
-	ofstream fout("test.txt", ios::app);
+	ofstream fout(getFolderName() + "test.txt", ios::app);
 	fout << "CorticalAddRadiusCalculateRatioData" << endl;
 
 	/* Jagdeep 11-8-2020 dividing number of cell files into two halves i.e. inner and outter.
@@ -122,7 +122,7 @@ void rsSourceCorticalDB::CorticalAddRadiusCalculateFromMinCellData()
 	double temp;
 	vector<double>::iterator itVec;
 	int i;
-	ofstream fout("test.txt", ios::app);
+	ofstream fout(getFolderName() + "test.txt", ios::app);
 	fout << "CorticalAddRadiusCalculateFromMinCellData" << endl;
 	for (itVec = corticalAddRadiusCalculateSingleRatioData.begin(), i = 0;
 		itVec != corticalAddRadiusCalculateSingleRatioData.end();
@@ -148,7 +148,7 @@ void rsSourceCorticalDB::CorticalAddRadiusCalculateFromCortexRadiusData()
 	double temp;
 	vector<double>::iterator itVec;
 
-	ofstream fout("test.txt", ios::app);
+	ofstream fout(getFolderName() + "test.txt", ios::app);
 	fout << "CorticalAddRadiusCalculateFromCortexRadiusData" << endl;
 	for (itVec = corticalAddRadiusCalculateMixRatioData.begin();
 		itVec != corticalAddRadiusCalculateMixRatioData.end();
@@ -390,7 +390,7 @@ void rsSourceCorticalDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
 	vector<double>::iterator itVecAdd;
 	vector<int>::iterator itVecCellNum;
 
-	ofstream fout("cortex.txt", ios::app);
+	ofstream fout(getFolderName() + "cortex.txt", ios::app);
 	fout << "circleSegmentRotateAngleDB" << endl;
 	for (iRingNum = 0, itVecCellNum = corticalCellNumDB.begin(), itVecAdd = corticalAddRadiusDB.begin();
 		itVecAdd != corticalAddRadiusDB.end();

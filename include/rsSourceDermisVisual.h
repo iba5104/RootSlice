@@ -1,6 +1,7 @@
 #ifndef RSSOURCEEPIDERMISVISUAL_H_INCLUDED
 #define RSSOURCEEPIDERMISVISUAL_H_INCLUDED
 
+#include "globals.h"
 #include "rsSourceDermisDB.h"
 #include "rsSourceCorticalVisual.h"
 
@@ -16,7 +17,7 @@
 //#include "vtkProperty.h"
 //#include "vtkSmartPointer.h"
 
-class rsSourceDermisVisual
+class rsSourceDermisVisual : public globals
 {
 public:
 

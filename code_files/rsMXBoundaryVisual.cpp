@@ -1,4 +1,5 @@
 #include "rsMXBoundaryVisual.h"
+#include "globals.h"
 
 /////////////////////////////////////////////// MXBoundaryCellVisual ///////////////////////////////////////////
 void rsMXBoundaryVisual::MXBoundaryCellVisual
@@ -23,10 +24,12 @@ void rsMXBoundaryVisual::MXBoundaryCellVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("MXBoundaryCell.vtp");
+	string flName = getFolderName() + "MXBoundaryCell.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("MXBoundaryCell.vtp");
 
 
-	ofstream fout("staticNum.txt", ios::app);
+	ofstream fout(getFolderName() + "staticNum.txt", ios::app);
 
 	//fout << "MXBoundaryCellVisual" << endl;
 	/// Right Up;

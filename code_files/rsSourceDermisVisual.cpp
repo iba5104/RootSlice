@@ -1,5 +1,5 @@
 #include "rsSourceDermisVisual.h"
-
+#include "globals.h"
 
 ////////////////////////////////////// Functions ///////////////////////////////////////////
 
@@ -24,8 +24,9 @@ void rsSourceDermisVisual::EpidermisVisual
 		outputFileName = "pureCell_" + outputFileName;
 	if (vacuolePlasmaFlag == 1)
 		outputFileName = "vacuole_" + outputFileName;
-	const char* outputVtp = outputFileName.c_str();
-	writer->SetFileName(outputVtp);
+	string flName = getFolderName() + outputFileName;
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector(outputFileName);
 
 	for (i = 0, itMap = EpidermisDB->objectHeightDB.begin();
 		itMap != EpidermisDB->objectHeightDB.end();

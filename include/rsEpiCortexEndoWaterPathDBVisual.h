@@ -1,6 +1,7 @@
 #ifndef RSEPICORTEXENDOWATERPATHDBOUTPUT_H_INCLUDED
 #define RSEPICORTEXENDOWATERPATHDBOUTPUT_H_INCLUDED
 
+#include "globals.h"
 #include "rsEpiCortexEndoWaterPathDB.h"
 
 #include <vtkSmartPointer.h>
@@ -22,7 +23,7 @@
 
 #include <vtkXMLPolyDataWriter.h>
 
-class rsEpiCortexEndoWaterPathDBVisual
+class rsEpiCortexEndoWaterPathDBVisual : public globals
 {
 public:
 

@@ -97,7 +97,7 @@ void rsMXCoreDB::BoundaryRadiusDB()
 	double sum;
 	double tempSum;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	for (itMap = xylemOutRingAddRadiusDB.begin(), sum = 0, i = 0;
 		itMap != xylemOutRingAddRadiusDB.end();
 		itMap++, i++)
@@ -146,7 +146,7 @@ void rsMXCoreDB::MXMaxBoundaryRadius()
 			max = sum;
 		}
 	}
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	mxMaxBoundaryRadius = max;
 	fout << "mxMaxBoundaryRadius: " << mxMaxBoundaryRadius << endl;
 }
@@ -167,7 +167,7 @@ void rsMXCoreDB::CenterXYRadiusDB()
 	double tempSum;
 	double temp;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	for (itMap = xylemOutRingAddRadiusDB.begin(), temp = 0, i = 0;
 		itMap != xylemOutRingAddRadiusDB.end();
 		itMap++, i++)
@@ -195,7 +195,7 @@ void rsMXCoreDB::CenterXYRadiusDB()
 
 void rsMXCoreDB::CenterXYPosition()
 {
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	for (int i = 0; i < mxNum; i++)
 	{
 		centerX.push_back(centerXYRadiusDB[i] * cos(centerRingRotateRadian[i]));

@@ -39,7 +39,7 @@ void rsRcaDB::CortexArea(double baseRadius, rsSourceCorticalDB* RsSourceCortical
 {
 	cortexArea = M_PI * (RsSourceCorticalDB->boundaryRadius) * (RsSourceCorticalDB->boundaryRadius)
 		- (M_PI * baseRadius * baseRadius);
-	ofstream fout("RCA.txt", ios::app); // was commented by Jie - Jagdeep
+	ofstream fout(getFolderName() + "RCA.txt", ios::app); // was commented by Jie - Jagdeep
 	fout << "cortexArea: " << cortexArea << endl;
 	fout << "baseRadius: " << baseRadius << endl;
 	fout << "RsSourceCorticalDB -> boundaryRadius: " << RsSourceCorticalDB->boundaryRadius << endl;
@@ -54,7 +54,7 @@ void rsRcaDB::CortexArea(double baseRadius, rsSourceCorticalDB* RsSourceCortical
 void rsRcaDB::RcaTotalArea()
 {
 	rcaTotalArea = cortexArea * rcaRatio;
-	ofstream fout("RCA.txt", ios::app); /////jagdeep uncommented
+	ofstream fout(getFolderName() + "RCA.txt", ios::app); /////jagdeep uncommented
 	fout << "rcaTotalArea: " << rcaTotalArea << endl; ////jagdeep uncomented
 }
 
@@ -566,7 +566,7 @@ void rsRcaDB::RcaLowerUpperLayerIntersectionAngleDB()
 	int exponent;
 	double tempAngle;
 
-	ofstream fout("RCA.txt", ios::app);
+	ofstream fout(getFolderName() + "RCA.txt", ios::app);
 	//   fout << endl;
 	//   fout << "RcaLowerUpperLayerIntersectionAngleDB" << endl;
 	//   fout << endl;
@@ -1007,7 +1007,7 @@ void rsRcaDB::JudgeAccuracyRcaDB(double baseRadius,
 		variationRatio,
 		gapAngleBetweenRcaRatio,
 		totalHeight);
-	ofstream fout("gapInput2ExactFabs.txt", ios::app);
+	ofstream fout(getFolderName() + "gapInput2ExactFabs.txt", ios::app);
 	fout << endl;
 
 	double gapInput2Exact = 0;

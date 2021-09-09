@@ -1,3 +1,4 @@
+#include "globals.h"
 #include "rsEpiCortexEndoWaterPathDBVisual.h"
 
 void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB)
@@ -16,8 +17,9 @@ void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(rsEpiCortexEn
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("ApoplastTriangleStripXML.vtp");
-
+	string flName = getFolderName() + "ApoplastTriangleStripXML.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("ApoplastTriangleStripXML.vtp");
 
 	/// cout << circleSegmentLengthDB;
 	for (itMapX = RsEpiCortexEndoWaterPathDB->epiCortexEndoApoplastTriangleStripXDB.begin(),
@@ -111,7 +113,9 @@ void rsEpiCortexEndoWaterPathDBVisual::SymplastTriangleStripXMLVtp(rsEpiCortexEn
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("SymplastTriangleStripXML.vtp");
+	string flName = getFolderName() + "SymplastTriangleStripXML.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("SymplastTriangleStripXML.vtp");
 
 
 	/// cout << circleSegmentLengthDB;
@@ -204,7 +208,9 @@ void rsEpiCortexEndoWaterPathDBVisual::ApoplastTubeXMLVtp(rsEpiCortexEndoWaterPa
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName(RsEpiCortexEndoWaterPathDB->ApoplastXMLVtpFileName);
+	string flName = getFolderName() + RsEpiCortexEndoWaterPathDB->ApoplastXMLVtpFileName;
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector(RsEpiCortexEndoWaterPathDB->ApoplastXMLVtpFileName);
 
 
 	/// cout << circleSegmentLengthDB;
@@ -329,8 +335,9 @@ void rsEpiCortexEndoWaterPathDBVisual::SymplastTubeXMLVtp(rsEpiCortexEndoWaterPa
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName(RsEpiCortexEndoWaterPathDB->SymplastXMLVtpFileName);
-
+	string flName = getFolderName() + RsEpiCortexEndoWaterPathDB->SymplastXMLVtpFileName;
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector(RsEpiCortexEndoWaterPathDB->SymplastXMLVtpFileName);
 
 	/// cout << circleSegmentLengthDB;
 	for (itMapX = RsEpiCortexEndoWaterPathDB->epiCortexEndoSymplastXDB.begin(),

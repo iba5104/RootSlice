@@ -411,7 +411,7 @@ void rsMXBoundaryOutDB::InterCellCenterRadianDB()
 	int j;
 	int k;
 	int num;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "InterCellCenterRadianDB" << endl;
 	for (itMapNum = interParallelNumDB.begin(), itVecRadianStart = interRadianStartDB.begin(),
 		itMapRadianDivide = interIntersectionRadianDivideDB.begin(), i = 0;
@@ -697,7 +697,7 @@ void rsMXBoundaryOutDB::UpVerticalLengthTotalDB()
 {
 	vector<double>::iterator itVec;
 	double temp;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpVerticalLengthTotalDB" << endl;
 	for (itVec = boundaryRadiusDB.begin(); itVec != boundaryRadiusDB.end(); itVec++)
 	{
@@ -766,7 +766,7 @@ void rsMXBoundaryOutDB::UpVerticalLengthAverageDB()
 	vector<double>::iterator itVec;
 	vector<double>::iterator itVecNum;
 	double temp;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpVerticalLengthAverageDB" << endl;
 	for (itVec = upVerticalLengthTotalDB.begin(), itVecNum = upVerticalNum.begin();
 		itVec != upVerticalLengthTotalDB.end();
@@ -832,7 +832,7 @@ void rsMXBoundaryOutDB::UpVerticalLengthHalfDB()
 	vector<double> upVerticalLengthHalf;
 	double temp;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpVerticalLengthHalfDB" << endl;
 	for (itMap = upVerticalLengthDB.begin(), i = 0;
 		itMap != upVerticalLengthDB.end();
@@ -872,7 +872,7 @@ void rsMXBoundaryOutDB::UpVerticalCenterRadiusDB()
 	vector<double> upVerticalCenterRadius;
 	double temp;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpVerticalLengthHalfDB" << endl;
 	for (itMap = upVerticalLengthDB.begin(), itMapAdd = upVerticalLengthAddDB.begin(), i = 0;
 		itMap != upVerticalLengthDB.end();
@@ -912,7 +912,7 @@ void rsMXBoundaryOutDB::UpParallelPerimeterDB()
 	int i;
 	int j;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpParallelPerimeterDB" << endl;
 	for (itMapRadius = upVerticalCenterRadiusDB.begin(), itVecRadian = boundaryCentralRadianDB.begin(), i = 0;
 		itMapRadius != upVerticalCenterRadiusDB.end();
@@ -952,7 +952,7 @@ void rsMXBoundaryOutDB::UpParallelNumDB()
 	int i;
 	int j;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpParallelNumDB" << endl;
 	for (itMapPerimeter = upParallelPerimeterDB.begin(), itMapLength = upVerticalLengthDB.begin(), i = 0;
 		itMapPerimeter != upParallelPerimeterDB.end();
@@ -999,7 +999,7 @@ void rsMXBoundaryOutDB::UpParallelLengthDB()
 	double temp;
 	int i;
 	int j;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpParallelLengthDB" << endl;
 	for (itMapPerimeter = upParallelPerimeterDB.begin(), itMapNum = upParallelNumDB.begin(), i = 0;
 		itMapPerimeter != upParallelPerimeterDB.end();
@@ -1069,7 +1069,7 @@ void rsMXBoundaryOutDB::UpParallelRadianDivideDB()
 	double temp;
 	int i;
 	int j;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpParallelRadianDivideDB" << endl;
 	for (itMapNum = upParallelNumDB.begin(), itVecRadian = boundaryCentralRadianDB.begin(), i = 0;
 		itMapNum != upParallelNumDB.end();
@@ -1117,7 +1117,7 @@ void rsMXBoundaryOutDB::UpCellCenterRadianDB()
 	int j;
 	int k;
 	int num;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpCellCenterRadianDB" << endl;
 	for (itMapNum = upParallelNumDB.begin(), itVecRadianStart = boundaryRadianStartDB.begin(),
 		itMapRadianDivide = upIntersectionRadianDivideDB.begin(), i = 0;
@@ -1227,7 +1227,7 @@ void rsMXBoundaryOutDB::UpCellXYDB()
 	int i;
 	int j;
 	int k;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpCellXYDB" << endl;
 	for (itMap = upCellCenterRadianDB.begin(), itMapCenterRadius = upVerticalCenterRadiusDB.begin(), i = 0;
 		itMap != upCellCenterRadianDB.end();
@@ -1294,7 +1294,7 @@ void rsMXBoundaryOutDB::UpCellObjectHeightAndZPositionDB(int sliceNum)
 	int iRingNum;
 	int cellNum;
 	int sliceTempNum;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpCellObjectHeightAndZPositionDB" << endl;
 
 	for (i = 0, itMap = upCellXDB.begin();

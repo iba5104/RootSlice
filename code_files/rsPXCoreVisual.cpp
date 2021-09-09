@@ -1,6 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath> 
 #include "rsPXCoreVisual.h"
+#include "globals.h"
 
 // Store the objects of each ring into the different vectors;
 //
@@ -19,14 +20,16 @@ void rsPXCoreVisual::PXCoreVisual
 
 	int PXCoreNum = 0;
 
-	ofstream fout("staticNum.txt", ios::app);
+	ofstream fout(getFolderName() + "staticNum.txt", ios::app);
 
 	/// Create vtkAppendPolyData and vtkXMLPolyDataWriter pointer outside the loop;
 	vtkSmartPointer<vtkAppendPolyData> append =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("PXCore.vtp");
+	string flName = getFolderName() + "PXCore.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("PXCore.vtp");
 
 	/// cout << circleSegmentLengthDB;
 	for (itMap = RsPXBoundaryDB->xylemOutRingObjectHeightDB.begin(), i = 0;
@@ -169,7 +172,9 @@ void rsPXCoreVisual::PXCenterRingVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("PXCenterRing.vtp");
+	string flName = getFolderName() + "PXCenterRing.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("PXCenterRing.vtp");
 
 	/// cout << circleSegmentLengthDB;
 	for (itMap = RsPXBoundaryDB->xylemCenterRingObjectHeightDB.begin(), i = 0;
@@ -267,7 +272,9 @@ void rsPXCoreVisual::PXSmallVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("PXSmall.vtp");
+	string flName = getFolderName() + "PXSmall.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("PXSmall.vtp");
 
 
 	for (itMap = RsPXBoundaryDB->xylemCenterRingObjectHeightDB.begin(), i = 0;

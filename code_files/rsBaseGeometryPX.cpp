@@ -23,7 +23,7 @@ double rsBaseGeometryPX::SteleBoundaryRingRadius(double endodermisBaseRadius)
 double rsBaseGeometryPX::PXBoundaryRingRadius(double pxGapRadius)
 {
 	pxBoundaryRingRadius = steleBoundaryRingRadius - pxGapRadius;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "pxBoundaryRingRadius: " << pxBoundaryRingRadius << endl;
 	return pxBoundaryRingRadius;
 }

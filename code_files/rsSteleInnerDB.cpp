@@ -178,7 +178,7 @@ void rsSteleInnerDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
 	vector<double>::iterator itVecAdd;
 	vector<int>::iterator itVecCellNum;
 
-	ofstream fout("cortex.txt", ios::app);
+	ofstream fout(getFolderName() + "cortex.txt", ios::app);
 	cout << "circleSegmentRotateAngleDB" << endl;
 	for (iRingNum = 0, itVecCellNum = steleInnerCellNumCalculateData.begin(),
 		itVecAdd = steleInnerAddRadiusDB.begin();

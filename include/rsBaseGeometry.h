@@ -12,9 +12,10 @@
 /// for random data generate;
 #include <stdlib.h>
 #include <time.h>
+#include "globals.h"
 using namespace std;
 
-class rsBaseGeometry
+class rsBaseGeometry : public globals
 {
 public:
 

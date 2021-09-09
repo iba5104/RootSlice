@@ -1,6 +1,7 @@
 #ifndef RSPHLOEMVISUAL_H_INCLUDED
 #define RSPHLOEMVISUAL_H_INCLUDED
 
+#include "globals.h"
 #include "rsPhloemDB.h"
 #include "rsSourceCorticalVisual.h"
 
@@ -19,7 +20,7 @@
 
 #include "vtkSmartPointer.h"
 
-class rsPhloemVisual
+class rsPhloemVisual : public globals
 {
 public:
    void UpAppendCellVisual

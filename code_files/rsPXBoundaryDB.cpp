@@ -171,7 +171,7 @@ void rsPXBoundaryDB::BoundaryHalfCentralRadianDB(rsPXCoreDB* RsPXCoreDB)
 	double sinHalfCentralRadian;
 	double asinHalfCentralRadian;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryHalfCentralRadianDB" << endl;
 	vector<double> boundaryRadiusDB = RsPXCoreDB->boundaryRadiusDB;
 	for (itVec = boundaryRadiusDB.begin(), i = 0; itVec != boundaryRadiusDB.end(); itVec++, i++)
@@ -222,7 +222,7 @@ void rsPXBoundaryDB::BoundaryMaxAndMinCenterRadiusDB(rsPXCoreDB* RsPXCoreDB)
 	int i;
 	double min;
 	double max;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	centerXYRadiusDB = RsPXCoreDB->centerXYRadiusDB;
 	boundaryRadiusDB = RsPXCoreDB->boundaryRadiusDB;
 	fout << "BoundaryMaxAndMinCenterRadiusDB" << endl;
@@ -336,7 +336,7 @@ void rsPXBoundaryDB::BoundaryTangentUpAndDownLengthSegmentDB()
 	int i;
 	double tempUp;
 	double tempDown;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "boundaryTangentLengthSegmentDB: " << endl;
 	for (itVec = boundaryTangentCenterRadiusDB.begin(), i = 0;
 		itVec != boundaryTangentCenterRadiusDB.end();
@@ -372,7 +372,7 @@ void rsPXBoundaryDB::BoundaryTangentUpAndDownLengthSegmentAppendRadiusDB()
 	int j;
 	double tempUp;
 	double tempDown;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryTangentUpAndDownLengthSegmentAppendRadiusDB" << endl;
 	fout << "Up" << endl;
 	/// Up;
@@ -427,7 +427,7 @@ void rsPXBoundaryDB::BoundaryPointRightHemisphereCenterDistanceDB()
 	double temp;
 	int i;
 	int j;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryPointRightHemisphereCenterDistanceDB" << endl;
 
 	for (itMapX = boundaryPointXRightHemisphereDB.begin(),
@@ -483,7 +483,7 @@ void rsPXBoundaryDB::BoundaryPointRightUpDownXYHemisphereTargetDB()
 	vector<double> boundaryPointRightDownXHemisphereTarget;
 	vector<double> boundaryPointRightDownYHemisphereTarget;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryPointRightUpDownXYHemisphereTargetDB" << endl;
 	fout << "Up" << endl;
 	/// Up;
@@ -577,7 +577,7 @@ void rsPXBoundaryDB::BoundaryRadianStartPointXYDB()
 	double tempX;
 	double tempY;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryRadianStartPointXYDB" << endl;
 	for (itVecCenter = centerXYRadiusDB.begin(), itVecStart = boundaryRadianStartDB.begin(), i = 0;
 		itVecCenter != centerXYRadiusDB.end();
@@ -618,7 +618,7 @@ void rsPXBoundaryDB::BoundaryPointRightUpAndDownHemisphereTargetIntersectionRadi
 	vector<double> boundaryPointRightUpHemisphereTargetIntersectionRadian;
 	vector<double> boundaryPointRightDownHemisphereTargetIntersectionRadian;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryPointRightUpAndDownHemisphereTargetIntersectionRadianDB: " << endl;
 
 	/// Up;
@@ -754,7 +754,7 @@ void rsPXBoundaryDB::BoundaryUpAndDownCellObjectVerticalDB()
 	vector<double>::iterator itVecDown;
 	double tempUp;
 	double tempDown;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpAndDownCellObjectVerticalDB: " << endl;
 	for (itVecUp = boundaryTangentUpLengthSegmentDB.begin(), itVecDown = boundaryTangentDownLengthSegmentDB.begin();
 		itVecUp != boundaryTangentUpLengthSegmentDB.end();
@@ -792,7 +792,7 @@ void rsPXBoundaryDB::BoundaryUpAndDownCellCenterRadiusDB()
 	double tempDown;
 	int i;
 	int j;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "boundaryCellCenterRadiusDB" << endl;
 	/// Up;
 	fout << "Up" << endl;
@@ -842,7 +842,7 @@ void rsPXBoundaryDB::BoundaryCellUpAndDownNumDB()
 {
 	int i;
 	int tempRound;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "boundaryCellUpNumDB" << endl;
 	for (i = validUpRowNum; i != 0; i--)
 	{
@@ -883,7 +883,7 @@ void rsPXBoundaryDB::BoundaryUpAndDownCellObjectParallelDB()
 	int i;
 	int j;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryUpAndDownCellObjectParallelDB: " << endl;
 	/// calculate Up;
 	for (itMapUp = boundaryPointRightUpHemisphereTargetIntersectionRadianDB.begin(), i = 0;
@@ -1019,7 +1019,7 @@ void rsPXBoundaryDB::BoundaryCellLeftAndRightUpAndDownCenterRadianDB()
 	int j;
 	int k;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryCellLeftAndRightUpAndDownCenterRadianDB - Up" << endl;
 	/// Up;
 	for (itMapUp = boundaryPointRightUpHemisphereTargetIntersectionRadianDivideDB.begin(), i = 0;
@@ -1134,7 +1134,7 @@ void rsPXBoundaryDB::BoundaryCellLeftAndRightUpAndDownCenterRotateAngleDB()
 	int k;
 	double tempRight;
 	double tempLeft;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryCellLeftAndRightUpAndDownCenterRotateAngleDB" << endl;
 	/// Up;
 	for (itMap = boundaryCellRightUpCenterRadianDB.begin(), i = 0;

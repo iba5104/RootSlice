@@ -2,6 +2,7 @@
 #define RSRCADB_H_INCLUDED
 
 #include "rsSourceCorticalDB.h"
+#include "globals.h"
 
 class rsRcaDB : public rsBaseGeometry
 {

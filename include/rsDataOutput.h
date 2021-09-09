@@ -5,8 +5,9 @@
 #include "rsRcaDB.h"
 #include "rsEpiCortexEndoWaterPathDB.h"
 #include <sstream>
+#include "globals.h"
 
-class rsDataOutput
+class rsDataOutput : public globals
 {
 
 public:

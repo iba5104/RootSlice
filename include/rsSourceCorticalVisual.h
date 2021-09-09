@@ -1,6 +1,7 @@
 #ifndef RSSOURCECORTICALVISUAL_H_INCLUDED
 #define RSSOURCECORTICALVISUAL_H_INCLUDED
 
+#include "globals.h"
 #include "rsSourceCorticalDB.h"
 #include "rsBaseGeometry.h"
 

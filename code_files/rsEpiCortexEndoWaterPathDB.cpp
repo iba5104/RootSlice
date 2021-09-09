@@ -42,7 +42,7 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoCellXYDB
 	int i;
 	int mapSize;
 
-	ofstream fout("WaterPath.txt", ios::app);
+	ofstream fout(getFolderName() + "WaterPath.txt", ios::app);
 	fout << "EpiCortexEndoCellXYDB" << endl;
 
 	vector<double> epidermisZPosition;

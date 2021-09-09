@@ -15,7 +15,7 @@ double rsBaseGeometryMX::BoundaryMXPXRingRadiusDeliver
 (rsPXCoreDB* RsPXCoreDB)
 {
 	boundaryMXPXRingRadiusDeliver = RsPXCoreDB->boundaryMXPXRingRadius;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "BoundaryMXPXRingRadiusDeliver: " << boundaryMXPXRingRadiusDeliver << endl;
 	return boundaryMXPXRingRadiusDeliver;
 }

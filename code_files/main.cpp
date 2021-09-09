@@ -5,6 +5,11 @@
 #include <sstream>
 #include "rsDynamicDataOutput.h"
 #include "rsSteleInnerVisual.h"
+#include "globals.h"
+#include <ctime>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 int main()
@@ -12,18 +17,24 @@ int main()
 	TiXmlDocument doc("CorticalData.xml");
 	doc.LoadFile();
 	TiXmlElement* main = doc.FirstChildElement("Main");
-	string filePrefix = main->Attribute("name");
-	//TiXmlElement* plantNum = doc.FirstChildElement("Main")
-	//	->FirstChildElement("Plant")
-	//	->FirstChildElement("PlantNum");
-	//map<int, double> corticalAddRadiusInputData;
+	const char* filePrefix = main->Attribute("name");
+	std::time_t curTime = time(NULL);
+
+	const tm *startTime = localtime(&curTime);
+	char outputFolderName [80];
+
+	char formatSpecifier[80]{};
+	strcpy(formatSpecifier, filePrefix);
+	strcat(formatSpecifier, "_%F_%H-%M");
+	const char* folderFormat = formatSpecifier;
+	strftime(outputFolderName, 80, folderFormat, startTime);
+	
+	fs::create_directory(outputFolderName);
+	globals::setFolderName(outputFolderName);
+
 	vector<double> corticalAddRadiusInputData;
-	// map<int, double>::iterator corticalAddRadiusInputData_it;
-
-	  //map<int, double> corticalCellNumInputData;
 	vector<int> corticalCellNumInputData;
-	// map<int, double>::iterator corticalCellNumInputData_it;
-
+	
 	double corticalCellWallWidth;
 	double corticalPlasmaMembraneThickness;
 	double corticalGapCytoTono;
@@ -318,19 +329,6 @@ int main()
 	double rcaRatioInput;
 	int rcaRatioInt;
 
-	/// Keep the cortex radius unchanged;
- //   corticalCellAddRadiusMinInput = 0;
- //   int corticalAddRadiusDBSelectInput = 1;
- //   int corticalCellNumSelectInput = 1;
- //   double cortexRadiusInput = 300;
-
-	/// Change the cortex radius;
- //   for (corticalCellAddRadiusMinInput);
- //   int corticalAddRadiusDBSelectInput = 1;
- //   int corticalCellNumSelectInput = 1;
- //   double cortexRadiusInput = 0;
-
-
 	for (rcaRatioInt = 0; rcaRatioInt <= 1; rcaRatioInt++) {
 		rcaRatioInput = rcaRatio * rcaRatioInt;
 		/////////////////////////////////////// Cortex ////////////////////////////////
@@ -404,9 +402,9 @@ int main()
 			+ rca2CortexRatioName + blankSpace + rca2CortexRatioString + blankSpace
 			+ TotalHeightName + blankSpace + TotalHeightString;
 
-		string prefixCortical = "Cortical";
-		string prefixCorticalVacuole = "CorticalVacuole";
-		string prefixPlasmaMembrane = "CorticalPlasmaMembrane";
+		string prefixCortical = " Cortical ";
+		string prefixCorticalVacuole = " CorticalVacuole ";
+		string prefixPlasmaMembrane = " CorticalPlasmaMembrane ";
 		string suffix = ".vtp";
 		string tempCortical = filePrefix + prefixCortical + prefix + suffix;
 		string tempCorticalVacuole = filePrefix + prefixCorticalVacuole + prefix + suffix;
@@ -414,6 +412,7 @@ int main()
 		const char* CorticalXMLVtpFileNameInput = tempCortical.c_str();
 		const char* CorticalVacuoleXMLVtpFileNameInput = tempCorticalVacuole.c_str();
 		const char* CorticalPlasmaMembraneVtpFileNameInput = tempCorticalPlasmaMembrane.c_str();
+
 
 
 		/// RCA;
@@ -652,8 +651,10 @@ int main()
 				/// Others
 				renL
 			);
-
 		}
+		string pvdFileName = "allVTP_RCA " + to_string(rcaRatioInput) + ".pvd";
+		globals::writePVDFile(pvdFileName);
+		globals::resetFileNameList();
 	}
 	return 0;
 }

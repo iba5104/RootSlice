@@ -2,6 +2,7 @@
 #define RSSOURCECORTICALDB_H_INCLUDED
 
 #include "rsBaseGeometry.h"
+#include "globals.h"
 
 /**************************************
 /// We need to store for each ring in Cortical cell;

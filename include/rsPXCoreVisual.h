@@ -1,6 +1,7 @@
 #ifndef RSPXCOREVISUAL_H_INCLUDED
 #define RSPXCOREVISUAL_H_INCLUDED
 
+#include "globals.h"
 #include "rsPXBoundaryDB.h"
 #include "rsSourceCorticalVisual.h"
 
@@ -18,7 +19,7 @@
 
 #include "vtkSmartPointer.h"
 
-class rsPXCoreVisual
+class rsPXCoreVisual : public globals
 {
 public:
 

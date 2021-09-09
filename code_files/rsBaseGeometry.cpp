@@ -633,7 +633,7 @@ void rsBaseGeometry::NonRandomHeight
 			zPositionSum += ((longitudeSegmentHeight[i] + longitudeSegmentHeight[i - 1]) / 2);
 			longitudeZPositionAdd.push_back(zPositionSum + initZPosition);
 		}
-		ofstream fout("Zposition.txt", ios::app);
+		ofstream fout(getFolderName() + "Zposition.txt", ios::app);
 		fout << "loop" << endl;
 		fout << "longitudeSegmentHeight = " << longitudeSegmentHeight.back() << endl;
 		fout << "longtiudeZpositionAdd   " << longitudeZPositionAdd.back() << endl;

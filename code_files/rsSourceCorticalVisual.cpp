@@ -1,4 +1,5 @@
 #include "rsSourceCorticalVisual.h"
+#include "globals.h"
 
 void rsSourceCorticalVisual::CorticalVisual
 (	rsSourceCorticalDB* CorticalDB,
@@ -20,7 +21,9 @@ void rsSourceCorticalVisual::CorticalVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName(CorticalDB->CorticalXMLVtpFileName);
+	string flName = getFolderName() + CorticalDB->CorticalXMLVtpFileName;
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector(CorticalDB->CorticalXMLVtpFileName);
 
 	for (iRingNum = 0, itMap = CorticalDB->objectHeightDB.begin();
 		itMap != CorticalDB->objectHeightDB.end();
@@ -154,7 +157,9 @@ void rsSourceCorticalVisual::VacuoleVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName(CorticalDB->CorticalVacuoleXMLVtpFileName);
+	string flName = getFolderName() + CorticalDB->CorticalVacuoleXMLVtpFileName;
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector(CorticalDB->CorticalVacuoleXMLVtpFileName);
 
 	for (iRingNum = 0, itMap = CorticalDB->vacuoleHeightDB.begin();
 		itMap != CorticalDB->vacuoleHeightDB.end();
@@ -288,7 +293,9 @@ void rsSourceCorticalVisual::CorticalPlasmaMembraneVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName(CorticalDB->CorticalPlasmaMembraneVtpFileName);
+	string flName = getFolderName() + CorticalDB->CorticalPlasmaMembraneVtpFileName;
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector(CorticalDB->CorticalPlasmaMembraneVtpFileName);
 
 	for (iRingNum = 0, itMap = CorticalDB->pureCellHeightDB.begin();
 		itMap != CorticalDB->pureCellHeightDB.end();

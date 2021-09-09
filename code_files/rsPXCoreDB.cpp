@@ -41,7 +41,7 @@ void rsPXCoreDB::XylemOutRingDB
 		xylemOutRingAddRadiusDB.insert(pair<int, double >(i, xylemOutRingAddRadius));
 		xylemOutRingCellNumDB.insert(pair<int, int >(i, xylemOutRingCellNum));
 	}
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	map<int, double>::iterator itMap;
 	for (itMap = xylemOutRingAddRadiusDB.begin(); itMap != xylemOutRingAddRadiusDB.end(); itMap++)
 	{
@@ -75,7 +75,7 @@ void rsPXCoreDB::PXMaxBoundaryRadius()
 	}
 	pxMaxBoundaryRadius = max;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "pxMaxBoundaryRadius: " << pxMaxBoundaryRadius << endl;
 }
 
@@ -91,7 +91,7 @@ double rsPXCoreDB::BoundaryMXPXRingRadius()
 {
 	boundaryMXPXRingRadius = pxBoundaryRingRadius - pxMaxBoundaryRadius * 2;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "boundaryMXPXRingRadius: " << boundaryMXPXRingRadius << endl;
 
 	return boundaryMXPXRingRadius;
@@ -112,7 +112,7 @@ void rsPXCoreDB::CenterXYRadiusDB()
 	map<int, double>::iterator itMap;
 	double temp;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	for (itMap = xylemOutRingAddRadiusDB.begin(), itVec = eachRingRadius.begin(), temp = 0, i = 0;
 		itMap != xylemOutRingAddRadiusDB.end();
 		itMap++, itVec++, i++)
@@ -134,7 +134,7 @@ void rsPXCoreDB::CenterXYRadiusDB()
 
 void rsPXCoreDB::CenterXYPosition()
 {
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	for (int i = 0; i < pxNum; i++)
 	{
 		centerX.push_back(centerXYRadiusDB[i] * cos(centerRingRotateRadian[i]));
@@ -663,7 +663,7 @@ void rsPXCoreDB::CenterXYPXSmall()
 	map<int, double>::iterator itMap;
 	int i;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "rsPXCoreDB.cpp" << endl;
 	for (itMap = centerXYRadiusPXSmallDB.begin(), itVec = centerRingRotateRadian.begin(), i = 0;
 		itMap != centerXYRadiusPXSmallDB.end();

@@ -59,7 +59,7 @@ void rsDataOutput::CorticalDataOutputCalculate
 
 	/// sectionVolume = the volume without epidermis;
 
-	ofstream fout("individual_cortical_cell_volume.txt", ios::app); // Jagdeep 1-24-2021
+	ofstream fout(getFolderName() + "individual_cortical_cell_volume.txt", ios::app); // Jagdeep 1-24-2021
 
 	sectionVolume = M_PI * RsSourceCorticalDB->boundaryRadius * RsSourceCorticalDB->boundaryRadius * totalHeight;
 	//*rootSegment1cmRatio;
@@ -495,7 +495,7 @@ void rsDataOutput::AllDataOutput(double baseRadius,
  //   string suffix = ".txt";
  //   outputTxtName = prefix + suffix;
  //    const char* outputTxtNameFinal = outputTxtName.c_str();
-	ofstream fout("AllOutputName.txt", ios::app);
+	ofstream fout(getFolderName() + "AllOutputName.txt", ios::app);
 
 	cout << prefix << endl;
 

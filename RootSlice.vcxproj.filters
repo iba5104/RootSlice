@@ -33,6 +33,7 @@
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinyxmlerror.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinyxmlparser.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\viStringTokenizer.cpp" />
+    <ClCompile Include="code_files\globals.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

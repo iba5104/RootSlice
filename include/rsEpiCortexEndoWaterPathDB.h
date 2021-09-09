@@ -3,6 +3,7 @@
 
 #include "rsSourceCorticalDB.h"
 #include "rsSourceDermisDB.h"
+#include "globals.h"
 
 class rsEpiCortexEndoWaterPathDB : public rsBaseGeometry
 {
