@@ -196,9 +196,6 @@ public:
      int sliceNum,
      double initZPosition,
      int vectorNum,
-     int setUResolution,
-     int setVResolution,
-     int setWResolution,
      double variationRatio  );
 
    /****************************************************************************************************************

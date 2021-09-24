@@ -1743,9 +1743,6 @@ void rsPhloemDB::InitUpCell
 	int sliceNum,
 	double initZPosition,
 	int vectorNum,
-	int setUResolution,
-	int setVResolution,
-	int setWResolution,
 	double variationRatio
 )
 {
@@ -1830,7 +1827,7 @@ void rsPhloemDB::InitUpCell
 
 	MapRGB();
 
-	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
+	SetSuperEllipsoidResolution();
 }
 
 /****************************************************************************************************************

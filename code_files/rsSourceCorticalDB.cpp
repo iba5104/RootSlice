@@ -524,9 +524,6 @@ void rsSourceCorticalDB::InitAllDB(double baseRadius,
 	vector<int> corticalCellNumInputData,
 	int corticalCellNumSelectInput,
 	double variationRatio,
-	int setUResolution,
-	int setVResolution,
-	int setWResolution,
 	int sliceNum
 )
 {
@@ -567,7 +564,7 @@ void rsSourceCorticalDB::InitAllDB(double baseRadius,
 
 	ObjectHeightAndZPositionDB(sliceNum);
 
-	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
+	SetSuperEllipsoidResolution();
 
 	MapRGB();
 

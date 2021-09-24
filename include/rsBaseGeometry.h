@@ -23,7 +23,7 @@ public:
    int uResolution;
    int vResolution;
    int wResolution;
-   void SetSuperEllipsoidResolution( int setUResolution, int setVResolution, int setWResolution );
+   void SetSuperEllipsoidResolution(  );
 
    /// SetObjectVerticalRatio;
    double objectXYZRadiusRatio;

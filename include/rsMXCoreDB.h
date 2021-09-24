@@ -92,9 +92,6 @@ public:
       double xylemMaxOutRingNum,
       double xylemMaxOutRingCellNum,
       double xylemMaxOutRingAddRadius,
-      int setUResolution,
-      int setVResolution,
-      int setWResolution,
       int sliceNum );
 
 };

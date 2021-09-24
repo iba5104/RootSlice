@@ -1,6 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath> 
 #include "rsDataOutput.h"
+#include <vtkMassProperties.h>
 /// The same;
 
 
@@ -26,9 +27,7 @@ void rsDataOutput::DataOutputName(const char* dataOutputNameInput)
  */
 
 void rsDataOutput::CorticalDataOutputCalculate
-(double baseRadius,
-	double totalHeight,
-	rsSourceCorticalDB* RsSourceCorticalDB)
+(rsSourceCorticalDB* RsSourceCorticalDB)
 
 
 {

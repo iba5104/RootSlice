@@ -303,9 +303,6 @@ void rsSteleInnerDB::InitAllDB(rsMXBoundaryOutDB* RsMXBoundaryOutDB,
 	double initZPosition,
 	int vectorNum,
 	double variationRatio,
-	int setUResolution,
-	int setVResolution,
-	int setWResolution,
 	int sliceNum)
 {
 	SteleInnerBoundRadius(RsMXBoundaryOutDB);
@@ -332,7 +329,7 @@ void rsSteleInnerDB::InitAllDB(rsMXBoundaryOutDB* RsMXBoundaryOutDB,
 
 	SteleInnestObjectHeightAndZPositionDB(sliceNum);
 
-	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
+	SetSuperEllipsoidResolution();
 
 	SetObjectOpacity();
 

@@ -60,9 +60,6 @@ public:
                     double initZPosition,
                     int vectorNum,
                     double variationRatio,
-                    int setUResolution,
-                    int setVResolution,
-                    int setWResolution,
                     int sliceNum );
 
 };

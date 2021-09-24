@@ -135,9 +135,6 @@ public:
                     vector<int> corticalCellNumInputData,
                     int corticalCellNumSelectInput,
                     double variationRatio,
-                    int setUResolution,
-                    int setVResolution,
-                    int setWResolution,
                     int sliceNum
                   );
 

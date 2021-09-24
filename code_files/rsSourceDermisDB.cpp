@@ -163,9 +163,6 @@ void rsSourceDermisDB::InitAllDB(const char* outputXMLVtpFileNameInput,
 	double epidermisBaseRadius,
 	//                                      int epidermisCellNum,
 	double variationRatio,
-	int setUResolution,
-	int setVResolution,
-	int setWResolution,
 	int sliceNum)
 
 {  /// first: get boundaryRadius from rsSourceCorticalDB;
@@ -194,7 +191,7 @@ void rsSourceDermisDB::InitAllDB(const char* outputXMLVtpFileNameInput,
 
 	ObjectHeightAndZPositionDB(sliceNum);
 
-	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
+	SetSuperEllipsoidResolution();
 
 	MapRGB();
 }

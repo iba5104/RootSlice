@@ -576,9 +576,6 @@ void rsMXCoreDB::InitXylemOutRing
 	double xylemMaxOutRingNum,
 	double xylemMaxOutRingCellNum,
 	double xylemMaxOutRingAddRadius,
-	int setUResolution,
-	int setVResolution,
-	int setWResolution,
 	int sliceNum)
 {
 	SetObjectXYZRadiusRatio();
@@ -619,5 +616,5 @@ void rsMXCoreDB::InitXylemOutRing
 	XylemOutRingObjectHeightAndZPositionDB(sliceNum);
 	XylemCenterRingObjectHeightAndZPositionDB(sliceNum);
 	MapRGB();
-	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
+	SetSuperEllipsoidResolution();
 }

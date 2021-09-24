@@ -68,9 +68,6 @@ public:
                     double epidermisBaseRadius,
 //                    int epidermisCellNum,
                     double variationRatio,
-                    int setUResolution,
-                    int setVResolution,
-                    int setWResolution,
                     int sliceNum );
 
    /// Initialize pure cell Database;

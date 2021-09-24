@@ -4,7 +4,7 @@
 using namespace std;
 
 /// Set SuperEllipsoid Resolution;
-void rsBaseGeometry::SetSuperEllipsoidResolution(int setUResolution, int setVResolution, int setWResolution)
+void rsBaseGeometry::SetSuperEllipsoidResolution()
 {
 	uResolution = setUResolution;
 	vResolution = setVResolution;

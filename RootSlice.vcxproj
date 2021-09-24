@@ -99,6 +99,8 @@
       <UseFullPaths>false</UseFullPaths>
       <PreprocessorDefinitions>WIN32;_WINDOWS;H5_BUILT_AS_DYNAMIC_LIB;VTK_HAS_OGGTHEORA_SUPPORT;DIY_NO_THREADS;LZ4_DLL_IMPORT=1;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;H5_BUILT_AS_DYNAMIC_LIB;VTK_HAS_OGGTHEORA_SUPPORT;DIY_NO_THREADS;LZ4_DLL_IMPORT=1;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -141,6 +143,8 @@
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;H5_BUILT_AS_DYNAMIC_LIB;VTK_HAS_OGGTHEORA_SUPPORT;DIY_NO_THREADS;LZ4_DLL_IMPORT=1;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>

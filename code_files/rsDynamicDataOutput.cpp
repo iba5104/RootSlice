@@ -13,26 +13,21 @@ void rsDynamicDataOutput::SetRenderer( vtkSmartPointer<vtkRenderer> renL )
 
 void rsDynamicDataOutput::InitEpiCortexEndoAllDB
 (
-   int setUResolution,
-   int setVResolution,
-   int setWResolution,
-   double baseRadius,
-   double thickness,
-   double totalHeight,
+    /// All objects;
+    globals cortical,
+    globals stele,
+    globals metaXylem,
+    globals protoXylem,
+    globals epidermis,
+    globals endodermis,
+    globals exodermis,
+    globals sclerenchyma,
+    globals pericycle,
+
    /// Cortical;
    vector<double> corticalAddRadiusInputData,
    vector<int> corticalCellNumInputData,
-   int corticalAddRadiusDBSelectInput,
-
-   int corticalCellNumSelectInput,
    int corticalSliceNum,
-   double initZPosition,
-   int vectorNum,
-   double variationRatioCotical,
-   int cortexLayerNum,
-   double corticalCellMultiplyRatio,
-   double corticalCellAddRadiusMinInput,
-   double cortexRadiusInput,
    /// RCA;
    double rcaRatioInput,
    int rcaNumInput,
@@ -40,12 +35,6 @@ void rsDynamicDataOutput::InitEpiCortexEndoAllDB
    int standardInnerLayerInput,
    double gapAngleBetweenRcaRatio,
    double variationRatioRca,
-
-   /// Pure Cortical Cell;
-   double gapCellWallInput,
-
-   /// Cortical Vacuole;
-   double gapCytoTonoInput,
 
    /// Plasma Membrane
    double plasmaMembraneWidth,
@@ -57,13 +46,10 @@ void rsDynamicDataOutput::InitEpiCortexEndoAllDB
    /// Epi;
    int epidermisSliceNum,
    double epidermisAddRadiusData,
-//   int epidermisCellNum,
-   double variationRatioDermis,
 
    /// Endo;
    int endodermisSliceNum,
    double endodermisAddRadiusData,
-//   int endodermisCellNum,
 
    /// Pericycle
    int pericycleSliceNum,
@@ -83,16 +69,11 @@ void rsDynamicDataOutput::InitEpiCortexEndoAllDB
    /// DataOutputName;
    const char* dataOutputNameInput,
 
-   /// Others
-   vtkSmartPointer<vtkRenderer> renL
-   
-
+    //Other
+    vtkSmartPointer<vtkRenderer> renL
 )
 
-{  setUResolution = 12;
-   setVResolution = 12;
-   setWResolution = 12;
-
+{  
    /*************************************
    CorticalDB
    **************************************/
@@ -100,18 +81,15 @@ void rsDynamicDataOutput::InitEpiCortexEndoAllDB
 
    RsSourceCorticalDB -> RandomHeightDB( totalHeight, corticalSliceNum, initZPosition, vectorNum );
    RsSourceCorticalDB -> InitAllDB ( baseRadius,
-                                     cortexLayerNum,
+                                     cortical.numFiles,
                                      corticalCellMultiplyRatio,
-                                     corticalCellAddRadiusMinInput,
+                                     cortical.cellDiameter/2.0,
                                      cortexRadiusInput,
                                      corticalAddRadiusDBSelectInput,
                                      corticalAddRadiusInputData,
                                      corticalCellNumInputData,
                                      corticalCellNumSelectInput,
-                                     variationRatioCotical,
-                                     setUResolution,
-                                     setVResolution,
-                                     setWResolution,
+                                     cortical.variationRatio,
                                      corticalSliceNum );
 
 //////////////////////////////////// RCA ////////////////////////////////////
@@ -132,10 +110,10 @@ void rsDynamicDataOutput::InitEpiCortexEndoAllDB
 //////////////////////////////////// RCA ///////////////////////////////////////
 
    /// pure cortical cell;
-   RsSourceCorticalDB -> InitPureCellDB( gapCellWallInput );
+   RsSourceCorticalDB -> InitPureCellDB( cortical.gapCellWall );
    /// cortical vacuole
 //   cout << "CorticalDB - Vacuole" << endl;
-   RsSourceCorticalDB -> InitVacuoleDB( gapCytoTonoInput );
+   RsSourceCorticalDB -> InitVacuoleDB( cortical.gapCytoTono );
    /////////////////////////////////// Vacuole ///////////////////////////////
 
    //////////////////////// OutputXMLVtpFileName ///////////////////////////
@@ -184,15 +162,12 @@ RsSourceSclerenDB->RandomHeightDB(totalHeight, sclerenSliceNum, initZPosition, v
 RsSourceSclerenDB->InitAllDB(SclerenXMLVtpFileNameInput,
     sclerenAddRadiusData,
     sclerenBaseRadius,
-    variationRatioDermis,
-    setUResolution,
-    setVResolution,
-    setWResolution,
+    sclerenchyma.variationRatio,
     sclerenSliceNum);
 
 RsSourceSclerenDB->SetObjectOpacity();
-RsSourceSclerenDB->InitPureCellDB(gapCellWallInput);
-RsSourceSclerenDB->InitVacuoleDB(gapCytoTonoInput);
+RsSourceSclerenDB->InitPureCellDB(sclerenchyma.gapCellWall);
+RsSourceSclerenDB->InitVacuoleDB(sclerenchyma.gapCytoTono);
 
 /************************************
 Sclerenchyma Visualization;
@@ -225,16 +200,12 @@ RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 2);
    RsSourceEpidermisDB -> InitAllDB (EpidermisXMLVtpFileNameInput,
                                      epidermisAddRadiusData,
                                      epidermisBaseRadius,
-//                                     epidermisCellNum,
-                                     variationRatioDermis,
-                                     setUResolution,
-                                     setVResolution,
-                                     setWResolution,
+                                     epidermis.variationRatio,
                                      epidermisSliceNum );
 
    RsSourceEpidermisDB->SetObjectOpacity();
-   RsSourceEpidermisDB->InitPureCellDB(gapCellWallInput);
-   RsSourceEpidermisDB->InitVacuoleDB(gapCytoTonoInput);
+   RsSourceEpidermisDB->InitPureCellDB(epidermis.gapCellWall);
+   RsSourceEpidermisDB->InitVacuoleDB(epidermis.gapCytoTono);
 
    /************************************
    Epidermis Visualization;
@@ -265,16 +236,12 @@ RsSourceEpidermisVisual->EpidermisVisual( RsSourceEpidermisDB, renL, 2);
    RsSourceEndodermisDB -> InitAllDB (EndodermisXMLVtpFileNameInput,
                                       endodermisAddRadiusData,
                                       endodermisBaseRadius,
-//                                      endodermisCellNum,
-                                      variationRatioDermis,
-                                      setUResolution,
-                                      setVResolution,
-                                      setWResolution,
+                                      endodermis.variationRatio,
                                       endodermisSliceNum );
 
    RsSourceEndodermisDB->SetObjectOpacity();
-   RsSourceEndodermisDB->InitPureCellDB(gapCellWallInput);
-   RsSourceEndodermisDB->InitVacuoleDB(gapCytoTonoInput);
+   RsSourceEndodermisDB->InitPureCellDB(endodermis.gapCellWall);
+   RsSourceEndodermisDB->InitVacuoleDB(endodermis.gapCytoTono);
 
    /************************************
    Endodermis Visualization;
@@ -318,7 +285,7 @@ RsEpiCortexEndoWaterPathDBVisual -> SymplastTriangleStripXMLVtp( RsEpiCortexEndo
    string outputName = "dataOutput";
 
    RsDataOutput -> DataOutputName( dataOutputNameInput );
-   RsDataOutput -> CorticalDataOutputCalculate( baseRadius, totalHeight, RsSourceCorticalDB );
+   RsDataOutput -> CorticalDataOutputCalculate( RsSourceCorticalDB );
    RsDataOutput -> RcaDataOutputCalculate( RsRcaDB );
    RsDataOutput -> NutrientAndMitochondriaCalculate();
    RsDataOutput -> PathLengthDataOutputCalculate( RsEpiCortexEndoWaterPathDB );
@@ -338,15 +305,12 @@ RsEpiCortexEndoWaterPathDBVisual -> SymplastTriangleStripXMLVtp( RsEpiCortexEndo
    RsSourcePericycleDB->InitAllDB(PericycXMLVtpFileNameInput,
        pericycleAddRadiusData,
        pericycleBaseRadius,
-       variationRatioDermis,
-       setUResolution,
-       setVResolution,
-       setWResolution,
+       pericycle.variationRatio,
        pericycleSliceNum);
 
    RsSourcePericycleDB->SetObjectOpacity();
-   RsSourcePericycleDB->InitPureCellDB(gapCellWallInput);
-   RsSourcePericycleDB->InitVacuoleDB(gapCytoTonoInput);
+   RsSourcePericycleDB->InitPureCellDB(pericycle.gapCellWall);
+   RsSourcePericycleDB->InitVacuoleDB(pericycle.gapCytoTono);
 
    /************************************
    Pericycle Visualization;
@@ -386,36 +350,22 @@ RsEpiCortexEndoWaterPathDBVisual -> SymplastTriangleStripXMLVtp( RsEpiCortexEndo
 /// InitEpiCortexEndoNonRCADB;
 void rsDynamicDataOutput::InitEpiCortexEndoNonRCADB
 (
-   int setUResolution,
-   int setVResolution,
-   int setWResolution,
-   double baseRadius,
-   double thickness,
-   double totalHeight,
-   /// Cortical;
+   /// All objects;
+   globals cortical,
+   globals stele,
+   globals metaXylem,
+   globals protoXylem,
+   globals epidermis,
+   globals endodermis,
+   globals exodermis,
+   globals sclerenchyma,
+   globals pericycle,
+
+   /// Cortical specific;
    vector<double> corticalAddRadiusInputData,
    vector<int> corticalCellNumInputData,
-   int corticalAddRadiusDBSelectInput,
-
-   int corticalCellNumSelectInput,
    int corticalSliceNum,
-   double initZPosition,
-   int vectorNum,
-   double variationRatioCotical,
-   int cortexLayerNum,
-   double corticalCellMultiplyRatio,
-   double corticalCellAddRadiusMinInput,
-   double cortexRadiusInput,
-
-   /// Pure Cortical Cell;
-   double gapCellWallInput,
-
-   /// Cortical Vacuole;
-   double gapCytoTono,
-
-    /// Plasma Membrane
-    double plasmaMembraneWidth,
-
+   
    /// Sclerenchyma
    int sclerenSliceNum,
    double sclerenAddRadiusData,
@@ -423,8 +373,6 @@ void rsDynamicDataOutput::InitEpiCortexEndoNonRCADB
    /// Epi;
    int epidermisSliceNum,
    double epidermisAddRadiusData,
-//   int epidermisCellNum,
-   double variationRatioDermis,
 
    /// Endo;
    int endodermisSliceNum,
@@ -449,35 +397,11 @@ void rsDynamicDataOutput::InitEpiCortexEndoNonRCADB
    /// DataOutputName;
    const char* dataOutputNameInput,
 
-   /// Others
-   vtkSmartPointer<vtkRenderer> renL,
-    /// Stele 
-
-    double variationRatio,
-    int sliceNum,
-    double steleInnestCellRadiusInput,
-    int steleInnerLayerNumInput,
-    /// metaxylem 
-
-    double setUpVecticalLengthThresholdRatio,
-    double innerTangentRingRadiusRatioTemp,
-    int setInterVerticalNum,
-    int setMXNum,
-    double setMXAverageRingRadius,
-    double xylemMaxOutRingNum,
-
-    // protoxylem
-    double pxGapRadius,
-    int setPXNum,
-    double setPXAverageRingRadius,
-    double xylemMaxOutRingCellNum,
-    double xylemMaxOutRingAddRadius
+    //Other
+    vtkSmartPointer<vtkRenderer> renL
 )
 
-{  setUResolution = 12;
-   setVResolution = 12;
-   setWResolution = 12;
-
+{  
    /*************************************
    CorticalDB
    **************************************/
@@ -485,25 +409,22 @@ void rsDynamicDataOutput::InitEpiCortexEndoNonRCADB
 
    RsSourceCorticalDB -> RandomHeightDB( totalHeight, corticalSliceNum, initZPosition, vectorNum );
    RsSourceCorticalDB -> InitAllDB ( baseRadius,
-                                     cortexLayerNum,
+                                     cortical.numFiles,
                                      corticalCellMultiplyRatio,
-                                     corticalCellAddRadiusMinInput,
+                                     cortical.cellDiameter/2,
                                      cortexRadiusInput,
                                      corticalAddRadiusDBSelectInput,
                                      corticalAddRadiusInputData,
                                      corticalCellNumInputData,
                                      corticalCellNumSelectInput,
-                                     variationRatioCotical,
-                                     setUResolution,
-                                     setVResolution,
-                                     setWResolution,
+                                     cortical.variationRatio,
                                      corticalSliceNum );
 
       /// pure cortical cell - plasma membrane ?;
-   RsSourceCorticalDB -> InitPureCellDB( gapCellWallInput );
+   RsSourceCorticalDB -> InitPureCellDB( cortical.gapCellWall );
    /// cortical vacuole
 //   cout << "CorticalDB - Vacuole" << endl;
-   RsSourceCorticalDB -> InitVacuoleDB( gapCytoTono );
+   RsSourceCorticalDB -> InitVacuoleDB( cortical.gapCytoTono );
    /////////////////////////////////// Vacuole ///////////////////////////////
 
    //////////////////////// OutputXMLVtpFileName ///////////////////////////
@@ -553,15 +474,12 @@ RsSourceCorticalVisual -> CorticalVisual( RsSourceCorticalDB, renL );
    RsSourceSclerenDB->InitAllDB(SclerenXMLVtpFileNameInput,
     sclerenAddRadiusData,
     sclerenBaseRadius,
-    variationRatioDermis,
-    setUResolution,
-    setVResolution,
-    setWResolution,
+    sclerenchyma.variationRatio,
     sclerenSliceNum);
 
    RsSourceSclerenDB->SetObjectOpacity();
-   RsSourceSclerenDB->InitPureCellDB(gapCellWallInput);
-   RsSourceSclerenDB->InitVacuoleDB(gapCytoTono);
+   RsSourceSclerenDB->InitPureCellDB(sclerenchyma.gapCellWall);
+   RsSourceSclerenDB->InitVacuoleDB(sclerenchyma.gapCytoTono);
 
 /************************************
 Epidermis Visualization;
@@ -594,15 +512,12 @@ RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 2);
                                      epidermisAddRadiusData,
                                      epidermisBaseRadius,
 //                                     epidermisCellNum,
-                                     variationRatioDermis,
-                                     setUResolution,
-                                     setVResolution,
-                                     setWResolution,
+                                     epidermis.variationRatio,
                                      epidermisSliceNum );
 
    RsSourceEpidermisDB->SetObjectOpacity();
-   RsSourceEpidermisDB->InitPureCellDB(gapCellWallInput);
-   RsSourceEpidermisDB->InitVacuoleDB(gapCytoTono);
+   RsSourceEpidermisDB->InitPureCellDB(epidermis.gapCellWall);
+   RsSourceEpidermisDB->InitVacuoleDB(epidermis.gapCytoTono);
 
    /************************************
    Epidermis Visualization;
@@ -633,16 +548,12 @@ RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 2);
    RsSourceEndodermisDB -> InitAllDB (EndodermisXMLVtpFileNameInput,
                                       endodermisAddRadiusData,
                                       endodermisBaseRadius,
-//                                      endodermisCellNum,
-                                      variationRatioDermis,
-                                      setUResolution,
-                                      setVResolution,
-                                      setWResolution,
+                                      endodermis.variationRatio,
                                       endodermisSliceNum );
 
    RsSourceEndodermisDB->SetObjectOpacity();
-   RsSourceEndodermisDB->InitPureCellDB(gapCellWallInput);
-   RsSourceEndodermisDB->InitVacuoleDB(gapCytoTono);
+   RsSourceEndodermisDB->InitPureCellDB(endodermis.gapCellWall);
+   RsSourceEndodermisDB->InitVacuoleDB(endodermis.gapCytoTono);
 
    /************************************
    Endodermis Visualization;
@@ -695,15 +606,12 @@ RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2);
    RsSourcePericycleDB->InitAllDB(PericycXMLVtpFileNameInput,
        pericycleAddRadiusData,
        pericycleBaseRadius,
-       variationRatioDermis,
-       setUResolution,
-       setVResolution,
-       setWResolution,
+       pericycle.variationRatio,
        pericycleSliceNum);
 
    RsSourcePericycleDB->SetObjectOpacity();
-   RsSourcePericycleDB->InitPureCellDB(gapCellWallInput);
-   RsSourcePericycleDB->InitVacuoleDB(gapCytoTono);
+   RsSourcePericycleDB->InitPureCellDB(pericycle.gapCellWall);
+   RsSourcePericycleDB->InitVacuoleDB(pericycle.gapCytoTono);
 
    /************************************
    Pericycle Visualization;
@@ -723,18 +631,16 @@ RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2);
    cout << "XylemOuterRing" << endl;
 
    rsPXCoreDB* RsPXCoreDB = new rsPXCoreDB;
-   RsPXCoreDB->RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
+   int protoXylemSliceNum = protoXylem.minSlice + (rand() % (protoXylem.maxSlice - protoXylem.minSlice + 1));
+   RsPXCoreDB->RandomHeightDB(totalHeight, protoXylemSliceNum, initZPosition, vectorNum);
    RsPXCoreDB->InitXylemOutRing(pericycleBaseRadius,
-       pxGapRadius,
-       setPXNum,
-       setPXAverageRingRadius,
-       variationRatio,
-       xylemMaxOutRingCellNum,
-       xylemMaxOutRingAddRadius,
-       setUResolution,
-       setVResolution,
-       setWResolution,
-       sliceNum);
+       protoXylem.gapRadius,
+       protoXylem.num,
+       protoXylem.averageRingRadius,
+       protoXylem.variationRatio,
+       protoXylem.surroundingCellRingNum,
+       protoXylem.surroundingCellRingRadius,
+       protoXylemSliceNum);
    RsPXCoreDB->InitPXSamll();
 
    /*************************************
@@ -743,18 +649,16 @@ RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2);
    cout << "XylemOuterRing" << endl;
 
    rsMXCoreDB* RsMXCoreDB = new rsMXCoreDB;
-   RsMXCoreDB->RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
+   int metaXylemSliceNum = metaXylem.minSlice + (rand() % (metaXylem.maxSlice - metaXylem.minSlice + 1));
+   RsMXCoreDB->RandomHeightDB(totalHeight, metaXylemSliceNum, initZPosition, vectorNum);
    RsMXCoreDB->InitXylemOutRing(RsPXCoreDB,
-       setMXNum,
-       setMXAverageRingRadius,
-       variationRatio,
-       xylemMaxOutRingNum,
-       xylemMaxOutRingCellNum,
-       xylemMaxOutRingAddRadius,
-       setUResolution,
-       setVResolution,
-       setWResolution,
-       sliceNum);
+       metaXylem.num,
+       metaXylem.averageRingRadius,
+       metaXylem.variationRatio,
+       metaXylem.surroundingCellRingNum,
+       protoXylem.surroundingCellRingNum,
+       protoXylem.surroundingCellRingRadius,
+       metaXylemSliceNum);
 
    /*************************************
    MetaXylum
@@ -772,28 +676,25 @@ RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2);
    cout << "rsMXBoundaryOutDB" << endl;
 
    rsMXBoundaryOutDB* RSMXBoundaryOutDB = new rsMXBoundaryOutDB;
-   RSMXBoundaryOutDB->RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
+   RSMXBoundaryOutDB->RandomHeightDB(totalHeight, metaXylemSliceNum, initZPosition, vectorNum);
    RSMXBoundaryOutDB->InitXylemOutRing(RsPXCoreDB,
-       setMXNum,
-       setMXAverageRingRadius,
-       variationRatio,
-       xylemMaxOutRingNum,
-       xylemMaxOutRingCellNum,
-       xylemMaxOutRingAddRadius,
-       setUResolution,
-       setVResolution,
-       setWResolution,
-       sliceNum);
-   RSMXBoundaryOutDB->InitBoundaryCell(dotNum, setUpRowNum, setDownRowNum, sliceNum);
+       metaXylem.num,
+       metaXylem.averageRingRadius,
+       metaXylem.variationRatio,
+       metaXylem.surroundingCellRingNum,
+       protoXylem.surroundingCellRingNum,
+       protoXylem.surroundingCellRingRadius,
+       metaXylemSliceNum);
+   RSMXBoundaryOutDB->InitBoundaryCell(dotNum, setUpRowNum, setDownRowNum, metaXylemSliceNum);
    RSMXBoundaryOutDB->InitBoundaryInterDB(
-       innerTangentRingRadiusRatioTemp,
-       setInterVerticalNum,
-       variationRatio,
-       sliceNum);
+       metaXylem.tangentRingRadiusRatio,
+       metaXylem.steleCellNumBetween,
+       metaXylem.variationRatio,
+       metaXylemSliceNum);
    RSMXBoundaryOutDB->InitBoundaryUpDB(
-       setUpVecticalLengthThresholdRatio,
-       variationRatio,
-       sliceNum);
+       metaXylem.verticalLengthThresholdRatio,
+       metaXylem.variationRatio,
+       metaXylemSliceNum);
 
    //////////////////////////////////// Stele Jagdeep 2-3-2021  /////////////////////////////////////////
    /*************************************
@@ -806,18 +707,15 @@ RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2);
    RSMXBoundaryOutDB->SetObjectXYZRadiusRatio(1);
 
    //RsSourceEndodermisDB->RandomHeightDB(totalHeight, endodermisSliceNum, initZPosition, vectorNum);
-
+   int steleSliceNum = stele.minSlice + (rand() % (stele.maxSlice - stele.minSlice + 1));
     RsSteleInnerDB->InitAllDB(RSMXBoundaryOutDB,
-        steleInnestCellRadiusInput,
-        steleInnerLayerNumInput,
+        stele.innestCellDiameter/2.0,
+        stele.innerLayerNum,
         totalHeight,
         initZPosition,
         vectorNum,
-        variationRatio,
-        setUResolution,
-        setVResolution,
-        setWResolution,
-        sliceNum);
+        stele.variationRatio,
+        steleSliceNum);
 
    RsSteleInnerDB ->SetObjectOpacity();
 
@@ -827,25 +725,22 @@ RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2);
    **************************************/
    rsPXBoundaryDB* RsPXBoundaryDB = new rsPXBoundaryDB;
 
-   RsPXBoundaryDB->RandomHeightDB(totalHeight, sliceNum, initZPosition, vectorNum);
+   RsPXBoundaryDB->RandomHeightDB(totalHeight, protoXylemSliceNum, initZPosition, vectorNum);
    RsPXBoundaryDB->InitXylemOutRing(pericycleBaseRadius,
-       pxGapRadius,
-       setPXNum,
-       setPXAverageRingRadius,
-       variationRatio,
-       xylemMaxOutRingCellNum,
-       xylemMaxOutRingAddRadius,
-       setUResolution,
-       setVResolution,
-       setWResolution,
-       sliceNum);
+       protoXylem.gapRadius,
+       protoXylem.num,
+       protoXylem.averageRingRadius,
+       protoXylem.variationRatio,
+       protoXylem.surroundingCellRingNum,
+       protoXylem.surroundingCellRingRadius,
+       protoXylemSliceNum);
    RsPXBoundaryDB->InitPXSamll();
    RsPXBoundaryDB->InitBoundaryCell
    (RsPXCoreDB,
        dotNum,
        setUpRowNum,
        setDownRowNum,
-       sliceNum);
+       protoXylemSliceNum);
 
 
    /*************************************
@@ -856,14 +751,11 @@ RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2);
        RsPXBoundaryDB,
        setUpAppendParallelLengthThresholdRatio,
        totalHeight,
-       sliceNum,
+       protoXylemSliceNum,
        initZPosition,
        vectorNum,
-       setUResolution,
-       setVResolution,
-       setWResolution,
-       variationRatio);
-   RsPhloemDB->InitDownCell(RsPXBoundaryDB, variationRatio, sliceNum);
+       protoXylem.variationRatio);
+   RsPhloemDB->InitDownCell(RsPXBoundaryDB, protoXylem.variationRatio, protoXylemSliceNum);
 
    /************************************
    PXCore Visualization;
@@ -964,7 +856,7 @@ RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2);
    string outputName = "dataOutput";
 
    RsDataOutput -> DataOutputName( dataOutputNameInput );
-   RsDataOutput -> CorticalDataOutputCalculate( baseRadius, totalHeight, RsSourceCorticalDB );
+   RsDataOutput -> CorticalDataOutputCalculate( RsSourceCorticalDB );
    RsDataOutput -> NonRcaDataOutput();
    RsDataOutput -> NutrientAndMitochondriaCalculate();
    RsDataOutput -> PathLengthDataOutputCalculate( RsEpiCortexEndoWaterPathDB );

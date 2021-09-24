@@ -464,9 +464,6 @@ void rsPXCoreDB::InitXylemOutRing
 	double variationRatio,
 	double xylemMaxOutRingCellNum,
 	double xylemMaxOutRingAddRadius,
-	int setUResolution,
-	int setVResolution,
-	int setWResolution,
 	int sliceNum
 )
 {
@@ -502,7 +499,7 @@ void rsPXCoreDB::InitXylemOutRing
 	XylemOutRingCircleSegmentLengthAdjustRatioDB();
 	XylemOutRingObjectHeightAndZPositionDB(sliceNum);
 	XylemCenterRingObjectHeightAndZPositionDB(sliceNum);
-	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
+	SetSuperEllipsoidResolution();
 	MapRGB();
 }
 /////////////////////////////////////////  PXSmall ///////////////////////////////////////////////////////

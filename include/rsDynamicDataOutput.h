@@ -45,8 +45,9 @@
 
 #include "rsSteleInnerDB.h"
 #include "rsSteleInnerVisual.h"
+#include "globals.h"
 
-class rsDynamicDataOutput
+class rsDynamicDataOutput : public globals
 {
 public:
 
@@ -54,26 +55,21 @@ public:
 
    void InitEpiCortexEndoAllDB
    (
-      int setUResolution,
-      int setVResolution,
-      int setWResolution,
-      double baseRadius,
-      double thickness,
-      double totalHeight,
+       /// All objects;
+       globals cortical,
+       globals stele,
+       globals metaXylem,
+       globals protoXylem,
+       globals epidermis,
+       globals endodermis,
+       globals exodermis,
+       globals sclerenchyma,
+       globals pericycle,
+
       /// Cortical;
       vector<double> corticalAddRadiusInputData,
       vector<int> corticalCellNumInputData,
-      int corticalAddRadiusDBSelectInput,
-
-      int corticalCellNumSelectInput,
       int corticalSliceNum,
-      double initZPosition,
-      int vectorNum,
-      double variationRatioCotical,
-      int cortexLayerNum,
-      double corticalCellMultiplyRatio,
-      double corticalCellAddRadiusMinInput,
-      double cortexRadiusInput,
       /// RCA;
       double rcaRatioInput,
       int rcaNumInput,
@@ -81,12 +77,6 @@ public:
       int standardInnerLayerInput,
       double gapAngleBetweenRcaRatio,
       double variationRatioRca,
-
-      /// Pure Cortical Cell;
-      double gapCellWallInput,
-
-      /// Cortical Vacuole;
-      double gapCytoTono,
 
       /// Plasma Membrane
       double plasmaMembraneWidth,
@@ -98,13 +88,10 @@ public:
       /// Epi;
       int epidermisSliceNum,
       double epidermisAddRadiusData,
-//      int epidermisCellNum,
-      double variationRatioDermis,
 
       /// Endo;
       int endodermisSliceNum,
       double endodermisAddRadiusData,
-//      int endodermisCellNum,
       
       // Pericycle
       int pericycleSliceNum,
@@ -124,42 +111,28 @@ public:
       /// DataOutputName;
       const char* dataOutputNameInput,
 
-      /// Others
-      vtkSmartPointer<vtkRenderer> renL
+       //Other
+       vtkSmartPointer<vtkRenderer> renL
    );
 
 
    void InitEpiCortexEndoNonRCADB
    (
-      int setUResolution,
-      int setVResolution,
-      int setWResolution,
-      double baseRadius,
-      double thickness,
-      double totalHeight,
-      /// Cortical;
+       /// All objects;
+      globals cortical,
+      globals stele,
+      globals metaXylem,
+      globals protoXylem,
+      globals epidermis,
+      globals endodermis,
+      globals exodermis,
+      globals sclerenchyma,
+      globals pericycle,
+      
+      /// Cortical specific;
       vector<double> corticalAddRadiusInputData,
       vector<int> corticalCellNumInputData,
-      int corticalAddRadiusDBSelectInput,
-
-      int corticalCellNumSelectInput,
       int corticalSliceNum,
-      double initZPosition,
-      int vectorNum,
-      double variationRatioCotical,
-      int cortexLayerNum,
-      double corticalCellMultiplyRatio,
-      double corticalCellAddRadiusMinInput,
-      double cortexRadiusInput,
-
-      /// Pure Cortical Cell;
-      double gapCellWallInput,
-
-      /// Cortical Vacuole;
-      double gapCytoTono,
-
-       /// Plasma Membrane
-       double plasmaMembraneWidth,
 
       /// Sclerenchyma
       int sclerenSliceNum,
@@ -168,13 +141,10 @@ public:
       /// Epi;
       int epidermisSliceNum,
       double epidermisAddRadiusData,
-//      int epidermisCellNum,
-      double variationRatioDermis,
 
       /// Endo;
       int endodermisSliceNum,
       double endodermisAddRadiusData,
-//      int endodermisCellNum,
       
        // Pericycle
        int pericycleSliceNum,
@@ -194,23 +164,8 @@ public:
       /// DataOutputName;
       const char* dataOutputNameInput,
 
-      /// Others
-      vtkSmartPointer<vtkRenderer> renL,
-       double variationRatio,
-       int sliceNum,
-       double steleInnestCellRadiusInput,
-       int steleInnerLayerNumInput,
-       double setUpVecticalLengthThresholdRatio,
-       double innerTangentRingRadiusRatioTemp,
-       int setInterVerticalNum,
-       int setMXNum,
-       double setMXAverageRingRadius,
-       double xylemMaxOutRingNum,
-       double pxGapRadius,
-       int setPXNum,
-       double setPXAverageRingRadius,
-       double xylemMaxOutRingCellNum,
-       double xylemMaxOutRingAddRadius
+       //Other
+       vtkSmartPointer<vtkRenderer> renL
    );
 
 

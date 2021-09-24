@@ -14,6 +14,9 @@ namespace fs = std::filesystem;
 /////////////////////////////////////////////////////////////////////////////////////////////////
 int main()
 {
+	//////////////////////////////////////// Visualization //////////////////////////////////////////////
+	vtkSmartPointer<vtkRenderer> renL = vtkSmartPointer<vtkRenderer>::New();
+
 	TiXmlDocument doc("CorticalData.xml");
 	doc.LoadFile();
 	TiXmlElement* main = doc.FirstChildElement("Main");
@@ -34,122 +37,37 @@ int main()
 
 	vector<double> corticalAddRadiusInputData;
 	vector<int> corticalCellNumInputData;
-	
-	double corticalCellWallWidth;
-	double corticalPlasmaMembraneThickness;
-	double corticalGapCytoTono;
-	double corticalGapCellWall;
-	double corticalVariationRatio;
-	int corticalMinSlice;
-	int corticalMaxSlice;
-	double corticalCellDiameter;
-	int corticalNumFiles;
 
-	double steleCellWallWidth;
-	double stelePlasmaMembraneThickness;
-	double steleGapCytoTono;
-	double steleGapCellWall;
-	double steleVariationRatio;
-	int steleMinSlice;
-	int steleMaxSlice;
-	double steleInnestCellDiameter;
-	int steleInnerLayerNum;
+	globals cortical;
+	globals stele;
+	globals metaXylem;
+	globals protoXylem;
+	globals epidermis;
+	globals endodermis;
+	globals exodermis;
+	globals sclerenchyma;
+	globals pericycle;
 
-	double metaXylemCellWallWidth;
-	double metaXylemPlasmaMembraneThickness;
-	double metaXylemGapCytoTono;
-	double metaXylemGapCellWall;
-	double metaXylemVariationRatio;
-	int metaXylemMinSlice;
-	int metaXylemMaxSlice;
-	double metaXylemverticalLengthThresholdRatio;
-	double metaXylemTangentRingRadiusRatio;
-	int metaXylemSteleCellNumBetween;
-	int metaXylemNum;
-	double metaXylemAverageRingRadius;
-	int metaXylemSurroundingCellRingNum;
-
-	double protoXylemCellWallWidth;
-	double protoXylemPlasmaMembraneThickness;
-	double protoXylemGapCytoTono;
-	double protoXylemGapCellWall;
-	double protoXylemVariationRatio;
-	int protoXylemMinSlice;
-	int protoXylemMaxSlice;
-	double protoXylemGapRadius;
-	int protoXylemNum;
-	double protoXylemAverageRingRadius;
-	int protoXylemSurroundingCellRingNum;
-	double protoXylemSurroundingCellRingRadius;
-
-	double epidermisCellWallWidth;
-	double epidermisPlasmaMembraneThickness;
-	double epidermisGapCytoTono;
-	double epidermisGapCellWall;
-	double epidermisVariationRatio;
-	int epidermisMinSlice;
-	int epidermisMaxSlice;
-	double epidermisCellDiameter;
-	int epidermisCellNum;
-
-	double endodermisCellWallWidth;
-	double endodermisPlasmaMembraneThickness;
-	double endodermisGapCytoTono;
-	double endodermisGapCellWall;
-	double endodermisVariationRatio;
-	int endodermisMinSlice;
-	int endodermisMaxSlice;
-	double endodermisCellDiameter;
-
-	double exodermisCellWallWidth;
-	double exodermisPlasmaMembraneThickness;
-	double exodermisGapCytoTono;
-	double exodermisGapCellWall;
-	double exodermisVariationRatio;
-	int exodermisMinSlice;
-	int exodermisMaxSlice;
-	double exodermisCellDiameter;
-
-	double sclerenchymaCellWallWidth;
-	double sclerenchymaPlasmaMembraneThickness;
-	double sclerenchymaGapCytoTono;
-	double sclerenchymaGapCellWall;
-	double sclerenchymaVariationRatio;
-	int sclerenchymaMinSlice;
-	int sclerenchymaMaxSlice;
-	double sclerenchymaCellDiameter;
-
-	double pericycleCellWallWidth;
-	double pericyclePlasmaMembraneThickness;
-	double pericycleGapCytoTono;
-	double pericycleGapCellWall;
-	double pericycleVariationRatio;
-	int pericycleMinSlice;
-	int pericycleMaxSlice;
-	double pericycleCellDiameter;
-
-	double totalHeight = atof(main->Attribute("height"));
-	double rcaRatio;
-
-	double baseRadius;
-	double thickness;
+	globals::totalHeight = atof(main->Attribute("height"));
 
 	// READ PARAMETERS FROM XML FILE //
 	//********** CORTICAL DATA *************//
 	TiXmlElement* corticalInput = main->FirstChildElement("Cortical");
 	if (corticalInput) {
-		baseRadius = atof(corticalInput->FirstChildElement("BaseRadius")->GetText());
-		thickness = atof(corticalInput->FirstChildElement("Thickness")->GetText());
-		corticalCellWallWidth = atof(corticalInput->FirstChildElement("CellwallWidth")->GetText());
-		corticalPlasmaMembraneThickness = atof(corticalInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		corticalGapCytoTono = atof(corticalInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		corticalGapCellWall = corticalCellWallWidth + corticalPlasmaMembraneThickness;
-		corticalVariationRatio = atof(corticalInput->Attribute("variationRatio"));
-		corticalMinSlice = atoi(corticalInput->FirstChildElement("Slices")->Attribute("min"));
-		corticalMaxSlice = atoi(corticalInput->FirstChildElement("Slices")->Attribute("max"));
-		corticalNumFiles = atoi(corticalInput->FirstChildElement("NumFiles")->GetText());
-		rcaRatio = atof(corticalInput->FirstChildElement("RCARatio")->GetText());
-		corticalCellDiameter = atof(corticalInput->FirstChildElement("CellDiameter")->GetText());
+		globals::baseRadius = atof(corticalInput->FirstChildElement("BaseRadius")->GetText());
+		globals::thickness = atof(corticalInput->FirstChildElement("Thickness")->GetText());
+		cout << "baseRadius: " << globals::baseRadius;
+		cout << "Thickness: " << globals::thickness;
+		cortical.cellWallWidth = atof(corticalInput->FirstChildElement("CellwallWidth")->GetText());
+		cortical.plasmaMembraneThickness = atof(corticalInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		cortical.gapCytoTono = atof(corticalInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		cortical.gapCellWall = cortical.cellWallWidth + cortical.plasmaMembraneThickness;
+		cortical.variationRatio = atof(corticalInput->Attribute("variationRatio"));
+		cortical.minSlice = atoi(corticalInput->FirstChildElement("Slices")->Attribute("min"));
+		cortical.maxSlice = atoi(corticalInput->FirstChildElement("Slices")->Attribute("max"));
+		cortical.numFiles = atoi(corticalInput->FirstChildElement("NumFiles")->GetText());
+		globals::rcaRatio = atof(corticalInput->FirstChildElement("RCARatio")->GetText());
+		cortical.cellDiameter = atof(corticalInput->FirstChildElement("CellDiameter")->GetText());
 	}
 	else {
 		cout << "Cortical Data Missing." << endl;
@@ -159,15 +77,15 @@ int main()
 	//********** STELE DATA *************//
 	TiXmlElement* steleInput = main->FirstChildElement("Stele");
 	if (steleInput) {
-		steleMinSlice = atoi(steleInput->FirstChildElement("Slices")->Attribute("min"));
-		steleMaxSlice = atoi(steleInput->FirstChildElement("Slices")->Attribute("max"));
-		steleCellWallWidth = atof(steleInput->FirstChildElement("CellwallWidth")->GetText());
-		stelePlasmaMembraneThickness = atof(steleInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		steleGapCytoTono = atof(steleInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		steleGapCellWall = steleCellWallWidth + stelePlasmaMembraneThickness;
-		steleVariationRatio = atof(steleInput->Attribute("variationRatio"));
-		steleInnestCellDiameter = atof(steleInput->FirstChildElement("InnestCellDiameer")->GetText());
-		steleInnerLayerNum = atoi(steleInput->FirstChildElement("InnerLayerNum")->GetText());
+		stele.minSlice = atoi(steleInput->FirstChildElement("Slices")->Attribute("min"));
+		stele.maxSlice = atoi(steleInput->FirstChildElement("Slices")->Attribute("max"));
+		stele.cellWallWidth = atof(steleInput->FirstChildElement("CellwallWidth")->GetText());
+		stele.plasmaMembraneThickness = atof(steleInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		stele.gapCytoTono = atof(steleInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		stele.gapCellWall = stele.cellWallWidth + stele.plasmaMembraneThickness;
+		stele.variationRatio = atof(steleInput->Attribute("variationRatio"));
+		stele.innestCellDiameter = atof(steleInput->FirstChildElement("InnestCellDiameer")->GetText());
+		stele.innerLayerNum = atoi(steleInput->FirstChildElement("InnerLayerNum")->GetText());
 	}
 	else {
 		cout << "Stele Parameters Missing." << endl;
@@ -177,19 +95,19 @@ int main()
 	//********** METAXYLEM DATA *************//
 	TiXmlElement* metaXylemInput = main->FirstChildElement("MetaXylem");
 	if (metaXylemInput) {
-		metaXylemMinSlice = atoi(metaXylemInput->FirstChildElement("Slices")->Attribute("min"));
-		metaXylemMaxSlice = atoi(metaXylemInput->FirstChildElement("Slices")->Attribute("max"));
-		metaXylemCellWallWidth = atof(metaXylemInput->FirstChildElement("CellwallWidth")->GetText());
-		metaXylemPlasmaMembraneThickness = atof(metaXylemInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		metaXylemGapCytoTono = atof(metaXylemInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		metaXylemGapCellWall = metaXylemCellWallWidth + metaXylemPlasmaMembraneThickness;
-		metaXylemVariationRatio = atof(metaXylemInput->Attribute("variationRatio"));
-		metaXylemverticalLengthThresholdRatio = atof(metaXylemInput->FirstChildElement("VerticalLengthThresholdRatio")->GetText());
-		metaXylemTangentRingRadiusRatio = atof(metaXylemInput->FirstChildElement("TangentRingRadiusRatio")->GetText());
-		metaXylemSteleCellNumBetween = atoi(metaXylemInput->FirstChildElement("SteleCellNumBetween")->GetText());
-		metaXylemNum = atoi(metaXylemInput->FirstChildElement("MXNum")->GetText());
-		metaXylemAverageRingRadius = atof(metaXylemInput->FirstChildElement("MXAverageRingRadius")->GetText());
-		metaXylemSurroundingCellRingNum = atoi(metaXylemInput->FirstChildElement("SurroundingCellRingNum")->GetText());
+		metaXylem.minSlice = atoi(metaXylemInput->FirstChildElement("Slices")->Attribute("min"));
+		metaXylem.maxSlice = atoi(metaXylemInput->FirstChildElement("Slices")->Attribute("max"));
+		metaXylem.cellWallWidth = atof(metaXylemInput->FirstChildElement("CellwallWidth")->GetText());
+		metaXylem.plasmaMembraneThickness = atof(metaXylemInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		metaXylem.gapCytoTono = atof(metaXylemInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		metaXylem.gapCellWall = metaXylem.cellWallWidth + metaXylem.plasmaMembraneThickness;
+		metaXylem.variationRatio = atof(metaXylemInput->Attribute("variationRatio"));
+		metaXylem.verticalLengthThresholdRatio = atof(metaXylemInput->FirstChildElement("VerticalLengthThresholdRatio")->GetText());
+		metaXylem.tangentRingRadiusRatio = atof(metaXylemInput->FirstChildElement("TangentRingRadiusRatio")->GetText());
+		metaXylem.steleCellNumBetween = atoi(metaXylemInput->FirstChildElement("SteleCellNumBetween")->GetText());
+		metaXylem.num = atoi(metaXylemInput->FirstChildElement("MXNum")->GetText());
+		metaXylem.averageRingRadius = atof(metaXylemInput->FirstChildElement("MXAverageRingRadius")->GetText());
+		metaXylem.surroundingCellRingNum = atoi(metaXylemInput->FirstChildElement("SurroundingCellRingNum")->GetText());
 	}
 	else {
 		cout << "MetaXylem Parameters Missing." << endl;
@@ -199,18 +117,18 @@ int main()
 	//********** PROTOXYLEM DATA *************//
 	TiXmlElement* protoXylemInput = main->FirstChildElement("ProtoXylem");
 	if (protoXylemInput) {
-		protoXylemMinSlice = atoi(protoXylemInput->FirstChildElement("Slices")->Attribute("min"));
-		protoXylemMaxSlice = atoi(protoXylemInput->FirstChildElement("Slices")->Attribute("max"));
-		protoXylemCellWallWidth = atof(protoXylemInput->FirstChildElement("CellwallWidth")->GetText());
-		protoXylemPlasmaMembraneThickness = atof(protoXylemInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		protoXylemGapCytoTono = atof(protoXylemInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		protoXylemGapCellWall = protoXylemCellWallWidth + protoXylemPlasmaMembraneThickness;
-		protoXylemVariationRatio = atof(protoXylemInput->Attribute("variationRatio"));
-		protoXylemGapRadius = atof(protoXylemInput->FirstChildElement("GapRadius")->GetText());
-		protoXylemNum = atoi(protoXylemInput->FirstChildElement("PXNum")->GetText());
-		protoXylemAverageRingRadius = atof(protoXylemInput->FirstChildElement("PXAverageRingRadius")->GetText());
-		protoXylemSurroundingCellRingNum = atoi(protoXylemInput->FirstChildElement("SurroundingCellRingNum")->GetText());
-		protoXylemSurroundingCellRingRadius = atof(protoXylemInput->FirstChildElement("SurroundingCellRingRadius")->GetText());
+		protoXylem.minSlice = atoi(protoXylemInput->FirstChildElement("Slices")->Attribute("min"));
+		protoXylem.maxSlice = atoi(protoXylemInput->FirstChildElement("Slices")->Attribute("max"));
+		protoXylem.cellWallWidth = atof(protoXylemInput->FirstChildElement("CellwallWidth")->GetText());
+		protoXylem.plasmaMembraneThickness = atof(protoXylemInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		protoXylem.gapCytoTono = atof(protoXylemInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		protoXylem.gapCellWall = protoXylem.cellWallWidth + protoXylem.plasmaMembraneThickness;
+		protoXylem.variationRatio = atof(protoXylemInput->Attribute("variationRatio"));
+		protoXylem.gapRadius = atof(protoXylemInput->FirstChildElement("GapRadius")->GetText());
+		protoXylem.num = atoi(protoXylemInput->FirstChildElement("PXNum")->GetText());
+		protoXylem.averageRingRadius = atof(protoXylemInput->FirstChildElement("PXAverageRingRadius")->GetText());
+		protoXylem.surroundingCellRingNum = atoi(protoXylemInput->FirstChildElement("SurroundingCellRingNum")->GetText());
+		protoXylem.surroundingCellRingRadius = atof(protoXylemInput->FirstChildElement("SurroundingCellRingRadius")->GetText());
 	}
 	else {
 		cout << "protoXylem Parameters Missing." << endl;
@@ -220,15 +138,15 @@ int main()
 	//********** EPIDERMIS DATA *************//
 	TiXmlElement* epidermisInput = main->FirstChildElement("Epidermis");
 	if (epidermisInput) {
-		epidermisMinSlice = atoi(epidermisInput->FirstChildElement("Slices")->Attribute("min"));
-		epidermisMaxSlice = atoi(epidermisInput->FirstChildElement("Slices")->Attribute("max"));
-		epidermisCellWallWidth = atof(epidermisInput->FirstChildElement("CellwallWidth")->GetText());
-		epidermisPlasmaMembraneThickness = atof(epidermisInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		epidermisGapCytoTono = atof(epidermisInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		epidermisGapCellWall = epidermisCellWallWidth + epidermisPlasmaMembraneThickness;
-		epidermisVariationRatio = atof(epidermisInput->Attribute("variationRatio"));
-		epidermisCellDiameter = atof(epidermisInput->FirstChildElement("CellDiameter")->GetText());
-		epidermisCellNum = atoi(epidermisInput->FirstChildElement("CellNum")->GetText());
+		epidermis.minSlice = atoi(epidermisInput->FirstChildElement("Slices")->Attribute("min"));
+		epidermis.maxSlice = atoi(epidermisInput->FirstChildElement("Slices")->Attribute("max"));
+		epidermis.cellWallWidth = atof(epidermisInput->FirstChildElement("CellwallWidth")->GetText());
+		epidermis.plasmaMembraneThickness = atof(epidermisInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		epidermis.gapCytoTono = atof(epidermisInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		epidermis.gapCellWall = epidermis.cellWallWidth + epidermis.plasmaMembraneThickness;
+		epidermis.variationRatio = atof(epidermisInput->Attribute("variationRatio"));
+		epidermis.cellDiameter = atof(epidermisInput->FirstChildElement("CellDiameter")->GetText());
+		epidermis.cellNum = atoi(epidermisInput->FirstChildElement("CellNum")->GetText());
 	}
 	else {
 		cout << "epidermis Parameters Missing." << endl;
@@ -237,14 +155,14 @@ int main()
 	//********** ENDODERMIS DATA *************//
 	TiXmlElement* endodermisInput = main->FirstChildElement("Endodermis");
 	if (endodermisInput) {
-		endodermisMinSlice = atoi(endodermisInput->FirstChildElement("Slices")->Attribute("min"));
-		endodermisMaxSlice = atoi(endodermisInput->FirstChildElement("Slices")->Attribute("max"));
-		endodermisCellWallWidth = atof(endodermisInput->FirstChildElement("CellwallWidth")->GetText());
-		endodermisPlasmaMembraneThickness = atof(endodermisInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		endodermisGapCytoTono = atof(endodermisInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		endodermisGapCellWall = endodermisCellWallWidth + endodermisPlasmaMembraneThickness;
-		endodermisVariationRatio = atof(endodermisInput->Attribute("variationRatio"));
-		endodermisCellDiameter = atof(endodermisInput->FirstChildElement("CellDiameter")->GetText());
+		endodermis.minSlice = atoi(endodermisInput->FirstChildElement("Slices")->Attribute("min"));
+		endodermis.maxSlice = atoi(endodermisInput->FirstChildElement("Slices")->Attribute("max"));
+		endodermis.cellWallWidth = atof(endodermisInput->FirstChildElement("CellwallWidth")->GetText());
+		endodermis.plasmaMembraneThickness = atof(endodermisInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		endodermis.gapCytoTono = atof(endodermisInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		endodermis.gapCellWall = endodermis.cellWallWidth + endodermis.plasmaMembraneThickness;
+		endodermis.variationRatio = atof(endodermisInput->Attribute("variationRatio"));
+		endodermis.cellDiameter = atof(endodermisInput->FirstChildElement("CellDiameter")->GetText());
 	}
 	else {
 		cout << "endodermis Parameters Missing." << endl;
@@ -253,14 +171,14 @@ int main()
 	//********** EXODERMIS DATA *************//
 	TiXmlElement* exodermisInput = main->FirstChildElement("Exodermis");
 	if (exodermisInput) {
-		exodermisMinSlice = atoi(exodermisInput->FirstChildElement("Slices")->Attribute("min"));
-		exodermisMaxSlice = atoi(exodermisInput->FirstChildElement("Slices")->Attribute("max"));
-		exodermisCellWallWidth = atof(exodermisInput->FirstChildElement("CellwallWidth")->GetText());
-		exodermisPlasmaMembraneThickness = atof(exodermisInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		exodermisGapCytoTono = atof(exodermisInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		exodermisGapCellWall = exodermisCellWallWidth + exodermisPlasmaMembraneThickness;
-		exodermisVariationRatio = atof(exodermisInput->Attribute("variationRatio"));
-		exodermisCellDiameter = atof(exodermisInput->FirstChildElement("CellDiameter")->GetText());
+		exodermis.minSlice = atoi(exodermisInput->FirstChildElement("Slices")->Attribute("min"));
+		exodermis.maxSlice = atoi(exodermisInput->FirstChildElement("Slices")->Attribute("max"));
+		exodermis.cellWallWidth = atof(exodermisInput->FirstChildElement("CellwallWidth")->GetText());
+		exodermis.plasmaMembraneThickness = atof(exodermisInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		exodermis.gapCytoTono = atof(exodermisInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		exodermis.gapCellWall = exodermis.cellWallWidth + exodermis.plasmaMembraneThickness;
+		exodermis.variationRatio = atof(exodermisInput->Attribute("variationRatio"));
+		exodermis.cellDiameter = atof(exodermisInput->FirstChildElement("CellDiameter")->GetText());
 	}
 	else {
 		cout << "exodermis Parameters Missing." << endl;
@@ -269,14 +187,14 @@ int main()
 	//********** SCLERENCHYMA DATA *************//
 	TiXmlElement* sclerenchymaInput = main->FirstChildElement("Sclerenchyma");
 	if (sclerenchymaInput) {
-		sclerenchymaMinSlice = atoi(sclerenchymaInput->FirstChildElement("Slices")->Attribute("min"));
-		sclerenchymaMaxSlice = atoi(sclerenchymaInput->FirstChildElement("Slices")->Attribute("max"));
-		sclerenchymaCellWallWidth = atof(sclerenchymaInput->FirstChildElement("CellwallWidth")->GetText());
-		sclerenchymaPlasmaMembraneThickness = atof(sclerenchymaInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		sclerenchymaGapCytoTono = atof(sclerenchymaInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		sclerenchymaGapCellWall = sclerenchymaCellWallWidth + sclerenchymaPlasmaMembraneThickness;
-		sclerenchymaVariationRatio = atof(sclerenchymaInput->Attribute("variationRatio"));
-		sclerenchymaCellDiameter = atof(sclerenchymaInput->FirstChildElement("CellDiameter")->GetText());
+		sclerenchyma.minSlice = atoi(sclerenchymaInput->FirstChildElement("Slices")->Attribute("min"));
+		sclerenchyma.maxSlice = atoi(sclerenchymaInput->FirstChildElement("Slices")->Attribute("max"));
+		sclerenchyma.cellWallWidth = atof(sclerenchymaInput->FirstChildElement("CellwallWidth")->GetText());
+		sclerenchyma.plasmaMembraneThickness = atof(sclerenchymaInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		sclerenchyma.gapCytoTono = atof(sclerenchymaInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		sclerenchyma.gapCellWall = sclerenchyma.cellWallWidth + sclerenchyma.plasmaMembraneThickness;
+		sclerenchyma.variationRatio = atof(sclerenchymaInput->Attribute("variationRatio"));
+		sclerenchyma.cellDiameter = atof(sclerenchymaInput->FirstChildElement("CellDiameter")->GetText());
 	}
 	else {
 		cout << "sclerenchyma Parameters Missing." << endl;
@@ -285,14 +203,14 @@ int main()
 	//********** PERICYCLE DATA *************//
 	TiXmlElement* pericycleInput = main->FirstChildElement("Pericycle");
 	if (pericycleInput) {
-		pericycleMinSlice = atoi(pericycleInput->FirstChildElement("Slices")->Attribute("min"));
-		pericycleMaxSlice = atoi(pericycleInput->FirstChildElement("Slices")->Attribute("max"));
-		pericycleCellWallWidth = atof(pericycleInput->FirstChildElement("CellwallWidth")->GetText());
-		pericyclePlasmaMembraneThickness = atof(pericycleInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		pericycleGapCytoTono = atof(pericycleInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
-		pericycleGapCellWall = pericycleCellWallWidth + pericyclePlasmaMembraneThickness;
-		pericycleVariationRatio = atof(pericycleInput->Attribute("variationRatio"));
-		pericycleCellDiameter = atof(pericycleInput->FirstChildElement("CellDiameter")->GetText());
+		pericycle.minSlice = atoi(pericycleInput->FirstChildElement("Slices")->Attribute("min"));
+		pericycle.maxSlice = atoi(pericycleInput->FirstChildElement("Slices")->Attribute("max"));
+		pericycle.cellWallWidth = atof(pericycleInput->FirstChildElement("CellwallWidth")->GetText());
+		pericycle.plasmaMembraneThickness = atof(pericycleInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
+		pericycle.gapCytoTono = atof(pericycleInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		pericycle.gapCellWall = pericycle.cellWallWidth + pericycle.plasmaMembraneThickness;
+		pericycle.variationRatio = atof(pericycleInput->Attribute("variationRatio"));
+		pericycle.cellDiameter = atof(pericycleInput->FirstChildElement("CellDiameter")->GetText());
 	}
 	else {
 		cout << "pericycle Parameters Missing." << endl;
@@ -314,40 +232,25 @@ int main()
 	/// PlantNum validation end
 	//doc.SaveFile("Iamhere.txt");
 
-	//////////////////////////////////////// Visualization //////////////////////////////////////////////
-
-	   /// we visualize in the same renderer - Keep static;
-	vtkSmartPointer<vtkRenderer> renL = vtkSmartPointer<vtkRenderer>::New();
-
 	/////////////////////////////////////// Dynamic Output /////////////////////////////////////////
 
-	double corticalCellAddRadiusMinInput = corticalCellDiameter;
-	double gapCytoTonoInput = corticalGapCytoTono;
-	double gapCellWallInput = corticalGapCellWall;
-	double PM_thick = corticalPlasmaMembraneThickness;
+	//double gapCytoTonoInput = cortical.gapCytoTono;
+	//double gapCellWallInput = cortical.gapCellWall;
+	//double PM_thick = cortical.plasmaMembraneThickness;
 	
 	double rcaRatioInput;
 	int rcaRatioInt;
 
 	for (rcaRatioInt = 0; rcaRatioInt <= 1; rcaRatioInt++) {
-		rcaRatioInput = rcaRatio * rcaRatioInt;
+		rcaRatioInput = globals::rcaRatio * rcaRatioInt;
 		/////////////////////////////////////// Cortex ////////////////////////////////
 		rsDynamicDataOutput* RsDynamicDataOutput = new rsDynamicDataOutput;
-		int setUResolution = 12;
-		int setVResolution = 12;
-		int setWResolution = 12;
 
 		/// Cortical;
-		int corticalAddRadiusDBSelectInput = 1;
-		int corticalCellNumSelectInput = 1;
-		int corticalSliceNum = corticalMinSlice + (rand() % (corticalMaxSlice - corticalMinSlice +1));
-		double initZPosition = -225;
-		int vectorNum = 200;
-		double corticalCellMultiplyRatio = 0.1;
-		double cortexRadiusInput = 0;
+		int corticalSliceNum = cortical.minSlice + (rand() % (cortical.maxSlice - cortical.minSlice +1));
 
 		  /*Stele parameters*/
-		double steleInnestCellRadiusInput = steleInnestCellDiameter/2.0;
+		double steleInnestCellRadiusInput = stele.innestCellDiameter/2.0;
 
 		/// Output filename;
 
@@ -355,21 +258,21 @@ int main()
 		string steleRadiusName = "SteleRadius(um)";
 		stringstream steleRadiusSS;
 		string steleRadiusString;
-		steleRadiusSS << baseRadius;
+		steleRadiusSS << globals::baseRadius;
 		steleRadiusSS >> steleRadiusString;
 
 		/// corticalRingNum to string;
 		string ringNumName = "RingNum";
 		stringstream ringNumSS;
 		string ringNumString;
-		ringNumSS << corticalNumFiles;
+		ringNumSS << cortical.numFiles;
 		ringNumSS >> ringNumString;
 
 		/// CorticalInnestCellDiameter to string;
 		string corticalInnermostCellDiameterName = "CorticalInnermostCellDiameter(um)";
 		stringstream corticalInnermostCellDiameterSS;
 		string corticalInnermostCellDiameterString;
-		corticalInnermostCellDiameterSS << corticalCellAddRadiusMinInput;
+		corticalInnermostCellDiameterSS << cortical.cellDiameter/2;
 		corticalInnermostCellDiameterSS >> corticalInnermostCellDiameterString;
 
 		/// rca2CortexRatio to string;
@@ -379,18 +282,11 @@ int main()
 		rca2CortexRatioSS << rcaRatioInput;
 		rca2CortexRatioSS >> rca2CortexRatioString;
 
-		/// gapCytoTono to string;
-		string gapCytoTonoName = "GapCytoTono(um)";
-		stringstream gapCytoTonoSS;
-		string gapCytoTonoString;
-		gapCytoTonoSS << gapCytoTonoInput;
-		gapCytoTonoSS >> gapCytoTonoString;
-
 		/// totalheight to string ** Jagdeep 12-2-2020
 		string TotalHeightName = "TotalHeight";
 		stringstream TotalHeightSS;
 		string TotalHeightString;
-		TotalHeightSS << totalHeight;
+		TotalHeightSS << globals::totalHeight;
 		TotalHeightSS >> TotalHeightString;
 
 		string blankSpace = " ";
@@ -398,7 +294,6 @@ int main()
 		string prefix = steleRadiusName + blankSpace + steleRadiusString + blankSpace
 			+ ringNumName + blankSpace + ringNumString + blankSpace
 			+ corticalInnermostCellDiameterName + blankSpace + corticalInnermostCellDiameterString + blankSpace
-			+ gapCytoTonoName + blankSpace + gapCytoTonoString + blankSpace
 			+ rca2CortexRatioName + blankSpace + rca2CortexRatioString + blankSpace
 			+ TotalHeightName + blankSpace + TotalHeightString;
 
@@ -412,8 +307,6 @@ int main()
 		const char* CorticalXMLVtpFileNameInput = tempCortical.c_str();
 		const char* CorticalVacuoleXMLVtpFileNameInput = tempCorticalVacuole.c_str();
 		const char* CorticalPlasmaMembraneVtpFileNameInput = tempCorticalPlasmaMembrane.c_str();
-
-
 
 		/// RCA;
 		int rcaNumInput;
@@ -431,11 +324,11 @@ int main()
 		double variationRatioRca = 0.2;
 
 		/// Plasma Membrane
-		double plasmaMembraneWidth = corticalPlasmaMembraneThickness;
+		double plasmaMembraneWidth = cortical.plasmaMembraneThickness;
 
 		/// Sclerenchyma
-		int sclerenSliceNum = sclerenchymaMinSlice + (rand() % (sclerenchymaMaxSlice - sclerenchymaMinSlice + 1));
-		double sclerenAddRadiusData = sclerenchymaCellDiameter/2.0;
+		int sclerenSliceNum = sclerenchyma.minSlice + (rand() % (sclerenchyma.maxSlice - sclerenchyma.minSlice + 1));
+		double sclerenAddRadiusData = sclerenchyma.cellDiameter/2.0;
 
 		/// Scleren Output filename;
 		string prefixScleren = "Sclerenchyma";
@@ -443,9 +336,9 @@ int main()
 		const char* SclerenXMLVtpFileNameInput = tempScleren.c_str();
 
 		/// Epidermis;
-		int epidermisSliceNum = epidermisMinSlice + (rand() % (epidermisMaxSlice - epidermisMinSlice + 1));
-		double epidermisAddRadiusData = epidermisCellDiameter/2.0;
-		double variationRatioDermis = epidermisVariationRatio;
+		int epidermisSliceNum = epidermis.minSlice + (rand() % (epidermis.maxSlice - epidermis.minSlice + 1));
+		double epidermisAddRadiusData = epidermis.cellDiameter/2.0;
+		double variationRatioDermis = epidermis.variationRatio;
 
 		/// Epi Output filename;
 		string prefixEpidermis = "Epidermis";
@@ -453,8 +346,8 @@ int main()
 		const char* EpidermisXMLVtpFileNameInput = tempEpidermis.c_str();
 
 		/// Endodermis;
-		int endodermisSliceNum = endodermisMinSlice + (rand() % (endodermisMaxSlice - endodermisMinSlice + 1));
-		double endodermisAddRadiusData = endodermisCellDiameter/2.0;
+		int endodermisSliceNum = endodermis.minSlice + (rand() % (endodermis.maxSlice - endodermis.minSlice + 1));
+		double endodermisAddRadiusData = endodermis.cellDiameter/2.0;
 
 		/// Endo Output filename;
 		string prefixEndodermis = "Endodermis";
@@ -462,14 +355,13 @@ int main()
 		const char* EndodermisXMLVtpFileNameInput = tempEndodermis.c_str();
 
 		/// Pericycle
-		int pericycleSliceNum = pericycleMinSlice + (rand() % (pericycleMaxSlice - pericycleMinSlice + 1));
-		double pericycleAddRadiusData = pericycleCellDiameter/2.0;
+		int pericycleSliceNum = pericycle.minSlice + (rand() % (pericycle.maxSlice - pericycle.minSlice + 1));
+		double pericycleAddRadiusData = pericycle.cellDiameter/2.0;
 
 		/// Peric Output filename;
 		string prefixPericycle = "Pericycle";
 		string tempPericycle = filePrefix + prefixPericycle + prefix + suffix;
 		const char* PericycXMLVtpFileNameInput = tempPericycle.c_str();
-
 
 		/// Apoplast and Symplast Output filename;
 		string prefixApoplast = "Apoplast";
@@ -485,41 +377,26 @@ int main()
 		string tempDataOutput = filePrefix + prefixDataOutput + prefix + txtSuffix;
 		const char* dataOutputNameInput = tempDataOutput.c_str();
 
-
 		/// Judge whether the rcaRatioInput is 0;
 		if (rcaRatioInput == 0)
 		{
 			RsDynamicDataOutput->InitEpiCortexEndoNonRCADB
 			(
-				setUResolution,
-				setVResolution,
-				setWResolution,
-				baseRadius,
-				thickness,
-				totalHeight,
+				/// All objects;
+				cortical,
+				stele,
+				metaXylem,
+				protoXylem,
+				epidermis,
+				endodermis,
+				exodermis,
+				sclerenchyma,
+				pericycle,
 
 				/// Cortical;
 				corticalAddRadiusInputData,
 				corticalCellNumInputData,
-				corticalAddRadiusDBSelectInput,
-				corticalCellNumSelectInput,
 				corticalSliceNum,
-				initZPosition,
-				vectorNum,
-				corticalVariationRatio,
-				corticalNumFiles,
-				corticalCellMultiplyRatio,
-				corticalCellAddRadiusMinInput,
-				cortexRadiusInput,
-
-				/// Pure Cortical Cell;
-				gapCellWallInput,
-
-				/// Cortical Vacuole;
-				gapCytoTonoInput,
-
-				/// Plasma Membrane
-				plasmaMembraneWidth,
 
 				/// Sclerenchyma
 				sclerenSliceNum,
@@ -528,20 +405,16 @@ int main()
 				/// Epi;
 				epidermisSliceNum,
 				epidermisAddRadiusData,
-				//                        epidermisCellNum,
-				variationRatioDermis,
 
 				/// Endo;
 				endodermisSliceNum,
 				endodermisAddRadiusData,
-				//                        endodermisCellNum,
 
 				// Pericycle
 				pericycleSliceNum,
 				pericycleAddRadiusData,
 
-
-										   /// OutXMLVtpFileName;
+			   /// OutXMLVtpFileName;
 				CorticalXMLVtpFileNameInput,
 				CorticalVacuoleXMLVtpFileNameInput,
 				CorticalPlasmaMembraneVtpFileNameInput,
@@ -555,50 +428,30 @@ int main()
 				/// DataOutputName;
 				dataOutputNameInput,
 
-				/// Others
-				renL,
-				steleVariationRatio,
-				steleMinSlice,
-				steleInnestCellRadiusInput,
-				steleInnerLayerNum,
-				metaXylemverticalLengthThresholdRatio,
-				metaXylemTangentRingRadiusRatio,
-				metaXylemSteleCellNumBetween,
-				metaXylemNum,
-				metaXylemAverageRingRadius,
-				metaXylemSurroundingCellRingNum,
-				protoXylemGapRadius,
-				protoXylemNum,
-				protoXylemAverageRingRadius,
-				protoXylemSurroundingCellRingNum,
-				protoXylemSurroundingCellRingRadius
+				//Other
+				renL
 			);
 		}
 		else
 		{
 			RsDynamicDataOutput->InitEpiCortexEndoAllDB
 			(
-				setUResolution,
-				setVResolution,
-				setWResolution,
-				baseRadius,
-				thickness,
-				totalHeight,
+				/// All objects;
+				cortical,
+				stele,
+				metaXylem,
+				protoXylem,
+				epidermis,
+				endodermis,
+				exodermis,
+				sclerenchyma,
+				pericycle,
 
 				/// Cortical;
 				corticalAddRadiusInputData,
 				corticalCellNumInputData,
-				corticalAddRadiusDBSelectInput,
-				corticalCellNumSelectInput,
 				corticalSliceNum,
-				initZPosition,
-				vectorNum,
-				corticalVariationRatio,
-				corticalNumFiles,
-				corticalCellMultiplyRatio,
-				corticalCellAddRadiusMinInput,
-				cortexRadiusInput,
-
+				
 				/// RCA;
 				rcaRatioInput,
 				rcaNumInput,
@@ -607,12 +460,6 @@ int main()
 				gapAngleBetweenRcaRatio,
 				variationRatioRca,
 
-				/// Pure Cortical Cell;
-				gapCellWallInput,
-
-				/// Cortical Vacuole;
-				gapCytoTonoInput,
-
 				/// Plasma Membrane
 				plasmaMembraneWidth,
 
@@ -623,13 +470,10 @@ int main()
 				/// Epi;
 				epidermisSliceNum,
 				epidermisAddRadiusData,
-				//                        epidermisCellNum,
-				variationRatioDermis,
 
 				/// Endo;
 				endodermisSliceNum,
 				endodermisAddRadiusData,
-				//                        endodermisCellNum,
 
 				// Pericycle
 				pericycleSliceNum,
@@ -648,7 +492,7 @@ int main()
 				/// DataOutputName;
 				dataOutputNameInput,
 
-				/// Others
+				//Other
 				renL
 			);
 		}

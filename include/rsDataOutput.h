@@ -49,9 +49,7 @@ public:
 
    
    void CorticalDataOutputCalculate
-   ( double baseRadius,
-     double totalHeight,
-     rsSourceCorticalDB *RsSourceCorticalDB );
+   ( rsSourceCorticalDB *RsSourceCorticalDB );
 
    /// RCA;
    double rcaRatioInput;
