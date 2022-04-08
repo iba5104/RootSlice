@@ -3,6 +3,7 @@
 
 #include "globals.h"
 #include "rsEpiCortexEndoWaterPathDB.h"
+#include "fluxEqns.h"
 
 #include <vtkSmartPointer.h>
 
@@ -27,8 +28,8 @@ class rsEpiCortexEndoWaterPathDBVisual : public globals
 {
 public:
 
-void ApoplastTriangleStripXMLVtp( rsEpiCortexEndoWaterPathDB * RsEpiCortexEndoWaterPathDB );
-void SymplastTriangleStripXMLVtp( rsEpiCortexEndoWaterPathDB * RsEpiCortexEndoWaterPathDB );
+void ApoplastTriangleStripXMLVtp( rsEpiCortexEndoWaterPathDB * RsEpiCortexEndoWaterPathDB, globals surfaceFlux);
+void SymplastTriangleStripXMLVtp( rsEpiCortexEndoWaterPathDB * RsEpiCortexEndoWaterPathDB, globals surfaceFlux );
 void ApoplastTubeXMLVtp( rsEpiCortexEndoWaterPathDB * RsEpiCortexEndoWaterPathDB );
 void SymplastTubeXMLVtp( rsEpiCortexEndoWaterPathDB * RsEpiCortexEndoWaterPathDB );
 };

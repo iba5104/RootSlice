@@ -6,11 +6,14 @@
 void rsSourceDermisVisual::EpidermisVisual
 (rsSourceDermisDB* EpidermisDB,
 	vtkSmartPointer<vtkRenderer> renL,
-	int vacuolePlasmaFlag)
+	int vacuolePlasmaFlag,
+	map<double, vector<double>> result)
 {  /// declare iterator;
-	map<int, vector<double> >::iterator itMap;
-	vector<double>::iterator itVector;
+	map<int, vector< vector<double> > >::iterator itMap;
+	vector< vector<double> >::iterator itVec2;
+	vector<double>::iterator           itVec1;
 	/// declare int;
+	int iRingNum;
 	int i;
 	int sliceTempNum;
 
@@ -28,113 +31,116 @@ void rsSourceDermisVisual::EpidermisVisual
 	writer->SetFileName(flName.c_str());
 	addToFileNamesVector(outputFileName);
 
-	for (i = 0, itMap = EpidermisDB->objectHeightDB.begin();
+	for (iRingNum = 0, itMap = EpidermisDB->objectHeightDB.begin();
 		itMap != EpidermisDB->objectHeightDB.end();
-		i++, itMap++)
+		iRingNum++, itMap++)
 	{
-		for (sliceTempNum = 0, itVector = (*itMap).second.begin();
-			itVector != (*itMap).second.end();
-			sliceTempNum++, itVector++)
+		for (i = 0, itVec2 = (*itMap).second.begin(); itVec2 != (*itMap).second.end(); i++, itVec2++)
 		{
-			vtkSmartPointer<vtkParametricSuperEllipsoid> superEllipsoid
-				= vtkSmartPointer<vtkParametricSuperEllipsoid>::New();
-
-			vtkSmartPointer<vtkParametricFunctionSource> superEllipsoidFunction
-				= vtkSmartPointer<vtkParametricFunctionSource>::New();
-
-			vtkSmartPointer<vtkPolyDataMapper> polyDataMapper
-				= vtkSmartPointer<vtkPolyDataMapper>::New();
-
-			vtkSmartPointer<vtkActor> actor
-				= vtkSmartPointer<vtkActor>::New();
-
-			if (vacuolePlasmaFlag == 0) {
-				superEllipsoid->SetXRadius(EpidermisDB->pureCellVerticalDB);
-				superEllipsoid->SetYRadius(EpidermisDB->pureCellParallelDB[i]);
-				superEllipsoid->SetZRadius(EpidermisDB->pureCellHeightDB[i][sliceTempNum]);
-			}
-			else if (vacuolePlasmaFlag == 1) {
-				superEllipsoid->SetXRadius(EpidermisDB->vacuoleVerticalDB);
-				superEllipsoid->SetYRadius(EpidermisDB->vacuoleParallelDB[i]);
-				superEllipsoid->SetZRadius(EpidermisDB->vacuoleHeightDB[i][sliceTempNum]);
-			}
-			else {
-				superEllipsoid->SetXRadius(EpidermisDB->objectVerticalDB);
-				superEllipsoid->SetYRadius(EpidermisDB->circleSegmentLengthDB[i]);
-				superEllipsoid->SetZRadius(EpidermisDB->objectHeightDB[i][sliceTempNum]);
-			}
-			superEllipsoid->SetN1(0.2);
-			superEllipsoid->SetN2(0.8);
-
-			superEllipsoidFunction->SetParametricFunction(superEllipsoid);
-			superEllipsoidFunction->SetUResolution(EpidermisDB->uResolution);
-			superEllipsoidFunction->SetVResolution(EpidermisDB->vResolution);
-			superEllipsoidFunction->SetWResolution(EpidermisDB->wResolution);
-			superEllipsoidFunction->Update();
-
-			/// Set Scalars;
-			// Extract the polydata
-			vtkSmartPointer<vtkPolyData> polydata =
-				vtkSmartPointer<vtkPolyData>::New();
-			polydata = superEllipsoidFunction->GetOutput();
-
-			int pointNum;
-			pointNum = polydata->GetNumberOfPoints();
-
-			//         vtkFloatArray *scalars = vtkFloatArray::New();
-			vtkSmartPointer<vtkFloatArray> scalars = vtkSmartPointer<vtkFloatArray>::New();
-			scalars->SetName("Color");
-			int numSequence;
-
-			/// Add scalar to point;
-			for (numSequence = 0; numSequence < pointNum; numSequence++)
+			for (sliceTempNum = 0, itVec1 = (*itVec2).begin();
+				itVec1 != (*itVec2).end();
+				sliceTempNum++, itVec1++)
 			{
-				scalars->InsertTuple1
-					//            ( numSequence, double(sliceTempNum) / 6 );
-					(numSequence, 0.9);
+				vtkSmartPointer<vtkParametricSuperEllipsoid> superEllipsoid
+					= vtkSmartPointer<vtkParametricSuperEllipsoid>::New();
+
+				vtkSmartPointer<vtkParametricFunctionSource> superEllipsoidFunction
+					= vtkSmartPointer<vtkParametricFunctionSource>::New();
+
+				vtkSmartPointer<vtkPolyDataMapper> polyDataMapper
+					= vtkSmartPointer<vtkPolyDataMapper>::New();
+
+				vtkSmartPointer<vtkActor> actor
+					= vtkSmartPointer<vtkActor>::New();
+
+				if (vacuolePlasmaFlag == 0) {
+					superEllipsoid->SetXRadius(EpidermisDB->pureCellVerticalDB[iRingNum]);
+					superEllipsoid->SetYRadius(EpidermisDB->pureCellParallelDB[iRingNum][i]);
+					superEllipsoid->SetZRadius(EpidermisDB->pureCellHeightDB[iRingNum][i][sliceTempNum]);
+				}
+				else if (vacuolePlasmaFlag == 1) {
+					superEllipsoid->SetXRadius(EpidermisDB->vacuoleVerticalDB[iRingNum]);
+					superEllipsoid->SetYRadius(EpidermisDB->vacuoleParallelDB[iRingNum][i]);
+					superEllipsoid->SetZRadius(EpidermisDB->vacuoleHeightDB[iRingNum][i][sliceTempNum]);
+				}
+				else {
+					superEllipsoid->SetXRadius(EpidermisDB->objectVerticalDB[iRingNum]);
+					superEllipsoid->SetYRadius(EpidermisDB->circleSegmentLengthDB[iRingNum][i]);
+					superEllipsoid->SetZRadius(EpidermisDB->objectHeightDB[iRingNum][i][sliceTempNum]);
+				}
+				superEllipsoid->SetN1(0.2);
+				superEllipsoid->SetN2(0.8);
+
+				superEllipsoidFunction->SetParametricFunction(superEllipsoid);
+				superEllipsoidFunction->SetUResolution(EpidermisDB->uResolution);
+				superEllipsoidFunction->SetVResolution(EpidermisDB->vResolution);
+				superEllipsoidFunction->SetWResolution(EpidermisDB->wResolution);
+				superEllipsoidFunction->Update();
+
+				/// Set Scalars;
+				// Extract the polydata
+				vtkSmartPointer<vtkPolyData> polydata =
+					vtkSmartPointer<vtkPolyData>::New();
+				polydata = superEllipsoidFunction->GetOutput();
+
+				int pointNum;
+				pointNum = polydata->GetNumberOfPoints();
+
+				//         vtkFloatArray *scalars = vtkFloatArray::New();
+				vtkSmartPointer<vtkFloatArray> scalars = vtkSmartPointer<vtkFloatArray>::New();
+				scalars->SetName("Color");
+				int numSequence;
+
+				/// Add scalar to point;
+				for (numSequence = 0; numSequence < pointNum; numSequence++)
+				{
+					scalars->InsertTuple1
+						//            ( numSequence, double(sliceTempNum) / 6 );
+						(numSequence, 0.9);
+				}
+				polydata->GetPointData()->SetScalars(scalars);
+				//scalars->Delete();
+
+
+				/// Set vtkTranform and vtkTransformPloyDataFilter;
+				vtkSmartPointer<vtkTransform> trans =
+					vtkSmartPointer<vtkTransform>::New();
+
+				vtkSmartPointer<vtkTransformPolyDataFilter> transFilter =
+					vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+
+				trans->Translate(EpidermisDB->circleXDB[iRingNum][i],
+					EpidermisDB->objectZPositionDB[iRingNum][i][sliceTempNum],
+					EpidermisDB->circleYDB[iRingNum][i]);
+				trans->RotateY(EpidermisDB->circleSegmentRotateAngleDB[iRingNum][i]);
+				trans->RotateX(90);
+
+				transFilter->SetInputData(polydata);
+				transFilter->SetTransform(trans);
+
+				/// Add transFilter to vtkAppendPolyData pointer everytime;
+				append->AddInputConnection(transFilter->GetOutputPort());
+
+				/// vtkPolyDataMapper and vtkActor;
+				polyDataMapper->SetInputConnection(transFilter->GetOutputPort());
+				actor->SetMapper(polyDataMapper);
+
+				//         actor->RotateY( (EpidermisDB->circleSegmentRotateAngleDB[i]) );
+				//         actor->RotateX( 90 );
+				//
+				//         actor->SetPosition( EpidermisDB->circleXDB[i],
+				//                             EpidermisDB->objectZPositionDB[i][sliceTempNum],
+				//                             EpidermisDB->circleYDB[i] );
+				//
+				//
+				//         actor->GetProperty()->SetColor
+				//         ( EpidermisDB->mapRGB[sliceTempNum*EpidermisDB->rgbTime + EpidermisDB->rgbStart][0],
+				//           EpidermisDB->mapRGB[sliceTempNum*EpidermisDB->rgbTime + EpidermisDB->rgbStart][1],
+				//           EpidermisDB->mapRGB[sliceTempNum*EpidermisDB->rgbTime + EpidermisDB->rgbStart][2] );
+				actor->GetProperty()->SetOpacity(EpidermisDB->objectOpacity);
+
+				renL->AddActor(actor);
 			}
-			polydata->GetPointData()->SetScalars(scalars);
-			//scalars->Delete();
-
-
-			/// Set vtkTranform and vtkTransformPloyDataFilter;
-			vtkSmartPointer<vtkTransform> trans =
-				vtkSmartPointer<vtkTransform>::New();
-
-			vtkSmartPointer<vtkTransformPolyDataFilter> transFilter =
-				vtkSmartPointer<vtkTransformPolyDataFilter>::New();
-
-			trans->Translate(EpidermisDB->circleXDB[i],
-				EpidermisDB->objectZPositionDB[i][sliceTempNum],
-				EpidermisDB->circleYDB[i]);
-			trans->RotateY(EpidermisDB->circleSegmentRotateAngleDB[i]);
-			trans->RotateX(90);
-
-			transFilter->SetInputData(polydata);
-			transFilter->SetTransform(trans);
-
-			/// Add transFilter to vtkAppendPolyData pointer everytime;
-			append->AddInputConnection(transFilter->GetOutputPort());
-
-			/// vtkPolyDataMapper and vtkActor;
-			polyDataMapper->SetInputConnection(transFilter->GetOutputPort());
-			actor->SetMapper(polyDataMapper);
-
-			//         actor->RotateY( (EpidermisDB->circleSegmentRotateAngleDB[i]) );
-			//         actor->RotateX( 90 );
-			//
-			//         actor->SetPosition( EpidermisDB->circleXDB[i],
-			//                             EpidermisDB->objectZPositionDB[i][sliceTempNum],
-			//                             EpidermisDB->circleYDB[i] );
-			//
-			//
-			//         actor->GetProperty()->SetColor
-			//         ( EpidermisDB->mapRGB[sliceTempNum*EpidermisDB->rgbTime + EpidermisDB->rgbStart][0],
-			//           EpidermisDB->mapRGB[sliceTempNum*EpidermisDB->rgbTime + EpidermisDB->rgbStart][1],
-			//           EpidermisDB->mapRGB[sliceTempNum*EpidermisDB->rgbTime + EpidermisDB->rgbStart][2] );
-			actor->GetProperty()->SetOpacity(EpidermisDB->objectOpacity);
-
-			renL->AddActor(actor);
 		}
 	}
 	writer->SetInputConnection(append->GetOutputPort());

@@ -281,7 +281,10 @@
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsRcaDB.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceCorticalDB.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSourceCorticalVisual.cpp" />
+    <ClCompile Include="code_files\fluxEqns.cpp" />
     <ClCompile Include="code_files\globals.cpp" />
+    <ClCompile Include="code_files\lsoda.cpp" />
+    <ClCompile Include="code_files\resources.cpp" />
     <ClCompile Include="code_files\rsSourceDermisDB.cpp" />
     <ClCompile Include="code_files\rsSourceDermisVisual.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\rsSteleInnerDB.cpp" />
@@ -291,6 +294,11 @@
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinyxmlerror.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinyxmlparser.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\viStringTokenizer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\fluxEqns.h" />
+    <ClInclude Include="include\helper.h" />
+    <ClInclude Include="include\lsoda.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

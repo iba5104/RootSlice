@@ -34,10 +34,18 @@
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\tinyxmlparser.cpp" />
     <ClCompile Include="C:\VSProjects\RootSlice_code\git\code_files\viStringTokenizer.cpp" />
     <ClCompile Include="code_files\globals.cpp" />
+    <ClCompile Include="code_files\resources.cpp" />
+    <ClCompile Include="code_files\lsoda.cpp" />
+    <ClCompile Include="code_files\fluxEqns.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{FC2AC8E2-4B9A-3F17-A61D-724EBB36DDBB}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\helper.h" />
+    <ClInclude Include="include\lsoda.h" />
+    <ClInclude Include="include\fluxEqns.h" />
   </ItemGroup>
 </Project>

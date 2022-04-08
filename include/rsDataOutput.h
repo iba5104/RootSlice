@@ -17,7 +17,6 @@ public:
 
    double steleRadius;
    double cortexHeight;
-   double totalHeight;// Jagdeep 12-2-2020
    double dlete;
 
    int corticalRingNum;
@@ -50,6 +49,8 @@ public:
    
    void CorticalDataOutputCalculate
    ( rsSourceCorticalDB *RsSourceCorticalDB );
+
+   void DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB);
 
    /// RCA;
    double rcaRatioInput;

@@ -26,9 +26,9 @@ void rsSourceCorticalDB::OutputXMLVtpFileName
  // tempMixRatio = 
  // ratioSum =
 
-void rsSourceCorticalDB::CorticalAddRadiusCalculateRatioData  // Jagdeep 11-8-2020 where is this function called??
+void rsSourceCorticalDB::CorticalAddRadiusCalculateRatioData
 (int cortexLayerNum,
-	double corticalCellMultiplyRatio) // Jagdeep 11-8-2020 corticalCellMultuplyRatio = 0.1, though I don't where is this set I calcualted it back from this function??
+	double corticalCellMultiplyRatio)
 {
 	double remain;
 	int innerHalfLayerNum;
@@ -43,10 +43,6 @@ void rsSourceCorticalDB::CorticalAddRadiusCalculateRatioData  // Jagdeep 11-8-20
 	ofstream fout(getFolderName() + "test.txt", ios::app);
 	fout << "CorticalAddRadiusCalculateRatioData" << endl;
 
-	/* Jagdeep 11-8-2020 dividing number of cell files into two halves i.e. inner and outter.
-	/  CoritcalCellMultiplyRatio = 0.1 which is 10% increase for each inner files compared to its inner neighbor and
-	/  10% decrease for each outer file compared to its inner neighbor except for the transition between inner and outer cell file.
-	*/
 	if (remain == 0)
 	{
 		innerHalfLayerNum = cortexLayerNum / 2;
@@ -174,13 +170,10 @@ void rsSourceCorticalDB::CorticalAddRadiusCalculateData
 	double cortexRadiusInput)
 {
 	corticalCellAddRadiusMin = corticalCellAddRadiusMinInput;
-	cortexRadius = cortexRadiusInput;  //11-17-2020 need to find where is this cortexRadiusInput value called inputted from??
-	/// Judge;
-	// 11-17-2020 here it is judged that whether to use inner most cell radius or based on the radius of cortex?
+	cortexRadius = cortexRadiusInput;
 	if (cortexRadius == 0)
 	{
 		CorticalAddRadiusCalculateFromMinCellData();
-
 		corticalAddRadiusCalculateData = corticalAddRadiusCalculateFromMinCellData;
 	}
 	else if (corticalCellAddRadiusMin == 0)
@@ -268,18 +261,13 @@ void rsSourceCorticalDB::CorticalCellNumCalculateData()
 	vector<double>::iterator itVecAdd;
 	vector<double>::iterator itVec;
 	int tempNum;
-	// int num;
-	double perimeterLayer;
 	int i;
 	cout << "CorticalCellNumCalculateData" << endl;
 	for (itVecAdd = corticalAddRadiusDB.begin(), itVec = circleRadiusDB.begin(), i = 0;
 		itVecAdd != corticalAddRadiusDB.end();
 		itVecAdd++, itVec++, i++)
 	{
-		perimeterLayer = 2 * M_PI * (*itVec);
-		tempNum = int(perimeterLayer / (*itVecAdd));
-		//num = tempNum;
-
+		tempNum = int((2 * M_PI * (*itVec)) / (*itVecAdd));
 
 		corticalCellNumCalculateData.push_back(tempNum);
 	}

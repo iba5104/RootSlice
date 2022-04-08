@@ -45,32 +45,46 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoCellXYDB
 	ofstream fout(getFolderName() + "WaterPath.txt", ios::app);
 	fout << "EpiCortexEndoCellXYDB" << endl;
 
-	vector<double> epidermisZPosition;
 	/// Insert RsSourceEpidermisDB->circleXDB and RsSourceEpidermisDB->circleYDB;
-	epiCortexEndoCellXDB.insert(pair<int, vector<double> >(0, RsSourceEpidermisDB->circleXDB));
-	epiCortexEndoCellYDB.insert(pair<int, vector<double> >(0, RsSourceEpidermisDB->circleYDB));
-	for (itMapZPosition = RsSourceEpidermisDB->objectZPositionDB.begin(),
-		itMapZHeight = RsSourceEpidermisDB->objectHeightDB.begin();
-		itMapZPosition != RsSourceEpidermisDB->objectZPositionDB.end();
-		itMapZPosition++, itMapZHeight++)
+	for (itMap = RsSourceEpidermisDB->circleXDB.rbegin(), i = 0;
+		itMap != RsSourceEpidermisDB->circleXDB.rend();
+		itMap++, i++)
 	{
-		epidermisZPosition.push_back(itMapZPosition->second[0] + itMapZHeight->second[0]);
-		fout << "itMapZPosition->second[0]: " << itMapZPosition->second[0]
-			<< "  itMapZHeight->second[0]: " << itMapZHeight->second[0]
-			<< "  result: " << itMapZPosition->second[0] + itMapZHeight->second[0] << endl;
+		epiCortexEndoCellXDB.insert(pair<int, vector<double> >(i, itMap->second));
 	}
-	epiCortexEndoCellZDB.insert(pair<int, vector<double> >(0, epidermisZPosition));
-
+	for (itMap = RsSourceEpidermisDB->circleYDB.rbegin(), i = 0;
+		itMap != RsSourceEpidermisDB->circleYDB.rend();
+		itMap++, i++)
+	{
+		epiCortexEndoCellYDB.insert(pair<int, vector<double> >(i, itMap->second));
+	}
+	vector<double> epidermalZPosition;
+	for (itMapZPositionReverse = RsSourceEpidermisDB->objectZPositionDB.rbegin(),
+		itMapZHeightReverse = RsSourceEpidermisDB->objectHeightDB.rbegin(), i = 0;
+		itMapZPositionReverse != RsSourceEpidermisDB->objectZPositionDB.rend();
+		itMapZPositionReverse++, itMapZHeightReverse++, i++)
+	{
+		epidermalZPosition.clear();
+		for (itVecZPosition = itMapZPositionReverse->second.begin(),
+			itVecZHeight = itMapZHeightReverse->second.begin();
+			itVecZPosition != itMapZPositionReverse->second.end();
+			itVecZPosition++, itVecZHeight++)
+		{
+			epidermalZPosition.push_back((*itVecZPosition)[0] + (*itVecZHeight)[0]);
+		}
+		epiCortexEndoCellZDB.insert(pair<int, vector<double> >(i, epidermalZPosition));
+	}
 
 	/// Insert RsSourceCorticalDB->circleXDB and RsSourceCorticalDB->circleYDB;
-	for (itMap = RsSourceCorticalDB->circleXDB.rbegin(), i = 1;
+	mapSize = epiCortexEndoCellXDB.size();
+	for (itMap = RsSourceCorticalDB->circleXDB.rbegin(), i = mapSize;
 		itMap != RsSourceCorticalDB->circleXDB.rend();
 		itMap++, i++)
 	{
 		epiCortexEndoCellXDB.insert(pair<int, vector<double> >(i, itMap->second));
 	}
 
-	for (itMap = RsSourceCorticalDB->circleYDB.rbegin(), i = 1;
+	for (itMap = RsSourceCorticalDB->circleYDB.rbegin(), i = mapSize;
 		itMap != RsSourceCorticalDB->circleYDB.rend();
 		itMap++, i++)
 	{
@@ -79,7 +93,7 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoCellXYDB
 
 	vector<double> corticalZPosition;
 	for (itMapZPositionReverse = RsSourceCorticalDB->objectZPositionDB.rbegin(),
-		itMapZHeightReverse = RsSourceCorticalDB->objectHeightDB.rbegin(), i = 1;
+		itMapZHeightReverse = RsSourceCorticalDB->objectHeightDB.rbegin(), i = mapSize;
 		itMapZPositionReverse != RsSourceCorticalDB->objectZPositionDB.rend();
 		itMapZPositionReverse++, itMapZHeightReverse++, i++)
 	{
@@ -96,19 +110,34 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoCellXYDB
 
 	/// Insert RsSourceEndodermisDB->circleXDB and RsSourceEndodermisDB->circleYDB;
 	mapSize = epiCortexEndoCellXDB.size();
-	epiCortexEndoCellXDB.insert(pair<int, vector<double> >(mapSize, RsSourceEndodermisDB->circleXDB));
-	epiCortexEndoCellYDB.insert(pair<int, vector<double> >(mapSize, RsSourceEndodermisDB->circleYDB));
-
-	vector<double> endodermisZPosition;
-	for (itMapZPosition = RsSourceEndodermisDB->objectZPositionDB.begin(),
-		itMapZHeight = RsSourceEndodermisDB->objectHeightDB.begin();
-		itMapZPosition != RsSourceEndodermisDB->objectZPositionDB.end();
-		itMapZPosition++, itMapZHeight++)
+	for (itMap = RsSourceEndodermisDB->circleXDB.rbegin(), i = mapSize;
+		itMap != RsSourceEndodermisDB->circleXDB.rend();
+		itMap++, i++)
 	{
-		endodermisZPosition.push_back(itMapZPosition->second[0] + itMapZHeight->second[0]);
+		epiCortexEndoCellXDB.insert(pair<int, vector<double> >(i, itMap->second));
 	}
-	epiCortexEndoCellZDB.insert(pair<int, vector<double> >(mapSize, endodermisZPosition));
-
+	for (itMap = RsSourceEndodermisDB->circleYDB.rbegin(), i = mapSize;
+		itMap != RsSourceEndodermisDB->circleYDB.rend();
+		itMap++, i++)
+	{
+		epiCortexEndoCellYDB.insert(pair<int, vector<double> >(i, itMap->second));
+	}
+	vector<double> endodermalZPosition;
+	for (itMapZPositionReverse = RsSourceEndodermisDB->objectZPositionDB.rbegin(),
+		itMapZHeightReverse = RsSourceEndodermisDB->objectHeightDB.rbegin(), i = mapSize;
+		itMapZPositionReverse != RsSourceEndodermisDB->objectZPositionDB.rend();
+		itMapZPositionReverse++, itMapZHeightReverse++, i++)
+	{
+		endodermalZPosition.clear();
+		for (itVecZPosition = itMapZPositionReverse->second.begin(),
+			itVecZHeight = itMapZHeightReverse->second.begin();
+			itVecZPosition != itMapZPositionReverse->second.end();
+			itVecZPosition++, itVecZHeight++)
+		{
+			endodermalZPosition.push_back((*itVecZPosition)[0] + (*itVecZHeight)[0]);
+		}
+		epiCortexEndoCellZDB.insert(pair<int, vector<double> >(i, endodermalZPosition));
+	}
 }
 
 /** \brief EpiCortexEndoRingCellDimensionDB
@@ -160,7 +189,12 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 	   ******************************/
 
 	   /// Insert RsSourceEpidermisDB;
-	epiCortexEndoRingMidCentreRadiusDB.push_back(RsSourceEpidermisDB->circleRadiusDB);
+	for (itVecRadius = RsSourceEpidermisDB->circleRadiusDB.rbegin();
+		itVecRadius != RsSourceEpidermisDB->circleRadiusDB.rend();
+		itVecRadius++)
+	{
+		epiCortexEndoRingMidCentreRadiusDB.push_back(*itVecRadius);
+	}
 	/// Insert RsSourceCorticalDB;
 	for (itVecRadius = RsSourceCorticalDB->circleRadiusDB.rbegin();
 		itVecRadius != RsSourceCorticalDB->circleRadiusDB.rend();
@@ -169,7 +203,12 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 		epiCortexEndoRingMidCentreRadiusDB.push_back(*itVecRadius);
 	}
 	/// Insert RsSourceEndodermisDB;
-	epiCortexEndoRingMidCentreRadiusDB.push_back(RsSourceEndodermisDB->circleRadiusDB);
+	for (itVecRadius = RsSourceEndodermisDB->circleRadiusDB.rbegin();
+		itVecRadius != RsSourceEndodermisDB->circleRadiusDB.rend();
+		itVecRadius++)
+	{
+		epiCortexEndoRingMidCentreRadiusDB.push_back(*itVecRadius);
+	}
 
 	//////////////////////  epiCortexEndoRingObjectVerticalDB  ///////////////////////
 	   /*****************************
@@ -179,7 +218,12 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 	   ******************************/
 
 	   /// Insert RsSourceEpidermisDB->objectVerticalDB;
-	epiCortexEndoRingObjectVerticalDB.push_back(RsSourceEpidermisDB->objectVerticalDB);
+	for (itVecVertical = RsSourceEpidermisDB->objectVerticalDB.rbegin();
+		itVecVertical != RsSourceEpidermisDB->objectVerticalDB.rend();
+		itVecVertical++)
+	{
+		epiCortexEndoRingObjectVerticalDB.push_back(*itVecVertical);
+	}
 	/// Insert RsSourceCorticalDB->objectVerticalDB;
 	for (itVecVertical = RsSourceCorticalDB->objectVerticalDB.rbegin();
 		itVecVertical != RsSourceCorticalDB->objectVerticalDB.rend();
@@ -188,7 +232,12 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 		epiCortexEndoRingObjectVerticalDB.push_back(*itVecVertical);
 	}
 	/// Insert RsSourceEndodermisDB->objectVerticalDB;
-	epiCortexEndoRingObjectVerticalDB.push_back(RsSourceEndodermisDB->objectVerticalDB);
+	for (itVecVertical = RsSourceEndodermisDB->objectVerticalDB.rbegin();
+		itVecVertical != RsSourceEndodermisDB->objectVerticalDB.rend();
+		itVecVertical++)
+	{
+		epiCortexEndoRingObjectVerticalDB.push_back(*itVecVertical);
+	}
 
 	//////////////////////  epiCortexEndoRingObjectParallelDB  ///////////////////////
 	   /*****************************
@@ -198,10 +247,16 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 	   ******************************/
 
 	   /// Insert RsSourceEpidermisDB->circleSegmentLengthDB;
-	epiCortexEndoRingObjectParallelDB.insert(pair<int, vector<double> >(0, RsSourceEpidermisDB->circleSegmentLengthDB));
+	for (itMap = RsSourceEpidermisDB->circleSegmentLengthDB.rbegin(), i = 0;
+		itMap != RsSourceEpidermisDB->circleSegmentLengthDB.rend();
+		itMap++, i++)
+	{
+		epiCortexEndoRingObjectParallelDB.insert(pair<int, vector<double> >(i, itMap->second));
+	}
 
 	/// Insert RsSourceCorticalDB->circleSegmentLengthDB;
-	for (itMap = RsSourceCorticalDB->circleSegmentLengthDB.rbegin(), i = 1;
+	mapSize = epiCortexEndoRingObjectParallelDB.size();
+	for (itMap = RsSourceCorticalDB->circleSegmentLengthDB.rbegin(), i = mapSize;
 		itMap != RsSourceCorticalDB->circleSegmentLengthDB.rend();
 		itMap++, i++)
 	{
@@ -210,12 +265,17 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 
 	/// Insert RsSourceEndodermisDB->circleSegmentLengthDB;
 	mapSize = epiCortexEndoRingObjectParallelDB.size();
-	epiCortexEndoRingObjectParallelDB.insert
-	(pair<int, vector<double> >(mapSize, RsSourceEndodermisDB->circleSegmentLengthDB));
+	for (itMap = RsSourceEndodermisDB->circleSegmentLengthDB.rbegin(), i = mapSize;
+		itMap != RsSourceEndodermisDB->circleSegmentLengthDB.rend();
+		itMap++, i++)
+	{
+		epiCortexEndoRingObjectParallelDB.insert(pair<int, vector<double> >(i, itMap->second));
+	}
 
 	/// fout;
  //   ofstream fout("WaterPath.txt",ios::app);
  //   fout << "epiCortexEndoRingObjectParallelDB" << endl;
+	/*
 	for (itMapParallel = epiCortexEndoRingObjectParallelDB.begin(), i = 0;
 		itMapParallel != epiCortexEndoRingObjectParallelDB.end();
 		itMapParallel++, i++)
@@ -227,7 +287,7 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 			//          fout << "ringNum: " << i << "  itVecParallel: " << *itVecParallel << endl;
 		}
 	}
-
+	*/
 	//////////////////////  epiCortexEndoCellMidRotateAngleDB  ///////////////////////
 	   /*****************************
 		Combine RsSourceEpidermisDB->circleSegmentRotateAngleDB,
@@ -236,11 +296,16 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 	   ******************************/
 
 	   /// Insert RsSourceEpidermisDB->circleSegmentRotateAngleDB;
-	epiCortexEndoCellMidRotateAngleDB.insert
-	(pair<int, vector<double> >(0, RsSourceEpidermisDB->circleSegmentRotateAngleDB));
+	for (itMap = RsSourceEpidermisDB->circleSegmentRotateAngleDB.rbegin(), i = 0;
+		itMap != RsSourceEpidermisDB->circleSegmentRotateAngleDB.rend();
+		itMap++, i++)
+	{
+		epiCortexEndoCellMidRotateAngleDB.insert(pair<int, vector<double> >(i, itMap->second));
+	}
 
 	/// Insert RsSourceCorticalDB->circleSegmentRotateAngleDB;
-	for (itMap = RsSourceCorticalDB->circleSegmentRotateAngleDB.rbegin(), i = 1;
+	mapSize = epiCortexEndoCellMidRotateAngleDB.size();
+	for (itMap = RsSourceCorticalDB->circleSegmentRotateAngleDB.rbegin(), i = mapSize;
 		itMap != RsSourceCorticalDB->circleSegmentRotateAngleDB.rend();
 		itMap++, i++)
 	{
@@ -249,9 +314,12 @@ void rsEpiCortexEndoWaterPathDB::EpiCortexEndoRingCellDimensionDB
 
 	/// Insert RsSourceEndodermisDB->circleSegmentRotateAngleDB;
 	mapSize = epiCortexEndoCellMidRotateAngleDB.size();
-	epiCortexEndoCellMidRotateAngleDB.insert
-	(pair<int, vector<double> >(mapSize, RsSourceEndodermisDB->circleSegmentRotateAngleDB));
-
+	for (itMap = RsSourceEndodermisDB->circleSegmentRotateAngleDB.rbegin(), i = mapSize;
+		itMap != RsSourceEndodermisDB->circleSegmentRotateAngleDB.rend();
+		itMap++, i++)
+	{
+		epiCortexEndoCellMidRotateAngleDB.insert(pair<int, vector<double> >(i, itMap->second));
+	}
 }
 
 /** \brief EpiCortexEndoRingCentreRadiusDB

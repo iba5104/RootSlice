@@ -889,6 +889,7 @@ void rsRcaDB::RcaCellErase(rsSourceCorticalDB* RsSourceCorticalDB)
 		itMap != rcaCellPositionSimplifyDB.rend();
 		itMap++)
 	{
+		int numDeleted = 0;
 		i = (*itMap).first;
 		for (itVec = (*itMap).second.rbegin();
 			itVec != (*itMap).second.rend();
@@ -901,8 +902,10 @@ void rsRcaDB::RcaCellErase(rsSourceCorticalDB* RsSourceCorticalDB)
 			RsSourceCorticalDB->circleYDB[i].erase(RsSourceCorticalDB->circleYDB[i].begin() + j - 1);
 			RsSourceCorticalDB->objectHeightDB[i].erase(RsSourceCorticalDB->objectHeightDB[i].begin() + j - 1);
 			RsSourceCorticalDB->objectZPositionDB[i].erase(RsSourceCorticalDB->objectZPositionDB[i].begin() + j - 1);
+			numDeleted++;
 			//         fout << "layerPosition: " << i << "  "<< "cellPosition: " << j << endl;
 		}
+		RsSourceCorticalDB->corticalCellNumCalculateData[i] = RsSourceCorticalDB->corticalCellNumCalculateData[i] - numDeleted;
 	}
 }
 

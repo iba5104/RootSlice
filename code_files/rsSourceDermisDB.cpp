@@ -5,25 +5,40 @@
 //////////////////////////////////////// Functions //////////////////////////////////////////////////
 
 /// Set OutputXMLVtpFileName;
-void rsSourceDermisDB::OutputXMLVtpFileName(const char* outputXMLVtpFileNameInput)
+void rsSourceDermisDB::OutputXMLVtpFileName(const char* outputXMLVtpFileNameInput, const char* cellTypeInput)
 {
 	outputXMLVtpFileName = outputXMLVtpFileNameInput;
+	cellType = cellTypeInput;
 }
 
 /// create circleRadiusDB;
 void rsSourceDermisDB::CircleRadiusDB
-(double epidermisBaseRadius,
-	double epidermisAddRadiusData)
+(double baseRadius,
+ vector<double> epidermisAddRadiusVectorDB
+)
 {
-	circleRadiusDB = CircleRadius(epidermisBaseRadius, 0, epidermisAddRadiusData);
-	cout << "epidermisbase radius " << epidermisBaseRadius;
+	double appendRadius = 0;
+	vector<double>::iterator itVecAdd;
+	for (itVecAdd = epidermisAddRadiusVectorDB.begin();
+		itVecAdd != epidermisAddRadiusVectorDB.end();
+		itVecAdd++)
+	{
+		circleRadiusDB.push_back(CircleRadius(baseRadius, appendRadius, (*itVecAdd)));
+		appendRadius += (*itVecAdd);
+	}
 }
 
 /// createobjectVerticalDB;
-void rsSourceDermisDB::ObjectVerticalDB(double epidermisAddRadius)
+void rsSourceDermisDB::ObjectVerticalDB(vector<double> epidermisAddRadiusVectorDB)
 {
-	objectVerticalDB = ObjectVertical(epidermisAddRadius / objectXYZRadiusRatio);
-	cout << "epidermisobjectVerticalDB" << objectVerticalDB << endl;
+	vector<double>::iterator itVecAdd;
+	for (itVecAdd = epidermisAddRadiusVectorDB.begin();
+		itVecAdd != epidermisAddRadiusVectorDB.end();
+		itVecAdd++)
+	{
+		objectVerticalDB.push_back(ObjectVertical(*itVecAdd) / objectXYZRadiusRatio);
+		cout << "epidermisobjectVerticalDB " << objectVerticalDB.back() << endl;
+	}
 }
 
 /******************************************************
@@ -53,14 +68,22 @@ void rsSourceDermisDB::RandomHeightDB(double totalHeight, int sliceNum, double i
  * \return int EpidermisCellNumCalculated
  *
  */
-
-void rsSourceDermisDB::EpidermisCellNumCalculate(double epidermisAddRadiusData)
+void rsSourceDermisDB::EpidermisCellNumCalculate(vector<double> epidermisAddRadiusData)
 {
-	EpidermisCellNumCalculated = int(2 * M_PI * circleRadiusDB / epidermisAddRadiusData);
-
+	int iRingNum;
+	vector<double>::iterator itVecAdd;
+	EpidermisCellNumCalculated = 0;
+	for (iRingNum = 0, itVecAdd = circleRadiusDB.begin();
+		itVecAdd != circleRadiusDB.end();
+		itVecAdd++, iRingNum++)
+	{
+		int curRingCellCount = int(2 * M_PI * (*itVecAdd) / epidermisAddRadiusData[iRingNum]);
+		DermisCellNumDB.push_back(curRingCellCount);
+		EpidermisCellNumCalculated += curRingCellCount;
+		cout << "epidermisAddRadiusData: " << epidermisAddRadiusData[iRingNum] << endl;
+	}
 	cout << "EpidermisCellNumCalculated: " << EpidermisCellNumCalculated << endl;
-	cout << "epidermisAddRadiusData" << epidermisAddRadiusData << endl;
-	cout << "circleRadiusDB" << circleRadiusDB << endl;
+	//cout << "circleRadiusDB" << circleRadiusDB << endl;
 }
 
 /******************************************************
@@ -68,34 +91,36 @@ void rsSourceDermisDB::EpidermisCellNumCalculate(double epidermisAddRadiusData)
 *******************************************************/
 
 void rsSourceDermisDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
-(double epidermisAddRadiusData,
+(vector<double> epidermisAddRadiusData,
 	double epidermisBaseRadius,
 	//   int epidermisCellNum,
 	double variationRatio)
-
 {
-	CircleRadiusDB(epidermisBaseRadius,
-		epidermisAddRadiusData);
+	// CircleRadiusDB(epidermisBaseRadius, epidermisAddRadiusData);
 
-	CirclePerimeter(circleRadiusDB);
+	int iRingNum;
+	vector<double>::iterator itVecAdd;
+	for (iRingNum = 0, itVecAdd = circleRadiusDB.begin();
+		itVecAdd != circleRadiusDB.end();
+		itVecAdd++, iRingNum++)
+	{
+		CirclePerimeter((*itVecAdd));
+		SameSumAndNumberAndRatio(circleSegmentLength,
+			circleSegmentLengthAdd,
+			circleSegmentLengthSum,
+			circlePerimeter,
+			DermisCellNumDB[iRingNum],
+			// epidermisCellNum,
+			variationRatio);
 
-	/// RandomRatioButSameSumAndNumber
-	SameSumAndNumberAndRatio(circleSegmentLength,
-		circleSegmentLengthAdd,
-		circleSegmentLengthSum,
-		circlePerimeter,
-		EpidermisCellNumCalculated,
-		//                             epidermisCellNum,
-		variationRatio);
-
-	circleSegmentLengthDB = circleSegmentLength;
-	circleSegmentLengthSumDB = circleSegmentLengthSum;
-
-	//   CircleXYNonuniform( epidermisCellNum, circleRadiusDB );
-	CircleXYNonuniform(EpidermisCellNumCalculated, circleRadiusDB);
-	circleXDB = circleX;
-	circleYDB = circleY;
-	circleSegmentRotateAngleDB = circleSegmentRotateAngle;
+		circleSegmentLengthDB.insert(pair<int, vector<double> >(iRingNum, circleSegmentLength));
+		circleSegmentLengthSumDB.push_back(circleSegmentLengthSum);
+		
+		CircleXYNonuniform(DermisCellNumDB[iRingNum], (*itVecAdd));
+		circleXDB.insert(pair<int, vector<double> >(iRingNum, circleX));
+		circleYDB.insert(pair<int, vector<double> >(iRingNum, circleY));
+		circleSegmentRotateAngleDB.insert(pair<int, vector<double> >(iRingNum, circleSegmentRotateAngle));
+	}
 }
 
 
@@ -104,11 +129,15 @@ void rsSourceDermisDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
 *******************************************************/
 void rsSourceDermisDB::CircleSegmentLengthAdjustRatioDB()
 {
+	map<int, vector<double> >::iterator itMap;
 	vector<double>::iterator itVector;
 
-	for (itVector = circleSegmentLengthDB.begin(); itVector != circleSegmentLengthDB.end(); itVector++)
+	for (itMap = circleSegmentLengthDB.begin(); itMap != circleSegmentLengthDB.end(); itMap++)
 	{
-		*itVector = (*itVector) / 2 / objectXYZRadiusRatio;
+		for (itVector = (*itMap).second.begin(); itVector != (*itMap).second.end(); itVector++)
+		{
+			*itVector = (*itVector) / 2 / objectXYZRadiusRatio;
+		}
 		//cout << "EpidermisCirclesegmentlength111 " << *itVector << endl;
 	}
 }
@@ -127,30 +156,48 @@ map<int, vector<double> > objectZPositionDB;
 
 void rsSourceDermisDB::ObjectHeightAndZPositionDB(int sliceNum)
 {  /// declare iterator;
-
+	map<int, vector<double> >::iterator itMap;
 	vector<double>::iterator itVector;
 
-	vector<double> objectHeightVec;
-	vector<double> objectZPositionVec;
+	vector< vector<double> > objectHeightVec2;
+	vector<double>           objectHeightVec1;
+
+	vector< vector<double> > objectZPositionVec2;
+	vector<double>           objectZPositionVec1;
+
 	/// declare int;
+	int iRingNum;
 	int i;
 	int sliceTempNum;
 
-	for (i = 0, itVector = circleXDB.begin(); itVector != circleXDB.end(); i++, itVector++)
+	for (iRingNum = 0, itMap = circleXDB.begin();
+		itMap != circleXDB.end();
+		iRingNum++, itMap++)
 	{
-		int randomHeightZPosition = rand() % 200;
-		objectHeightVec.clear();
-		objectZPositionVec.clear();
-		for (sliceTempNum = 0; sliceTempNum != sliceNum; sliceTempNum++)
-		{
-			objectHeightVec.push_back
-			(longitudeSegmentHeightDB[randomHeightZPosition][sliceTempNum] / 2 / objectXYZRadiusRatio);
+		objectHeightVec2.clear();
+		objectZPositionVec2.clear();
 
-			objectZPositionVec.push_back
-			(longitudeZPositionAddDB[randomHeightZPosition][sliceTempNum]);
+		for (i = 0, itVector = (*itMap).second.begin(); itVector != (*itMap).second.end(); i++, itVector++)
+		{
+			int randomHeightZPosition = rand() % 200;
+			objectHeightVec1.clear();
+			objectZPositionVec1.clear();
+
+			for (sliceTempNum = 0; sliceTempNum != sliceNum; sliceTempNum++)
+			{
+				objectHeightVec1.push_back
+				(longitudeSegmentHeightDB[randomHeightZPosition][sliceTempNum] / 2 / objectXYZRadiusRatio);
+				objectZPositionVec1.push_back
+				(longitudeZPositionAddDB[randomHeightZPosition][sliceTempNum]);
+			}
+
+			objectHeightVec2.push_back(objectHeightVec1);
+			objectZPositionVec2.push_back(objectZPositionVec1);
 		}
-		objectHeightDB.insert(pair<int, vector<double> >(i, objectHeightVec));
-		objectZPositionDB.insert(pair<int, vector<double> >(i, objectZPositionVec));
+
+		objectHeightDB.insert(pair<int, vector< vector<double> > >(iRingNum, objectHeightVec2));
+		objectZPositionDB.insert(pair<int, vector< vector<double> > >(iRingNum, objectZPositionVec2));
+
 	}
 }
 
@@ -159,33 +206,34 @@ void rsSourceDermisDB::ObjectHeightAndZPositionDB(int sliceNum)
 Initialize other Database;
 ********************************************/
 void rsSourceDermisDB::InitAllDB(const char* outputXMLVtpFileNameInput,
-	double epidermisAddRadiusData,
+	const char* cellTypeInput,
+	vector<double> cellDiameter,
 	double epidermisBaseRadius,
 	//                                      int epidermisCellNum,
 	double variationRatio,
-	int sliceNum)
+	int sliceNum, int numFiles)
 
 {  /// first: get boundaryRadius from rsSourceCorticalDB;
 
+	//sclerenBaseRadius += sclerenAddRadiusData * fileCount;
 
-	OutputXMLVtpFileName(outputXMLVtpFileNameInput);
+	OutputXMLVtpFileName(outputXMLVtpFileNameInput, cellTypeInput);
 
-	CircleRadiusDB(epidermisBaseRadius,
-		epidermisAddRadiusData);
+	CircleRadiusDB(epidermisBaseRadius, cellDiameter);
 
 	SetObjectXYZRadiusRatio();
 
 	SetObjectOpacity();
 
-	ObjectVerticalDB(epidermisAddRadiusData);
+	ObjectVerticalDB(cellDiameter);
 
-	EpidermisCellNumCalculate(epidermisAddRadiusData);
+	EpidermisCellNumCalculate(cellDiameter);
 
 	GetRandomCircleSegmentAndCircleXYNonuniformDB
-	(epidermisAddRadiusData,
-		epidermisBaseRadius,
-		//     epidermisCellNum,
-		variationRatio);
+	(cellDiameter,
+	epidermisBaseRadius,
+	//     epidermisCellNum,
+	variationRatio);
 
 	CircleSegmentLengthAdjustRatioDB();
 
@@ -227,18 +275,48 @@ void rsSourceDermisDB::InitPureCellDB(double gapCellWallInput)
 	int i;
 
 	/// pureCellVerticalDB
-	pureCellVerticalDB = objectVerticalDB;
-
-	/// pureCellParallelDB
-	for (itVec1 = circleSegmentLengthDB.begin(), i = 0;
-		itVec1 != circleSegmentLengthDB.end();
-		itVec1++, i++)
+	for (itVec1 = objectVerticalDB.begin();
+		itVec1 != objectVerticalDB.end();
+		itVec1++)
 	{
 		temp = *itVec1 - gapCellWall;
-		pureCellParallelDB.push_back(temp);
+		pureCellVerticalDB.push_back(temp);
+	}
+	//pureCellVerticalDB = objectVerticalDB;
+
+	/// pureCellParallelDB
+	for (itMap1 = circleSegmentLengthDB.begin(), i = 0;
+		itMap1 != circleSegmentLengthDB.end();
+		itMap1++, i++)
+	{
+		vec1.clear();
+		for (itVec1 = (*itMap1).second.begin(); itVec1 != (*itMap1).second.end(); itVec1++)
+		{
+			temp = *itVec1 - gapCellWall;
+			vec1.push_back(temp);
+		}
+		pureCellParallelDB.insert(pair<int, vector<double> >(i, vec1));
 	}
 
 	/// pureCellHeightDB
+	for (itMap2 = objectHeightDB.begin(), i = 0;
+		itMap2 != objectHeightDB.end();
+		itMap2++, i++)
+	{
+		vec2.clear();
+		for (itVec2 = (*itMap2).second.begin(); itVec2 != (*itMap2).second.end(); itVec2++)
+		{
+			vec1.clear();
+			for (itVec1 = (*itVec2).begin(); itVec1 != (*itVec2).end(); itVec1++)
+			{
+				temp = *itVec1 - gapCellWall;
+				vec1.push_back(temp);
+			}
+			vec2.push_back(vec1);
+		}
+		pureCellHeightDB.insert(pair<int, vector< vector<double> > >(i, vec2));
+	}
+/*
 	for (itMap1 = objectHeightDB.begin(), i = 0;
 		itMap1 != objectHeightDB.end();
 		itMap1++, i++)
@@ -251,7 +329,7 @@ void rsSourceDermisDB::InitPureCellDB(double gapCellWallInput)
 		}
 		pureCellHeightDB.insert(pair<int, vector<double> >(i, vec1));
 	}
-
+*/
 }
 
 /******************************************************************************************************************
@@ -281,19 +359,17 @@ void rsSourceDermisDB::InitVacuoleDB(double gapCytoTonoInput)
 	int i;
 	gapCytoTono = gapCytoTonoInput;
 	/// vacuoleVerticalDB
-	vacuoleVerticalDB = objectVerticalDB;
-	
-	/// vacuoleParallelDB
-	for (itVec1 = circleSegmentLengthDB.begin(), i = 0;
-		itVec1 != circleSegmentLengthDB.end();
-		itVec1++, i++)
+	for (itVec1 = objectVerticalDB.begin();
+		itVec1 != objectVerticalDB.end();
+		itVec1++)
 	{
 		temp = *itVec1 - gapCytoTono - gapCellWall;
-		vacuoleParallelDB.push_back(temp);
+		vacuoleVerticalDB.push_back(temp);
 	}
-	/// vacuoleHeightDB
-	for (itMap1 = objectHeightDB.begin(), i = 0;
-		itMap1 != objectHeightDB.end();
+	
+	/// vacuoleParallelDB
+	for (itMap1 = circleSegmentLengthDB.begin(), i = 0;
+		itMap1 != circleSegmentLengthDB.end();
 		itMap1++, i++)
 	{
 		vec1.clear();
@@ -302,6 +378,24 @@ void rsSourceDermisDB::InitVacuoleDB(double gapCytoTonoInput)
 			temp = *itVec1 - gapCytoTono - gapCellWall;
 			vec1.push_back(temp);
 		}
-		vacuoleHeightDB.insert(pair<int, vector<double> >(i, vec1));
+		vacuoleParallelDB.insert(pair<int, vector<double> >(i, vec1));
+	}
+	/// vacuoleHeightDB
+	for (itMap2 = objectHeightDB.begin(), i = 0;
+		itMap2 != objectHeightDB.end();
+		itMap2++, i++)
+	{
+		vec2.clear();
+		for (itVec2 = (*itMap2).second.begin(); itVec2 != (*itMap2).second.end(); itVec2++)
+		{
+			vec1.clear();
+			for (itVec1 = (*itVec2).begin(); itVec1 != (*itVec2).end(); itVec1++)
+			{
+				temp = *itVec1 - gapCytoTono - gapCellWall;
+				vec1.push_back(temp);
+			}
+			vec2.push_back(vec1);
+		}
+		vacuoleHeightDB.insert(pair<int, vector< vector<double> > >(i, vec2));
 	}
 }

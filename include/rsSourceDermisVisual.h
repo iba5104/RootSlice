@@ -29,7 +29,8 @@ public:
    void EpidermisVisual
    ( rsSourceDermisDB *EpidermisDB,
      vtkSmartPointer<vtkRenderer> renL,
-     int vacuolePlasmaFlag );
+     int vacuolePlasmaFlag,
+     map<double, vector<double>> result);
 
 };
 

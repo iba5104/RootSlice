@@ -1,7 +1,9 @@
 #include "globals.h"
 #include "rsEpiCortexEndoWaterPathDBVisual.h"
 
-void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB)
+void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(
+	rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB,
+	globals surfaceFlux)
 {  /// declare iterator;
 	map<int, vector<double> >::iterator itMapX;
 	map<int, vector<double> >::iterator itMapY;
@@ -97,7 +99,9 @@ void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(rsEpiCortexEn
 }
 
 
-void rsEpiCortexEndoWaterPathDBVisual::SymplastTriangleStripXMLVtp(rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB)
+void rsEpiCortexEndoWaterPathDBVisual::SymplastTriangleStripXMLVtp(
+	rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB,
+	globals surfaceFlux)
 {  /// declare iterator;
 	map<int, vector<double> >::iterator itMapX;
 	map<int, vector<double> >::iterator itMapY;
@@ -160,11 +164,27 @@ void rsEpiCortexEndoWaterPathDBVisual::SymplastTriangleStripXMLVtp(rsEpiCortexEn
 		scalars->SetName("Color");
 		int numSequence;
 
+		fluxEqns* FluxEqns = new fluxEqns;
+//		FluxEqns->flowRate(
+//			surfaceFlux.hydraulicConductance,
+//			surfaceFlux.reflectionCoeffecient,
+//			surfaceFlux.waterPressureDiff,
+//			surfaceFlux.osmoticPressureDiff
+//		);
+
 		/// Add scalar to point;
 		for (numSequence = 0; numSequence < pointNum; numSequence++)
 		{
+			double waterFluxSurface = FluxEqns->waterFlux(
+				surfaceFlux.radialConductivity,
+				surfaceFlux.pressurePotentialSurface * (1.0 - ((double)numSequence/ (double)pointNum)),
+				surfaceFlux.pressurePotentialXylem,
+				surfaceFlux.effectiveReflectionCoefficient,
+				surfaceFlux.osmoticPotentialSurface,
+				surfaceFlux.osmoticPotentialXylem
+			);
 			scalars->InsertTuple1
-			(numSequence, 0.7);
+			(numSequence, waterFluxSurface);
 		}
 		polydata->GetPointData()->SetScalars(scalars);
 

@@ -477,9 +477,12 @@ void rsBaseGeometry::RandomRatioButSameSumAndNumber
 
 /** \brief SameSumAndNumberAndRatio
  *
- * \param
- * \param
- * \return
+ * \param vector<double>& circleSegmentLength
+ * \param vector<double>& circleSegmentLengthAdd
+ * \param double& circleSegmentLengthSum
+ * \param double circlePerimeter
+ * \param int *itVecCellNum
+ * \param double variationRatio
  *
  */
 void rsBaseGeometry::SameSumAndNumberAndRatio

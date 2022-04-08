@@ -45,7 +45,9 @@
 
 #include "rsSteleInnerDB.h"
 #include "rsSteleInnerVisual.h"
+#include "fluxEqns.h"
 #include "globals.h"
+#include "resources.h"
 
 class rsDynamicDataOutput : public globals
 {
@@ -60,11 +62,14 @@ public:
        globals stele,
        globals metaXylem,
        globals protoXylem,
+       globals phloem,
        globals epidermis,
        globals endodermis,
        globals exodermis,
        globals sclerenchyma,
        globals pericycle,
+       globals surfaceFlux,
+       vector<globals> nutrients,
 
       /// Cortical;
       vector<double> corticalAddRadiusInputData,
@@ -123,19 +128,24 @@ public:
       globals stele,
       globals metaXylem,
       globals protoXylem,
+      globals phloem,
       globals epidermis,
       globals endodermis,
       globals exodermis,
       globals sclerenchyma,
       globals pericycle,
-      
+      globals surfaceFlux,
+      vector<globals> nutrients,
+
       /// Cortical specific;
       vector<double> corticalAddRadiusInputData,
       vector<int> corticalCellNumInputData,
+
       int corticalSliceNum,
 
       /// Sclerenchyma
       int sclerenSliceNum,
+
       double sclerenAddRadiusData,
 
       /// Epi;
@@ -145,7 +155,7 @@ public:
       /// Endo;
       int endodermisSliceNum,
       double endodermisAddRadiusData,
-      
+
        // Pericycle
        int pericycleSliceNum,
        double pericycleAddRadiusData,
@@ -161,15 +171,23 @@ public:
       const char* SymplastXMLVtpFileNameInput,
       const char* PericycXMLVtpFileNameInput,
 
-      /// DataOutputName;
-      const char* dataOutputNameInput,
-
-       //Other
+       /// DataOutputName;
+      const char* dataOutputNameInput, //Other
        vtkSmartPointer<vtkRenderer> renL
    );
 
-
    void RenderTogether( vtkSmartPointer<vtkRenderer> renL );
+
+   void InitInnertructure(
+       globals stele,
+       globals metaXylem,
+       globals protoXylem,
+       globals phloem,
+
+       double pericycleBaseRadius,
+
+       vtkSmartPointer<vtkRenderer> renL
+   );
 
 };
 

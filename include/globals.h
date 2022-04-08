@@ -33,6 +33,13 @@ public:
 	static int corticalAddRadiusDBSelectInput;
 	static int corticalCellNumSelectInput;
 
+	const char* type_scleren	= "sclerenchyma";
+	const char* type_epi		= "epidermis";
+	const char* type_endo		= "endodermis";
+	const char* type_peri		= "pericycle";
+	const char* type_exo		= "exodermis";
+	const char* type_cortical	= "cortical";
+
 	double cellWallWidth;
 	double plasmaMembraneThickness;
 	double gapCytoTono;
@@ -40,7 +47,7 @@ public:
 	double variationRatio;
 	int minSlice;
 	int maxSlice;
-	double cellDiameter;
+	vector<double> cellDiameter;
 	int numFiles;
 
 	double innestCellDiameter;
@@ -57,5 +64,40 @@ public:
 	double surroundingCellRingRadius;
 
 	int cellNum;
+
+	double hydraulicConductance;
+	double reflectionCoeffecient;
+	double waterPressureDiff;
+	double osmoticPressureDiff;
+	double radialConductivity;
+	double pressurePotentialSurface;
+	double pressurePotentialXylem;
+	double effectiveReflectionCoefficient;
+	double osmoticPotentialSurface;
+	double osmoticPotentialXylem;
+
+	int dotNum;
+	int setUpRowNum;
+	int setDownRowNum;
+
+	double setUpAppendParallelLengthThresholdRatio;
+
+	string nutriName;
+	vector<double> simTimes;
+	vector<double> initialConcentration;
+	double V_max;
+	double k_m;
+	double surfaceConcentration;
+	double surface_epi_permeability;
+	double permeability;
+	double utilisation;
+	double plasmodesmaRadius;
+
+	struct CellData {
+		int ID;
+		double x, y, z, radius, distanceCenter, height, Conc;
+		vector<int> neighbours;
+		string type;
+	};
 };
 #endif // GLOBALS_H_INCLUDED
