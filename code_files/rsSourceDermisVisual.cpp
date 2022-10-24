@@ -7,7 +7,8 @@ void rsSourceDermisVisual::EpidermisVisual
 (rsSourceDermisDB* EpidermisDB,
 	vtkSmartPointer<vtkRenderer> renL,
 	int vacuolePlasmaFlag,
-	map<double, vector<double>> result)
+	vector<double> result,
+	string filePrefix)
 {  /// declare iterator;
 	map<int, vector< vector<double> > >::iterator itMap;
 	vector< vector<double> >::iterator itVec2;
@@ -16,6 +17,7 @@ void rsSourceDermisVisual::EpidermisVisual
 	int iRingNum;
 	int i;
 	int sliceTempNum;
+	int cellCtr = 0;
 
 	/// Create vtkAppendPolyData and vtkXMLPolyDataWriter pointer outside the loop;
 	vtkSmartPointer<vtkAppendPolyData> append =
@@ -27,6 +29,7 @@ void rsSourceDermisVisual::EpidermisVisual
 		outputFileName = "pureCell_" + outputFileName;
 	if (vacuolePlasmaFlag == 1)
 		outputFileName = "vacuole_" + outputFileName;
+	outputFileName = filePrefix + outputFileName;
 	string flName = getFolderName() + outputFileName;
 	writer->SetFileName(flName.c_str());
 	addToFileNamesVector(outputFileName);
@@ -94,9 +97,10 @@ void rsSourceDermisVisual::EpidermisVisual
 				/// Add scalar to point;
 				for (numSequence = 0; numSequence < pointNum; numSequence++)
 				{
+					double insrtVal = (cellCtr < result.size()) ? result[cellCtr] : 0;
 					scalars->InsertTuple1
 						//            ( numSequence, double(sliceTempNum) / 6 );
-						(numSequence, 0.9);
+						(numSequence, insrtVal);
 				}
 				polydata->GetPointData()->SetScalars(scalars);
 				//scalars->Delete();
@@ -141,6 +145,7 @@ void rsSourceDermisVisual::EpidermisVisual
 
 				renL->AddActor(actor);
 			}
+			cellCtr++;
 		}
 	}
 	writer->SetInputConnection(append->GetOutputPort());

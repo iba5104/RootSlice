@@ -92,6 +92,9 @@ public:
       double xylemMaxOutRingNum,
       double xylemMaxOutRingCellNum,
       double xylemMaxOutRingAddRadius,
+      double setMaxRadius,
+      int setmxRingNum,
+      vector<int> eachRingNum,
       int sliceNum );
 
 };

@@ -30,7 +30,8 @@ public:
    ( rsSourceDermisDB *EpidermisDB,
      vtkSmartPointer<vtkRenderer> renL,
      int vacuolePlasmaFlag,
-     map<double, vector<double>> result);
+     vector<double> result,
+       string filePrefix);
 
 };
 

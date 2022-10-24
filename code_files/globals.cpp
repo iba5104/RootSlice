@@ -16,6 +16,7 @@ double globals::baseRadius = 0;
 double globals::thickness = 0;
 double globals::totalHeight = 0;
 double globals::rcaRatio = 0;
+bool globals::type_dicot = false;
 
 /// Cortical
 vector<double> corticalAddRadiusInputData;

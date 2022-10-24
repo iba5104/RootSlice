@@ -39,15 +39,18 @@ public:
 
    void CorticalVisual
    ( rsSourceCorticalDB *CorticalDB,
-     vtkSmartPointer<vtkRenderer> renL );
+     vtkSmartPointer<vtkRenderer> renL,
+       vector<double> result, string filePrefix);
 
    void VacuoleVisual
    ( rsSourceCorticalDB *CorticalDB,
-     vtkSmartPointer<vtkRenderer> renL );
+     vtkSmartPointer<vtkRenderer> renL,
+       vector<double> result, string filePrefix);
 
    void CorticalPlasmaMembraneVisual
    ( rsSourceCorticalDB* CorticalDB,
-     vtkSmartPointer<vtkRenderer> renL );
+     vtkSmartPointer<vtkRenderer> renL,
+       vector<double> result, string filePrefix);
 
 };
 

@@ -19,10 +19,11 @@ int main()
 	//////////////////////////////////////// Visualization //////////////////////////////////////////////
 	vtkSmartPointer<vtkRenderer> renL = vtkSmartPointer<vtkRenderer>::New();
 
-	TiXmlDocument doc("CorticalData.xml");
+	TiXmlDocument doc("InputData.xml");
 	doc.LoadFile();
 	TiXmlElement* main = doc.FirstChildElement("Main");
 	const char* filePrefix = main->Attribute("name");
+
 	std::time_t curTime = time(NULL);
 
 	const tm *startTime = localtime(&curTime);
@@ -51,6 +52,7 @@ int main()
 	vector<globals> nutrients;
 
 	globals::totalHeight = atof(main->Attribute("height"));
+	globals::type_dicot = (strcmp(main->Attribute("type"), "dicot") == 0);
 
 	vector<double> rcaRatioVals;
 	vector<double> baseRadiusVals;
@@ -69,6 +71,7 @@ int main()
 			baseRadiusVals.push_back(tempDiameter);
 			baseRadiusInput.erase(0, pos + delimiter.length());
 		}
+		baseRadiusVals.push_back(stof(baseRadiusInput));
 		pos = 0;
 		//globals::baseRadius = atof(corticalInput->FirstChildElement("BaseRadius")->GetText());
 		//globals::thickness = atof(corticalInput->FirstChildElement("Thickness")->GetText());
@@ -80,6 +83,7 @@ int main()
 				numFilesVals.push_back(tempDiameter);
 				numFilesInput.erase(0, pos + delimiter.length());
 			}
+			numFilesVals.push_back(stof(numFilesInput));
 			pos = 0;
 			//cortical.numFiles = atoi(corticalInput->FirstChildElement("NumFiles")->GetText());
 		}
@@ -127,15 +131,29 @@ int main()
 	//********** STELE DATA *************//
 	TiXmlElement* steleInput = main->FirstChildElement("Stele");
 	if (steleInput) {
-		stele.minSlice = atoi(steleInput->FirstChildElement("Slices")->Attribute("min"));
-		stele.maxSlice = atoi(steleInput->FirstChildElement("Slices")->Attribute("max"));
-		stele.cellWallWidth = atof(steleInput->FirstChildElement("CellwallWidth")->GetText());
-		stele.plasmaMembraneThickness = atof(steleInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		stele.gapCytoTono = atof(steleInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		TiXmlElement* curElmnt;
+		curElmnt = steleInput->FirstChildElement("Slices");
+		if (curElmnt) {
+			stele.minSlice = atoi(curElmnt->Attribute("min"));
+			stele.maxSlice = atoi(curElmnt->Attribute("max"));
+		}
+		curElmnt = steleInput->FirstChildElement("CellwallWidth");
+		if (curElmnt)
+			stele.cellWallWidth = atof(curElmnt->GetText());
+		curElmnt = steleInput->FirstChildElement("PlasmaMembraneWidth");
+		if (curElmnt)
+			stele.plasmaMembraneThickness = atof(curElmnt->GetText());
+		curElmnt = steleInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap");
+		if (curElmnt)
+			stele.gapCytoTono = atof(curElmnt->GetText());
 		stele.gapCellWall = stele.cellWallWidth + stele.plasmaMembraneThickness;
 		stele.variationRatio = atof(steleInput->Attribute("variationRatio"));
-		stele.innestCellDiameter = atof(steleInput->FirstChildElement("InnestCellDiameer")->GetText());
-		stele.innerLayerNum = atoi(steleInput->FirstChildElement("InnerLayerNum")->GetText());
+		curElmnt = steleInput->FirstChildElement("InnestCellDiameer");
+		if (curElmnt)
+			stele.innestCellDiameter = atof(curElmnt->GetText());
+		curElmnt = steleInput->FirstChildElement("InnerLayerNum");
+		if (curElmnt)
+			stele.innerLayerNum = atof(curElmnt->GetText());
 	}
 	else {
 		cout << "Stele Parameters Missing." << endl;
@@ -145,22 +163,77 @@ int main()
 	//********** METAXYLEM DATA *************//
 	TiXmlElement* metaXylemInput = main->FirstChildElement("MetaXylem");
 	if (metaXylemInput) {
-		metaXylem.minSlice = atoi(metaXylemInput->FirstChildElement("Slices")->Attribute("min"));
-		metaXylem.maxSlice = atoi(metaXylemInput->FirstChildElement("Slices")->Attribute("max"));
-		metaXylem.cellWallWidth = atof(metaXylemInput->FirstChildElement("CellwallWidth")->GetText());
-		metaXylem.plasmaMembraneThickness = atof(metaXylemInput->FirstChildElement("PlasmaMembraneWidth")->GetText());
-		metaXylem.gapCytoTono = atof(metaXylemInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap")->GetText());
+		TiXmlElement* curElmnt;
+		curElmnt = metaXylemInput->FirstChildElement("Slices");
+		if (curElmnt) {
+			metaXylem.minSlice = atoi(curElmnt->Attribute("min"));
+			metaXylem.maxSlice = atoi(curElmnt->Attribute("max"));
+		}
+		curElmnt = metaXylemInput->FirstChildElement("CellwallWidth");
+		if (curElmnt)
+			metaXylem.cellWallWidth = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("PlasmaMembraneWidth");
+		if (curElmnt)
+			metaXylem.plasmaMembraneThickness = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("InnerPlasmaMembraneTonoplastGap");
+		if (curElmnt)
+			metaXylem.gapCytoTono = atof(curElmnt->GetText());
 		metaXylem.gapCellWall = metaXylem.cellWallWidth + metaXylem.plasmaMembraneThickness;
 		metaXylem.variationRatio = atof(metaXylemInput->Attribute("variationRatio"));
-		metaXylem.verticalLengthThresholdRatio = atof(metaXylemInput->FirstChildElement("VerticalLengthThresholdRatio")->GetText());
-		metaXylem.tangentRingRadiusRatio = atof(metaXylemInput->FirstChildElement("TangentRingRadiusRatio")->GetText());
-		metaXylem.steleCellNumBetween = atoi(metaXylemInput->FirstChildElement("SteleCellNumBetween")->GetText());
-		metaXylem.num = atoi(metaXylemInput->FirstChildElement("MXNum")->GetText());
-		metaXylem.averageRingRadius = atof(metaXylemInput->FirstChildElement("MXAverageRingRadius")->GetText());
-		metaXylem.surroundingCellRingNum = atoi(metaXylemInput->FirstChildElement("SurroundingCellRingNum")->GetText());
-		metaXylem.dotNum = atoi(metaXylemInput->FirstChildElement("BoundaryDotNum")->GetText());
-		metaXylem.setUpRowNum = atoi(metaXylemInput->FirstChildElement("BoundaryUpRowNum")->GetText());
-		metaXylem.setDownRowNum = atoi(metaXylemInput->FirstChildElement("BoundaryDownRowNum")->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("VerticalLengthThresholdRatio");
+		if (curElmnt)
+			metaXylem.verticalLengthThresholdRatio = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("TangentRingRadiusRatio");
+		if (curElmnt)
+			metaXylem.tangentRingRadiusRatio = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("SteleCellNumBetween");
+		if (curElmnt)
+			metaXylem.steleCellNumBetween = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("MXNum");
+		if (curElmnt)
+			metaXylem.num = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("MXAverageRingRadius");
+		if (curElmnt)
+			metaXylem.averageRingRadius = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("MXMaxRingRadius");
+		if (curElmnt)
+			metaXylem.maxRingRadius = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("SurroundingCellRingNum");
+		if (curElmnt)
+			metaXylem.surroundingCellRingNum = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("BoundaryDotNum");
+		if (curElmnt)
+			metaXylem.dotNum = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("BoundaryUpRowNum");
+		if (curElmnt)
+			metaXylem.setUpRowNum = atof(curElmnt->GetText());
+		curElmnt = metaXylemInput->FirstChildElement("BoundaryDownRowNum");
+		if (curElmnt)
+			metaXylem.setDownRowNum = atof(curElmnt->GetText());
+		if (globals::type_dicot)
+		{
+			curElmnt = metaXylemInput->FirstChildElement("MXRings");
+			if (curElmnt)
+				metaXylem.numFiles = atof(curElmnt->GetText());
+			curElmnt = metaXylemInput->FirstChildElement("MXNumEachRing");
+			if (curElmnt)
+			{
+				string numFilesInput = curElmnt->GetText();
+				while ((pos = numFilesInput.find(delimiter)) != std::string::npos)
+				{
+					double temp = stof(numFilesInput.substr(0, pos));
+					metaXylem.eachRingNum.push_back(temp);
+					numFilesInput.erase(0, pos + delimiter.length());
+				}
+				metaXylem.eachRingNum.push_back(stof(numFilesInput));
+				pos = 0;
+			}
+		}
+		else
+		{
+			metaXylem.numFiles = 1;
+			metaXylem.eachRingNum.push_back(metaXylem.num);
+		}
 	}
 	else {
 		cout << "MetaXylem Parameters Missing." << endl;
@@ -309,52 +382,57 @@ int main()
 		cout << "pericycle Parameters Missing." << endl;
 	}
 
-	//*********** FLUX CALC DATA **********//
-	TiXmlElement* fluxInput = main->FirstChildElement("FluxInput");
-	if (fluxInput) {
-		surfaceFlux.hydraulicConductance			= atof(fluxInput->FirstChildElement("hydraulicConductance")->GetText());
-		surfaceFlux.reflectionCoeffecient			= atof(fluxInput->FirstChildElement("reflectionCoeffecient")->GetText());
-		surfaceFlux.waterPressureDiff				= atof(fluxInput->FirstChildElement("waterPressureDiff")->GetText());
-		surfaceFlux.osmoticPressureDiff				= atof(fluxInput->FirstChildElement("osmoticPressureDiff")->GetText());
-		surfaceFlux.radialConductivity				= atof(fluxInput->FirstChildElement("radialConductivity")->GetText());
-		surfaceFlux.pressurePotentialSurface		= atof(fluxInput->FirstChildElement("pressurePotentialSurface")->GetText());
-		surfaceFlux.pressurePotentialXylem			= atof(fluxInput->FirstChildElement("pressurePotentialXylem")->GetText());
-		surfaceFlux.effectiveReflectionCoefficient	= atof(fluxInput->FirstChildElement("effectiveReflectionCoefficient")->GetText());
-		surfaceFlux.osmoticPotentialSurface			= atof(fluxInput->FirstChildElement("osmoticPotentialSurface")->GetText());
-		surfaceFlux.osmoticPotentialXylem			= atof(fluxInput->FirstChildElement("osmoticPotentialXylem")->GetText());
-	}
+	TiXmlDocument fluxDoc("fluxInput.xml");
+	fluxDoc.LoadFile();
+	if (!fluxDoc.Error()) {
+		TiXmlElement* fluxMain = fluxDoc.FirstChildElement("Main");
+		//*********** FLUX CALC DATA **********//
+		TiXmlElement* fluxInput = fluxMain->FirstChildElement("FluxInput");
+		if (fluxInput) {
+			surfaceFlux.hydraulicConductance = atof(fluxInput->FirstChildElement("hydraulicConductance")->GetText());
+			surfaceFlux.reflectionCoeffecient = atof(fluxInput->FirstChildElement("reflectionCoeffecient")->GetText());
+			surfaceFlux.waterPressureDiff = atof(fluxInput->FirstChildElement("waterPressureDiff")->GetText());
+			surfaceFlux.osmoticPressureDiff = atof(fluxInput->FirstChildElement("osmoticPressureDiff")->GetText());
+			surfaceFlux.radialConductivity = atof(fluxInput->FirstChildElement("radialConductivity")->GetText());
+			surfaceFlux.pressurePotentialSurface = atof(fluxInput->FirstChildElement("pressurePotentialSurface")->GetText());
+			surfaceFlux.pressurePotentialXylem = atof(fluxInput->FirstChildElement("pressurePotentialXylem")->GetText());
+			surfaceFlux.effectiveReflectionCoefficient = atof(fluxInput->FirstChildElement("effectiveReflectionCoefficient")->GetText());
+			surfaceFlux.osmoticPotentialSurface = atof(fluxInput->FirstChildElement("osmoticPotentialSurface")->GetText());
+			surfaceFlux.osmoticPotentialXylem = atof(fluxInput->FirstChildElement("osmoticPotentialXylem")->GetText());
+		}
 
-	//*********** Nutrient DATA *******//
-	for (TiXmlElement* nutrInput = main->FirstChildElement("Nutrient"); 
-		nutrInput != NULL; nutrInput = nutrInput->NextSiblingElement()) {
-		globals nutrientInfo;
-		nutrientInfo.nutriName = nutrInput->Attribute("name");
-		if (nutrInput->Attribute("startTime")) {
-			nutrientInfo.simTimes.push_back(atof(nutrInput->Attribute("startTime")));
-			if (nutrInput->Attribute("endTime"))
-				nutrientInfo.simTimes.push_back(atof(nutrInput->Attribute("endTime")));
-			if (nutrInput->Attribute("timestep"))
-				nutrientInfo.simTimes.push_back(atof(nutrInput->Attribute("timestep")));
+		//*********** Nutrient DATA *******//
+		for (TiXmlElement* nutrInput = fluxMain->FirstChildElement("Nutrient"); nutrInput != NULL; nutrInput = nutrInput->NextSiblingElement()) {
+			globals nutrientInfo;
+			nutrientInfo.nutriName = nutrInput->Attribute("name");
+			if (nutrInput->Attribute("startTime")) {
+				nutrientInfo.simTimes.push_back(atof(nutrInput->Attribute("startTime")));
+				if (nutrInput->Attribute("endTime"))
+					nutrientInfo.simTimes.push_back(atof(nutrInput->Attribute("endTime")));
+				if (nutrInput->Attribute("timestep"))
+					nutrientInfo.simTimes.push_back(atof(nutrInput->Attribute("timestep")));
+			}
+			else {
+				nutrientInfo.simTimes.push_back(0.0);
+				nutrientInfo.simTimes.push_back(10.0);
+				nutrientInfo.simTimes.push_back(1);
+			}
+			nutrientInfo.V_max = atof(nutrInput->FirstChildElement("V_max")->GetText());
+			nutrientInfo.k_m = atof(nutrInput->FirstChildElement("k_m")->GetText());
+			nutrientInfo.surfaceConcentration = atof(nutrInput->FirstChildElement("surfaceConcentration")->GetText());
+			string initConcInput = nutrInput->FirstChildElement("initialConcentration")->GetText();
+			while ((pos = initConcInput.find(delimiter)) != std::string::npos) {
+				nutrientInfo.initialConcentration.push_back(stof(initConcInput.substr(0, pos)));
+				initConcInput.erase(0, pos + delimiter.length());
+			}
+			nutrientInfo.initialConcentration.push_back(stof(initConcInput));
+			nutrientInfo.surface_epi_permeability = atof(nutrInput->FirstChildElement("outer_permeability")->GetText());
+			nutrientInfo.permeability = atof(nutrInput->FirstChildElement("cell_permeability")->GetText());
+			nutrientInfo.utilisation = atof(nutrInput->FirstChildElement("utilisation")->GetText());
+			nutrientInfo.plasmodesmaRadius = atof(nutrInput->FirstChildElement("plasmodesmaRadius")->GetText());
+			nutrientInfo.plasmodesmaFrequency = atoi(nutrInput->FirstChildElement("plasmodesmaFrequency")->GetText());
+			nutrients.push_back(nutrientInfo);
 		}
-		else {
-			nutrientInfo.simTimes.push_back(0.0);
-			nutrientInfo.simTimes.push_back(10.0);
-			nutrientInfo.simTimes.push_back(1);
-		}
-		nutrientInfo.V_max = atof(nutrInput->FirstChildElement("V_max")->GetText());
-		nutrientInfo.k_m = atof(nutrInput->FirstChildElement("k_m")->GetText());
-		nutrientInfo.surfaceConcentration = atof(nutrInput->FirstChildElement("surfaceConcentration")->GetText());
-		string initConcInput = nutrInput->FirstChildElement("initialConcentration")->GetText();
-		while ((pos = initConcInput.find(delimiter)) != std::string::npos) {
-			nutrientInfo.initialConcentration.push_back(stof(initConcInput.substr(0, pos)));
-			initConcInput.erase(0, pos + delimiter.length());
-		}
-		nutrientInfo.initialConcentration.push_back(stof(initConcInput));
-		nutrientInfo.surface_epi_permeability = atof(nutrInput->FirstChildElement("outer_permeability")->GetText());
-		nutrientInfo.permeability = atof(nutrInput->FirstChildElement("cell_permeability")->GetText());
-		nutrientInfo.utilisation = atof(nutrInput->FirstChildElement("utilisation")->GetText());
-		nutrientInfo.plasmodesmaRadius = atof(nutrInput->FirstChildElement("plasmodesmaRadius")->GetText());
-		nutrients.push_back(nutrientInfo);
 	}
 
 	// Get the data of cortical;

@@ -398,6 +398,9 @@ MigrationBackup/
 Debug/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/PlantName_2021-09-05_22-26
+/PlantName_*
 /RootSlice.dir/RelWithDebInfo
 /RelWithDebInfo
+/Fig*
+/Dicot*
+/VTK

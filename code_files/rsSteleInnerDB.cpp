@@ -11,7 +11,6 @@
 void rsSteleInnerDB::SteleInnerBoundRadius(rsMXBoundaryOutDB* RsMXBoundaryOutDB)
 {
 	steleInnerBoundRadius = RsMXBoundaryOutDB->innerRingRadius;
-	cout << "stele test line 13" << endl;
 }
 
 /** \brief SteleInnestCellRadius
@@ -113,7 +112,6 @@ void rsSteleInnerDB::SteleInnerCellNumCalculateData()
 		cout << tempNum << endl;
 		steleInnerCellNumCalculateData.push_back(tempNum);
 	}
-	cout << "done stele 106" << endl;
 }
 
 
@@ -133,9 +131,7 @@ void rsSteleInnerDB::SteleInnerObjectVerticalDB()
 		itVecAdd++, iRingNum++)
 	{
 		steleInnerObjectVerticalDB.push_back(ObjectVertical(*itVecAdd));
-		cout << "stele 124" << endl;
 	}
-	cout << "done stele 126" << endl;
 }
 
 /******************************************************
@@ -152,9 +148,7 @@ void rsSteleInnerDB::RandomHeightDB(double totalHeight, int sliceNum, double ini
 		RandomHeight(totalHeight, sliceNum, initZPosition);
 		longitudeSegmentHeightDB.insert(pair<int, vector<double> >(temp, longitudeSegmentHeight));
 		longitudeZPositionAddDB.insert(pair<int, vector<double> >(temp, longitudeZPositionAdd));
-		cout << "stele 141" << endl;
 	}
-	cout << "done stele 143" << endl;
 }
 
 /** \brief GetRandomCircleSegmentAndCircleXYNonuniformDB
@@ -185,17 +179,14 @@ void rsSteleInnerDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
 		itVecAdd != steleInnerAddRadiusDB.end();
 		itVecAdd++, iRingNum++, itVecCellNum++)
 	{
-		cout << "stele 173" << endl;
 		CirclePerimeter(steleInnerRingRadiusDB[iRingNum]);
-		cout << "stele 175" << endl;
 		SameSumAndNumberAndRatio(circleSegmentLength,
 			circleSegmentLengthAdd,
 			circleSegmentLengthSum,
 			circlePerimeter,
 			*itVecCellNum,
 			variationRatio);
-		cout << "stele 182" << endl;
-
+		
 		circleSegmentLengthDB.insert(pair<int, vector<double> >(iRingNum, circleSegmentLength));
 		circleSegmentLengthSumDB.push_back(circleSegmentLengthSum);
 
@@ -203,9 +194,7 @@ void rsSteleInnerDB::GetRandomCircleSegmentAndCircleXYNonuniformDB
 		circleXDB.insert(pair<int, vector<double> >(iRingNum, circleX));
 		circleYDB.insert(pair<int, vector<double> >(iRingNum, circleY));
 		circleSegmentRotateAngleDB.insert(pair<int, vector<double> >(iRingNum, circleSegmentRotateAngle));
-		cout << "stele 187" << endl;
 	}
-	cout << "done stele 189" << endl;
 }
 
 /******************************************************
@@ -285,11 +274,7 @@ void rsSteleInnerDB::SteleInnestObjectHeightAndZPositionDB(int sliceNum)
 
 		steleInnestObjectZPositionDB.push_back
 		(longitudeZPositionAddDB[randomHeightZPosition][sliceTempNum]);
-
-		cout << "stele 260" << endl;
 	}
-	cout << "done stele 262" << endl;
-
 }
 
 

@@ -186,7 +186,7 @@ void rsSourceDermisDB::ObjectHeightAndZPositionDB(int sliceNum)
 			for (sliceTempNum = 0; sliceTempNum != sliceNum; sliceTempNum++)
 			{
 				objectHeightVec1.push_back
-				(longitudeSegmentHeightDB[randomHeightZPosition][sliceTempNum] / 2 / objectXYZRadiusRatio);
+				(longitudeSegmentHeightDB[randomHeightZPosition][sliceTempNum] / 2 / objectXYZRadiusRatio); // Why half?
 				objectZPositionVec1.push_back
 				(longitudeZPositionAddDB[randomHeightZPosition][sliceTempNum]);
 			}

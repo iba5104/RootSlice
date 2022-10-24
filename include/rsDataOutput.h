@@ -6,6 +6,10 @@
 #include "rsEpiCortexEndoWaterPathDB.h"
 #include <sstream>
 #include "globals.h"
+#include <rsPXBoundaryDB.h>
+#include <rsMXBoundaryOutDB.h>
+#include <rsPhloemDB.h>
+#include <rsSteleInnerDB.h>
 
 class rsDataOutput : public globals
 {
@@ -51,6 +55,12 @@ public:
    ( rsSourceCorticalDB *RsSourceCorticalDB );
 
    void DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB);
+   void PXDataOutputCalculate(rsPXCoreDB* RsPXCoreDB);
+   void MXDataOutputCalculate(rsMXCoreDB* RsMXCoreDB);
+   void MXBoundaryDataOutputCalculate(rsMXBoundaryOutDB* RSMXBoundaryOutDB);
+   void SteleDataOutputCalculate(rsSteleInnerDB* RsSteleInnerDB);
+   void PXBoundaryDataOutputCalculate(rsPXBoundaryDB* RsPXBoundaryDB);
+   void PhloemDataOutputCalculate(rsPhloemDB* RsPhloemDB);
 
    /// RCA;
    double rcaRatioInput;

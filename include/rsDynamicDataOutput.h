@@ -186,7 +186,13 @@ public:
 
        double pericycleBaseRadius,
 
-       vtkSmartPointer<vtkRenderer> renL
+       vtkSmartPointer<vtkRenderer> renL,
+
+       rsPXCoreDB* &RsPXCoreDB,
+       rsMXBoundaryOutDB* &RSMXBoundaryOutDB,
+       rsSteleInnerDB* &RsSteleInnerDB,
+       rsPXBoundaryDB* &RsPXBoundaryDB,
+       rsPhloemDB* &RsPhloemDB
    );
 
 };

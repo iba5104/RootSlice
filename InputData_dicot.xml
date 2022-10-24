@@ -1,52 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Main name="PlantName" type="PlantType" height="300">
+<Main name="PlantName" type="dicot" height="300">
     <Cortical unit="um" variationRatio="0.2">
 		<Slices min=3 max=6 />
 		<CellwallWidth>0.48</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<BaseRadius>200,250,300</BaseRadius>
+		<BaseRadius>200</BaseRadius>
 		<Thickness>200</Thickness>
 		<CellDiameter>20</CellDiameter>
-		<NumFiles>8,10,11</NumFiles>
-		<RCARatio min=0.0 max=0.6 step=0.1 />
+		<NumFiles>8</NumFiles>
+		<RCARatio min=0.3 max=0.3 step=0.1 />
 	</Cortical>
 	<Stele unit="um" variationRatio="0.2">
 		<Slices min=3 max=6 />
 		<CellwallWidth>0.48</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<InnestCellDiameer>5</InnestCellDiameer>
-		<InnerLayerNum>10</InnerLayerNum>
+		<InnestCellDiameer>0</InnestCellDiameer>
+		<InnerLayerNum>0</InnerLayerNum>
 	</Stele>
 	<MetaXylem unit="um" variationRatio="0.2">
 		<Slices min=3 max=6 />
 		<CellwallWidth>0.48</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<VerticalLengthThresholdRatio>0.3</VerticalLengthThresholdRatio>
-		<TangentRingRadiusRatio>0.4</TangentRingRadiusRatio>
-		<SteleCellNumBetween>6</SteleCellNumBetween>
-		<MXNum>5</MXNum>
-		<MXAverageRingRadius>20</MXAverageRingRadius>
-		<SurroundingCellRingNum>2</SurroundingCellRingNum>
+		<VerticalLengthThresholdRatio>0.1</VerticalLengthThresholdRatio>
+		<TangentRingRadiusRatio>0.1</TangentRingRadiusRatio>
+		<SteleCellNumBetween>20</SteleCellNumBetween>
+		<MXNum>21</MXNum>
+		<MXAverageRingRadius>12</MXAverageRingRadius>
+		<MXMaxRingRadius>13</MXMaxRingRadius>
+		<SurroundingCellRingNum>1</SurroundingCellRingNum>
 		<BoundaryDotNum>10</BoundaryDotNum>
-		<BoundaryUpRowNum>8</BoundaryUpRowNum>
-		<BoundaryDownRowNum>1</BoundaryDownRowNum>
+		<BoundaryUpRowNum>5</BoundaryUpRowNum>
+		<BoundaryDownRowNum>5</BoundaryDownRowNum>
 	</MetaXylem>
-	<ProtoXylem unit="um" variationRatio="0.2">
+	<ProtoXylem unit="um" variationRatio="0.6">
 		<Slices min=3 max=6 />
 		<CellwallWidth>0.48</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<GapRadius>5</GapRadius>
-		<PXNum>10</PXNum>
+		<GapRadius>10</GapRadius>
+		<PXNum>4</PXNum>
 		<PXAverageRingRadius>10</PXAverageRingRadius>
-		<SurroundingCellRingNum>15</SurroundingCellRingNum>
+		<SurroundingCellRingNum>10</SurroundingCellRingNum>
 		<SurroundingCellRingRadius>5</SurroundingCellRingRadius>
 	</ProtoXylem>
 	<Phloem unit="um" variationRatio="0.2">
-		<ParallelThresholdRatio>0.5</ParallelThresholdRatio>
+		<ParallelThresholdRatio>0.1</ParallelThresholdRatio>
 	</Phloem>
 	<Epidermis unit="um" variationRatio="0.2">
 		<Slices min=3 max=6 />
@@ -85,26 +86,4 @@
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
 		<CellDiameter>5</CellDiameter>
 	</Pericycle>
-	<FluxInput>
-		<hydraulicConductance>6.1e-19</hydraulicConductance>
-		<reflectionCoeffecient>1</reflectionCoeffecient>
-		<waterPressureDiff>0.1</waterPressureDiff>
-		<osmoticPressureDiff>0.2</osmoticPressureDiff>
-		<radialConductivity>3.22e-08</radialConductivity>
-		<pressurePotentialSurface>3e+7</pressurePotentialSurface>
-		<pressurePotentialXylem>0</pressurePotentialXylem>
-		<effectiveReflectionCoefficient>0</effectiveReflectionCoefficient>
-		<osmoticPotentialSurface>0.2</osmoticPotentialSurface>
-		<osmoticPotentialXylem>0</osmoticPotentialXylem>
-	</FluxInput>
-	<Nutrient name="Phosphorous" startTime=0 endTime=10 timestep=0.5>
-		<surfaceConcentration>5</surfaceConcentration>
-		<initialConcentration>4</initialConcentration>
-		<V_max>47125</V_max>
-		<k_m>177</k_m>
-		<outer_permeability>0.0001</outer_permeability>
-		<cell_permeability>50</cell_permeability>
-		<utilisation>0.1</utilisation>
-		<plasmodesmaRadius>0.03</plasmodesmaRadius>
-	</Nutrient>
 </Main>

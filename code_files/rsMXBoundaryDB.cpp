@@ -175,7 +175,10 @@ void rsMXBoundaryDB::BoundaryHalfCentralRadianDB()
 	fout << "BoundaryHalfCentralRadianDB" << endl;
 	for (itVec = boundaryRadiusDB.begin(), i = 0; itVec != boundaryRadiusDB.end(); itVec++, i++)
 	{
-		sinHalfCentralRadian = *itVec / (centerXYRadiusDB[i]);
+		if (*itVec <= centerXYRadiusDB[i])
+			sinHalfCentralRadian = *itVec / (centerXYRadiusDB[i]);
+		else
+			sinHalfCentralRadian = 0;
 		asinHalfCentralRadian = asin(sinHalfCentralRadian);
 		boundaryHalfCentralRadianDB.push_back(asinHalfCentralRadian);
 		fout << "i: " << i << "  " << asinHalfCentralRadian << endl;
@@ -256,7 +259,10 @@ void rsMXBoundaryDB::BoundaryTangentCenterRadiusDB()
 		itVec != centerXYRadiusDB.end();
 		itVec++, i++)
 	{
-		temp = pow(pow(*itVec, 2) - pow(boundaryRadiusDB[i], 2), 0.5);
+		double temp2 = pow(*itVec, 2) - pow(boundaryRadiusDB[i], 2);
+		if (temp2 < 0)
+			temp2 = 0.0;
+		temp = pow(temp2, 0.5);
 		boundaryTangentCenterRadiusDB.push_back(temp);
 	}
 }

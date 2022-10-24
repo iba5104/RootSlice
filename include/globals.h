@@ -4,7 +4,9 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include <algorithm>
 #include "tinyxml.h"
+#include <numeric>
 
 using namespace std;
 
@@ -32,6 +34,7 @@ public:
 	static double cortexRadiusInput;
 	static int corticalAddRadiusDBSelectInput;
 	static int corticalCellNumSelectInput;
+	static bool type_dicot;
 
 	const char* type_scleren	= "sclerenchyma";
 	const char* type_epi		= "epidermis";
@@ -57,7 +60,9 @@ public:
 	double tangentRingRadiusRatio;
 	int steleCellNumBetween;
 	int num;
+	vector<int> eachRingNum;
 	double averageRingRadius;
+	double maxRingRadius;
 	int surroundingCellRingNum;
 
 	double gapRadius;
@@ -92,6 +97,7 @@ public:
 	double permeability;
 	double utilisation;
 	double plasmodesmaRadius;
+	int plasmodesmaFrequency;
 
 	struct CellData {
 		int ID;

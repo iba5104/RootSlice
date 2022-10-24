@@ -25,6 +25,23 @@ void rsMXCoreDB::XylemOutRingDB
 	int minus;
 
 	//cout << endl;
+	if (type_dicot)
+	{
+		double maxCenterDistanceSum = (mxRingNum * xylemMaxOutRingNum * xylemMaxOutRingAddRadius * 2) + eachArmDiameterSum;
+		double maxRadiusDiff = boundaryMXPXRingRadiusDeliver - mxMaxRingRadius;
+		if (noCentreMX)
+			maxRadiusDiff = boundaryMXPXRingRadiusDeliver;
+		while (maxCenterDistanceSum > maxRadiusDiff) {
+			double ratio = maxRadiusDiff / maxCenterDistanceSum;
+			for (int i = 0; i < eachRingRadius.size(); i++)
+					eachRingRadius[i] = eachRingRadius[i] * ratio;
+			for (int k = 0; k < eachRingDiameterSum.size(); k++)
+				eachRingDiameterSum[k] = eachRingDiameterSum[k] * ratio;
+			eachArmDiameterSum = eachArmDiameterSum * ratio;
+			maxCenterDistanceSum = (mxRingNum * xylemMaxOutRingNum * xylemMaxOutRingAddRadius * 2) + eachArmDiameterSum;
+			maxRadiusDiff = boundaryMXPXRingRadiusDeliver - eachRingRadius[0];
+		}
+	}
 
 	for (it = eachRingRadius.begin(), i = 0;
 		it != eachRingRadius.end();
@@ -34,29 +51,30 @@ void rsMXCoreDB::XylemOutRingDB
 		xylemOutRingCellNum.clear();
 		/// according to eachRingRadius to set the ringNum of mx;
 		//cout << "XylemOutRingDB: " << i << endl;
-		if (*it <= mxAverageRingRadius)
-		{
-			xylemOutRingNum = xylemMaxOutRingNum - 1;
-			{  for (temp = 0, minus = xylemOutRingNum; temp != xylemOutRingNum; temp++, minus--)
-			{
-				if (temp == xylemOutRingNum - 1)
-				{
-					xylemOutRingAddRadius.push_back(xylemMaxOutRingAddRadius);
-					xylemOutRingCellNum.push_back(round(xylemMaxOutRingCellNum));
-					//cout << round(xylemMaxOutRingCellNum) << endl;
-				}
-				else
-				{
-					xylemOutRingAddRadius.push_back(xylemMaxOutRingAddRadius / (minus * factorAddRaius));
-					xylemOutRingCellNum.push_back(round(xylemMaxOutRingCellNum));
-					//cout << round(xylemMaxOutRingCellNum) << endl;
-				}
-				//cout << xylemOutRingAddRadius[temp] << endl;
-			}
-			}
-		}
-		else
-		{
+		//if (*it <= mxAverageRingRadius)
+		//{
+		//	xylemOutRingNum = xylemMaxOutRingNum - 1;
+		//	if (xylemOutRingNum > 0) {
+		//		for (temp = 0, minus = xylemOutRingNum; temp != xylemOutRingNum; temp++, minus--)
+		//		{
+		//			if (temp == xylemOutRingNum - 1)
+		//			{
+		//				xylemOutRingAddRadius.push_back(xylemMaxOutRingAddRadius);
+		//				xylemOutRingCellNum.push_back(round(xylemMaxOutRingCellNum));
+		//				//cout << round(xylemMaxOutRingCellNum) << endl;
+		//			}
+		//			else
+		//			{
+		//				xylemOutRingAddRadius.push_back(xylemMaxOutRingAddRadius / (minus * factorAddRaius));
+		//				xylemOutRingCellNum.push_back(round(xylemMaxOutRingCellNum));
+		//				//cout << round(xylemMaxOutRingCellNum) << endl;
+		//			}
+		//			//cout << xylemOutRingAddRadius[temp] << endl;
+		//		}
+		//	}
+		//}
+		//else
+		//{
 			xylemOutRingNum = xylemMaxOutRingNum;
 			{  for (temp = 0, minus = xylemOutRingNum; temp != xylemOutRingNum; temp++, minus--)
 			{
@@ -75,7 +93,7 @@ void rsMXCoreDB::XylemOutRingDB
 				//cout << xylemOutRingAddRadius[temp] << endl;
 			}
 			}
-		}
+		//}
 		xylemOutRingAddRadiusDB.insert(pair<int, vector<double> >(i, xylemOutRingAddRadius));
 		xylemOutRingCellNumDB.insert(pair<int, vector<int> >(i, xylemOutRingCellNum));
 
@@ -164,23 +182,72 @@ void rsMXCoreDB::CenterXYRadiusDB()
 {
 	map<int, vector<double> >::iterator itMap;
 	vector<double>::iterator itVec;
+	//vector<double>::reverse_iterator itVec1;
 	double tempSum;
 	double temp;
-	int i;
+	int i, rngIdx;
 	ofstream fout(getFolderName() + "a.txt", ios::app);
-	for (itMap = xylemOutRingAddRadiusDB.begin(), temp = 0, i = 0;
-		itMap != xylemOutRingAddRadiusDB.end();
-		itMap++, i++)
-	{
-		for (itVec = (*itMap).second.begin(), tempSum = 0;
-			itVec != (*itMap).second.end();
-			itVec++)
+	if (type_dicot) {
+		int count = 0;
+		double prevRingRadius = 0;
+		if (!noCentreMX)
 		{
-			tempSum += *itVec;
+			count = 1;
+			centerXYRadiusDB.push_back(0.0);
+			prevRingRadius = boundaryRadiusDB[0];
 		}
-		temp = boundaryMXPXRingRadiusDeliver - tempSum - eachRingRadius[i];
-		centerXYRadiusDB.push_back(temp);
-		fout << "centerXYRadiusDB: " << i << "  " << temp << endl;
+		for (i = 0; i < mxRingNum; i++)
+		{
+			if (i != 0)
+				prevRingRadius = centerXYRadiusDB.back() + boundaryRadiusDB[count-1];
+			for (int j = 0; j < eachRingMXNum[i]; j++, count++)
+			{
+				if (i == 0)
+					temp = prevRingRadius + boundaryRadiusDB[count];
+				else
+					temp = prevRingRadius + boundaryRadiusDB[count];
+				if (temp > boundaryMXPXRingRadiusDeliver)
+					temp = boundaryMXPXRingRadiusDeliver - boundaryRadiusDB[count];
+				centerXYRadiusDB.push_back(temp);
+				fout << "centerXYRadiusDB: " << centerXYRadiusDB.size() - 1 << "  " << temp << endl;
+			}
+		}
+		//for (itVec = boundaryRadiusDB.begin(), i = 0;
+		//	itVec != boundaryRadiusDB.end();
+		//	itVec++, i++)
+		//{
+		//	if (i == 0) {
+		//		temp = 0;
+		//		centerXYRadiusDB.push_back(0.0);
+		//		fout << "centerXYRadiusDB: " << centerXYRadiusDB.size() - 1 << "  " << temp << endl;
+		//		continue;
+		//	}
+		//	temp = (centerXYRadiusDB.back() * 2.0) + *itVec;
+		//	if (temp > boundaryMXPXRingRadiusDeliver)
+		//		temp = boundaryMXPXRingRadiusDeliver - *itVec;
+		//	/*if (i == cellNumLayer) {
+		//		j--;
+		//		cellNumLayer = lineNumLayer[j];
+		//		i = 0;
+		//		curMaxRadius -= (*itVec1 * 2);
+		//	}
+		//	temp = curMaxRadius - *itVec1;
+		//	if (temp < 0)
+		//		temp = 0;*/
+		//	centerXYRadiusDB.push_back(temp);
+		//	fout << "centerXYRadiusDB: " << centerXYRadiusDB.size() - 1 << "  " << temp << endl;
+		//}
+		//reverse(centerXYRadiusDB.begin(), centerXYRadiusDB.end());
+	}
+	else {
+		for (itVec = boundaryRadiusDB.begin(), i = 0;
+			itVec != boundaryRadiusDB.end();
+			itVec++, i++)
+		{
+			temp = boundaryMXPXRingRadiusDeliver - *itVec;
+			centerXYRadiusDB.push_back(temp);
+			fout << "centerXYRadiusDB: " << i << "  " << temp << endl;
+		}
 	}
 }
 
@@ -576,6 +643,9 @@ void rsMXCoreDB::InitXylemOutRing
 	double xylemMaxOutRingNum,
 	double xylemMaxOutRingCellNum,
 	double xylemMaxOutRingAddRadius,
+	double setMaxRadius,
+	int setmxRingNum,
+	vector<int> eachRingNum,
 	int sliceNum)
 {
 	SetObjectXYZRadiusRatio();
@@ -586,12 +656,21 @@ void rsMXCoreDB::InitXylemOutRing
 	vector<double> eachRingRadiusAdd;
 	double eachRingRadiusSum;
 	**************************/
+	if (type_dicot)
+	{
+		XylemArms(RsPXCoreDB->pxNum);
+		MXRingNum(setmxRingNum);
+		EachRingMXNum(eachRingNum);
+		SetOutRingCellNum(xylemMaxOutRingCellNum);
+		SetOutRingAddRadius(xylemMaxOutRingAddRadius);
+	}
 	BoundaryMXPXRingRadiusDeliver(RsPXCoreDB);
 	MXNum(setMXNum);
 	MXAverageRingRadius(setMXAverageRingRadius);
+	MXMinMaxRingRadius(setMaxRadius, RsPXCoreDB->eachRingRadius);
 
 	RandomRadius(variationRatio);
-	CenterXYRotate();
+	CenterXYRotate(RsPXCoreDB->centerRingRotateRadian, RsPXCoreDB->centerRingRotateAngle);
 
 	XylemOutRingDB(xylemMaxOutRingNum,
 		xylemMaxOutRingCellNum,

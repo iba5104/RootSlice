@@ -244,7 +244,7 @@ void rsDataOutput::DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB)
 
 	/// for volume calculation of 1 cm root segment, we need to mutiply 450 / 10000;
 	// Jagdeep 5-14-2020 This ratio represents the ratio of simualted segment by 1 cm long segment.
-	rootSegment1cmRatio = 10000 / totalHeight;
+	// rootSegment1cmRatio = 10000 / totalHeight;
 
 	/// The ratio of volume accupied by air;
 	//airSpaceRatio = 0.95;
@@ -277,7 +277,7 @@ void rsDataOutput::DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB)
 	}
 
 	/*******************************************************************************
-	corticalTotalCellVolume;
+	TotalCellVolume;
 	********************************************************************************/
 	map<int, vector< vector<double> > >::iterator itMap;
 	vector< vector<double> >::iterator itVec2;
@@ -322,7 +322,7 @@ void rsDataOutput::DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB)
 
 
 	/*******************************************************************************
-	corticalPureCellVolume;
+	PureCellVolume;
 	********************************************************************************/
 	double pureCellVolume = 0;
 	double pureCellVolume_each_ring = 0;
@@ -351,7 +351,7 @@ void rsDataOutput::DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB)
 	}
 
 	/******************
-	corticalVacuoleVolume;
+	VacuoleVolume;
 	******************/
 	double vacuoleVolume = 0;
 	double vacuoleVolume_each_ring = 0;
@@ -376,12 +376,10 @@ void rsDataOutput::DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB)
 		}
 		lines[iRingNum] = lines[iRingNum] + "," + to_string(vacuoleVolume_each_ring);
 	}
-	/// for 1 cm root segment, we need to mutiply rootSegment1cmRatio;
-	//corticalVacuoleVolume = corticalVacuoleVolume; //* airSpaceRatio * rootSegment1cmRatio;
-
+	
 	/******************************************************************************************
-	calculating plasma memembrane volume by adding 0.01 to a, b, and, c radius to pure cell volume
-	**********************************************************************************************///// 1-27-2021 - JGDP
+	calculating plasma memembrane volume
+	*******************************************************************************************/
 	double PM_thick = RsSourceDermisDB->plasmaMembraneThickness;
 	double pureCell_plus_PM_Volume = 0;
 	double pureCell_plus_PM_Volume_each_ring = 0;
@@ -408,10 +406,6 @@ void rsDataOutput::DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB)
 		lines[iRingNum] = lines[iRingNum] + "," + to_string(pureCell_plus_PM_Volume_each_ring);
 		fout << lines[iRingNum] << endl;
 	}
-
-
-	/// for 1 cm root segment, we need to mutiply rootSegment1cmRatio;
-	//corticalPureCellVolume = corticalPureCellVolume;// * airSpaceRatio; //* rootSegment1cmRatio;
 
 	/*******************************************************************************
 	cellWallVolume;
@@ -440,6 +434,145 @@ void rsDataOutput::DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB)
 	double apoplastVolume = cellWallVolume;
 	/// symplastVolume;
 	double symplastVolume = cytoplasmVolume;
+
+}
+
+void rsDataOutput::PXDataOutputCalculate(rsPXCoreDB* RsPXCoreDB) {
+	vector<int>::iterator itVecNum;
+	vector<double>::iterator itVecAddRadius;
+
+	ofstream fout(getFolderName() + "individual_protoxylem_cell_volume.csv", ios::app);
+
+	double sectionVolume = M_PI * pow(RsPXCoreDB->circleRadius, 2.0) * totalHeight;
+
+	double theoreticalVolume = M_PI * (pow(RsPXCoreDB->circleRadius, 2.0) - pow(baseRadius, 2.0)) * totalHeight;
+
+	double sectionRatio = theoreticalVolume / sectionVolume;
+	int i;
+
+	/*******************************************************************************
+	TotalCellVolume;
+	********************************************************************************/
+	map<int, vector<double> > ::iterator itMap;
+	vector<double>::iterator           itVec;
+	/// declare int;
+	int iRingNum;
+	int sliceTempNum;
+
+	double totalCellVolume = 0;
+	double totalCellVolume_each_ring = 0;
+
+	fout << endl << endl << "Ring Num,Total Cell Volume,Pure Cell Volume,Vacuole Volume,Pure Cell plus PM Volume" << endl;
+	vector<string> lines;
+
+	for (iRingNum = 0, itMap = RsPXCoreDB->pxSmallCenterRingObjectHeightDB.begin();
+		itMap != RsPXCoreDB->pxSmallCenterRingObjectHeightDB.end();
+		iRingNum++, itMap++)
+	{
+		for (sliceTempNum = 0, itVec = (*itMap).second.begin(); itVec != (*itMap).second.end(); sliceTempNum++, itVec++)
+		{
+			/////Volume of cylinder
+			totalCellVolume_each_ring = M_PI * RsPXCoreDB->pxSmallVerticalRadiusDB[iRingNum] *
+				RsPXCoreDB->pxSmallVerticalRadiusDB[iRingNum] *
+				RsPXCoreDB->pxSmallCenterRingObjectHeightDB[iRingNum][sliceTempNum];
+		}
+		string line = to_string(iRingNum + 1) + "," + to_string(totalCellVolume_each_ring);
+		lines.push_back(line);
+		fout << lines[iRingNum] << endl;
+	}
+
+	/*******************************************************************************
+	PureCellVolume;
+	********************************************************************************/
+
+	/******************
+	VacuoleVolume;
+	******************/
+
+
+	/******************************************************************************************
+	calculating plasma memembrane volume
+	*******************************************************************************************/
+	double PM_thick = RsPXCoreDB->plasmaMembraneThickness;
+	double pureCell_plus_PM_Volume = 0;
+	double pureCell_plus_PM_Volume_each_ring = 0;
+
+	/*******************************************************************************
+	cellWallVolume;
+	********************************************************************************/
+	//double cellWallVolume = totalCellVolume - pureCellVolume;
+
+	/********************
+	cytoplasmVolume;
+	********************/
+	//double cytoplasmVolume = pureCellVolume - vacuoleVolume;
+
+	/***************************
+	cytoplasm and vacuole ratio;
+	***************************/
+	//double cytoplasm2SectionRatio = cytoplasmVolume / sectionVolume;
+	//double vacuole2SectionRatio = vacuoleVolume / sectionVolume;
+
+	//double cellWall2CellRatio = cellWallVolume / totalCellVolume;
+	//double cytoplasm2CellRatio = cytoplasmVolume / totalCellVolume;
+	//double vacuole2CellRatio = vacuoleVolume / totalCellVolume;
+
+}
+void rsDataOutput::MXDataOutputCalculate(rsMXCoreDB* RsMXCoreDB) {
+
+}
+void rsDataOutput::MXBoundaryDataOutputCalculate(rsMXBoundaryOutDB* RSMXBoundaryOutDB) {
+
+}
+void rsDataOutput::SteleDataOutputCalculate(rsSteleInnerDB* RsSteleInnerDB) {
+
+}
+void rsDataOutput::PXBoundaryDataOutputCalculate(rsPXBoundaryDB* RsPXBoundaryDB) {
+
+	vector<int>::iterator itVecNum;
+	vector<double>::iterator itVecAddRadius;
+
+	ofstream fout(getFolderName() + "individual_protoxylem_boundary_cell_volume.csv", ios::app);
+
+	double sectionVolume = M_PI * pow(RsPXBoundaryDB->circleRadius, 2.0) * totalHeight;
+
+	double theoreticalVolume = M_PI * (pow(RsPXBoundaryDB->circleRadius, 2.0) - pow(baseRadius, 2.0)) * totalHeight;
+
+	double sectionRatio = theoreticalVolume / sectionVolume;
+	int i;
+
+	/*******************************************************************************
+	TotalCellVolume;
+	********************************************************************************/
+	map<int, vector<double> > ::iterator itMap;
+	vector<double>::iterator           itVec;
+	/// declare int;
+	int iRingNum;
+	int sliceTempNum;
+
+	double totalCellVolume = 0;
+	double totalCellVolume_each_ring = 0;
+
+	fout << endl << endl << "Ring Num,Total Cell Volume,Pure Cell Volume,Vacuole Volume,Pure Cell plus PM Volume" << endl;
+	vector<string> lines;
+
+	for (iRingNum = 0, itMap = RsPXBoundaryDB->pxSmallCenterRingObjectHeightDB.begin();
+		itMap != RsPXBoundaryDB->pxSmallCenterRingObjectHeightDB.end();
+		iRingNum++, itMap++)
+	{
+		for (sliceTempNum = 0, itVec = (*itMap).second.begin(); itVec != (*itMap).second.end(); sliceTempNum++, itVec++)
+		{
+			/////Volume of cylinder
+			totalCellVolume_each_ring = M_PI * RsPXBoundaryDB->pxSmallVerticalRadiusDB[iRingNum] *
+				RsPXBoundaryDB->pxSmallVerticalRadiusDB[iRingNum] *
+				RsPXBoundaryDB->pxSmallCenterRingObjectHeightDB[iRingNum][sliceTempNum];
+		}
+		string line = to_string(iRingNum + 1) + "," + to_string(totalCellVolume_each_ring);
+		lines.push_back(line);
+		fout << lines[iRingNum] << endl;
+	}
+}
+void rsDataOutput::PhloemDataOutputCalculate(rsPhloemDB* RsPhloemDB) {
 
 }
 

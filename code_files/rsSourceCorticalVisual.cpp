@@ -3,7 +3,9 @@
 
 void rsSourceCorticalVisual::CorticalVisual
 (	rsSourceCorticalDB* CorticalDB,
-	vtkSmartPointer<vtkRenderer> renL
+	vtkSmartPointer<vtkRenderer> renL,
+	vector<double> result_cortical,
+	string filePrefix
 )
 {  /// declare iterator;
 	map<int, vector< vector<double> > >::iterator itMap;
@@ -13,6 +15,7 @@ void rsSourceCorticalVisual::CorticalVisual
 	int iRingNum;
 	int i;
 	int sliceTempNum;
+	int cellCtr = 0;
 	//   int CorticalCellNum = 0;
 	//   ofstream fout("staticNum.txt",ios::app);
 
@@ -21,7 +24,7 @@ void rsSourceCorticalVisual::CorticalVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	string flName = getFolderName() + CorticalDB->CorticalXMLVtpFileName;
+	string flName = getFolderName() + filePrefix + CorticalDB->CorticalXMLVtpFileName;
 	writer->SetFileName(flName.c_str());
 	addToFileNamesVector(CorticalDB->CorticalXMLVtpFileName);
 
@@ -86,9 +89,10 @@ void rsSourceCorticalVisual::CorticalVisual
 				/// Add scalar to point;
 				for (numSequence = 0; numSequence < pointNum; numSequence++)
 				{
+					double insrtVal = (cellCtr < result_cortical.size()) ? result_cortical[cellCtr] : 0;
 					scalars->InsertTuple1
 						//               ( numSequence, double(sliceTempNum) / 2 );
-						(numSequence, 0);
+						(numSequence, cellCtr*2.0);
 				}
 				polydata->GetPointData()->SetScalars(scalars);
 				scalars->Delete();
@@ -134,6 +138,7 @@ void rsSourceCorticalVisual::CorticalVisual
 
 				renL->AddActor(actor);
 			}
+			cellCtr++;
 		}
 	}
 	writer->SetInputConnection(append->GetOutputPort());
@@ -142,7 +147,9 @@ void rsSourceCorticalVisual::CorticalVisual
 
 void rsSourceCorticalVisual::VacuoleVisual
 (rsSourceCorticalDB* CorticalDB,
-	vtkSmartPointer<vtkRenderer> renL)
+	vtkSmartPointer<vtkRenderer> renL,
+	vector<double> result_cortical,
+	string filePrefix)
 {  /// declare iterator;
 	map<int, vector< vector<double> > >::iterator itMap;
 	vector< vector<double> >::iterator itVec2;
@@ -151,13 +158,14 @@ void rsSourceCorticalVisual::VacuoleVisual
 	int iRingNum;
 	int i;
 	int sliceTempNum;
+	int cellCtr = 0;
 
 	/// Create vtkAppendPolyData and vtkXMLPolyDataWriter pointer outside the loop;
 	vtkSmartPointer<vtkAppendPolyData> append =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	string flName = getFolderName() + CorticalDB->CorticalVacuoleXMLVtpFileName;
+	string flName = getFolderName() + filePrefix + CorticalDB->CorticalVacuoleXMLVtpFileName;
 	writer->SetFileName(flName.c_str());
 	addToFileNamesVector(CorticalDB->CorticalVacuoleXMLVtpFileName);
 
@@ -209,9 +217,8 @@ void rsSourceCorticalVisual::VacuoleVisual
 					vtkSmartPointer<vtkPolyData>::New();
 				polydata = superEllipsoidFunction->GetOutput();
 
-				int pointNum, cellNum;
+				int pointNum;
 				pointNum = polydata->GetNumberOfPoints();
-				cellNum = polydata->GetNumberOfCells();
 
 				vtkSmartPointer<vtkFloatArray> scalars = vtkSmartPointer<vtkFloatArray>::New();
 				scalars->SetName("Color");
@@ -220,9 +227,10 @@ void rsSourceCorticalVisual::VacuoleVisual
 				/// Add scalar to point;
 				for (numSequence = 0; numSequence < pointNum; numSequence++)
 				{
+					double insrtVal = (cellCtr < result_cortical.size()) ? result_cortical[cellCtr] : 0;
 					scalars->InsertTuple1
 						//               ( numSequence, double(sliceTempNum) / 4 );
-						(numSequence, 0.05);
+						(numSequence, insrtVal/2.0);
 				}
 				polydata->GetPointData()->SetScalars(scalars);
 
@@ -267,6 +275,7 @@ void rsSourceCorticalVisual::VacuoleVisual
 
 				renL->AddActor(actor);
 			}
+			cellCtr++;
 		}
 	}
 	writer->SetInputConnection(append->GetOutputPort());
@@ -275,7 +284,9 @@ void rsSourceCorticalVisual::VacuoleVisual
 
 void rsSourceCorticalVisual::CorticalPlasmaMembraneVisual
 (rsSourceCorticalDB* CorticalDB,
-	vtkSmartPointer<vtkRenderer> renL
+	vtkSmartPointer<vtkRenderer> renL,
+	vector<double> result_cortical,
+	string filePrefix
 )
 {  /// declare iterator;
 	map<int, vector< vector<double> > >::iterator itMap;
@@ -285,6 +296,7 @@ void rsSourceCorticalVisual::CorticalPlasmaMembraneVisual
 	int iRingNum;
 	int i;
 	int sliceTempNum;
+	int cellCtr = 0;
 	//   int CorticalCellNum = 0;
 	//   ofstream fout("staticNum.txt",ios::app);
 
@@ -293,7 +305,7 @@ void rsSourceCorticalVisual::CorticalPlasmaMembraneVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	string flName = getFolderName() + CorticalDB->CorticalPlasmaMembraneVtpFileName;
+	string flName = getFolderName() + filePrefix + CorticalDB->CorticalPlasmaMembraneVtpFileName;
 	writer->SetFileName(flName.c_str());
 	addToFileNamesVector(CorticalDB->CorticalPlasmaMembraneVtpFileName);
 
@@ -354,13 +366,13 @@ void rsSourceCorticalVisual::CorticalPlasmaMembraneVisual
 				vtkFloatArray* scalars = vtkFloatArray::New();
 				scalars->SetName("Color");
 				int numSequence;
+				vector<double> colorTuple;
 
 				/// Add scalar to point;
 				for (numSequence = 0; numSequence < pointNum; numSequence++)
 				{
-					scalars->InsertTuple1
-						//               ( numSequence, double(sliceTempNum) / 2 );
-						(numSequence, 0);
+					double insrtVal = (cellCtr < result_cortical.size()) ? result_cortical[cellCtr] : 0;
+					scalars->InsertTuple1 (numSequence, insrtVal);
 				}
 				polydata->GetPointData()->SetScalars(scalars);
 				scalars->Delete();
@@ -393,6 +405,7 @@ void rsSourceCorticalVisual::CorticalPlasmaMembraneVisual
 
 				renL->AddActor(actor);
 			}
+			cellCtr++;
 		}
 	}
 	writer->SetInputConnection(append->GetOutputPort());
