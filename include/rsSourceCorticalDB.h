@@ -2,6 +2,7 @@
 #define RSSOURCECORTICALDB_H_INCLUDED
 
 #include "rsBaseGeometry.h"
+#include "globals.h"
 
 /**************************************
 /// We need to store for each ring in Cortical cell;
@@ -29,9 +30,11 @@ public:
    /// Set OutputXMLVtpFileName;
    const char* CorticalXMLVtpFileName;
    const char* CorticalVacuoleXMLVtpFileName;
+   const char* CorticalPlasmaMembraneVtpFileName;
    void OutputXMLVtpFileName
    ( const char* CorticalXMLVtpFileNameInput,
-     const char* CorticalVacuoleXMLVtpFileNameInput );
+     const char* CorticalVacuoleXMLVtpFileNameInput,
+     const char* CorticalPlasmaMembraneVtpFileNameInput );
 
    /// CorticalAddRadiusCalculateRatioData;
    vector<double> corticalAddRadiusCalculateSingleRatioData;
@@ -132,9 +135,6 @@ public:
                     vector<int> corticalCellNumInputData,
                     int corticalCellNumSelectInput,
                     double variationRatio,
-                    int setUResolution,
-                    int setVResolution,
-                    int setWResolution,
                     int sliceNum
                   );
 
@@ -151,9 +151,6 @@ public:
    map<int, vector<double> > vacuoleParallelDB;
    map<int, vector< vector<double> > > vacuoleHeightDB;
    void InitVacuoleDB( double gapCytoTonoInput );
-
-
-
 };
 
 #endif // RSSOURCECORTICALDB_H_INCLUDED

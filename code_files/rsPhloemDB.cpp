@@ -20,7 +20,7 @@ void rsPhloemDB::InterRadianStartAndEndDB(rsPXBoundaryDB* RsPXBoundaryDB)
 	vector<double>::iterator itVecInterStart;
 	vector<double>::iterator itVecInterEnd;
 	double temp;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "/////////////////////////////////////// rsPhloemDB ///////////////////////////////////////////////" << endl;
 	fout << "InterRadianStartAndEndDB" << endl;
 	for (itVecEnd = RsPXBoundaryDB->boundaryRadianEndDB.begin();
@@ -84,7 +84,7 @@ void rsPhloemDB::PhloemVerticalLengthHalfDB()
 {
 	vector<double>::iterator itVec;
 	double temp;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "PhloemVerticalLengthHalfDB" << endl;
 	for (itVec = upVerticalLengthTotalDB.begin();
 		itVec != upVerticalLengthTotalDB.end();
@@ -117,7 +117,7 @@ void rsPhloemDB::UpAppendVerticalLengthHalfDB()
 {
 	vector<double>::iterator itVec;
 	double temp;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendVerticalLengthHalfDB" << endl;
 	for (itVec = upAppendVerticalLengthDB.begin();
 		itVec != upAppendVerticalLengthDB.end();
@@ -137,7 +137,7 @@ void rsPhloemDB::UpAppendVerticalLengthHalfDB()
  */
 void rsPhloemDB::BoundaryMXPXRingRadiusDeliver(rsPXBoundaryDB* RsPXBoundaryDB)
 {
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "BoundaryMXPXRingRadiusDeliver" << endl;
 	boundaryMXPXRingRadiusDeliver = RsPXBoundaryDB->boundaryMXPXRingRadius;
 	fout << boundaryMXPXRingRadiusDeliver << endl;
@@ -179,7 +179,7 @@ void rsPhloemDB::UpFirstSecondPhloemParallelNumDB()
 	vector<double>::iterator itVec;
 	int tempFirst;
 	int tempSecond;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpFirstSecondPhloemParallelNumDB" << endl;
 	for (itVec = interIntersectionRadianDB.begin();
 		itVec != interIntersectionRadianDB.end();
@@ -208,7 +208,7 @@ void rsPhloemDB::PhloemRadianRatioDB()
 					  double(3) / double(4)
 	};
 	int i;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "PhloemRadianRatioDB" << endl;
 	for (i = 0; i != 3; i++)
 	{
@@ -234,7 +234,7 @@ void rsPhloemDB::UpFirstSecondPhloemParallelRadianTotalDB()
 	vector<int>::iterator itVecSecondNum;
 	double tempFirst;
 	double tempSecond;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpFirstSecondPhloemParallelRadianTotalDB" << endl;
 	for (itVec = interIntersectionRadianDB.begin(), itVecFirstNum = upFirstPhloemParallelNumDB.begin(),
 		itVecSecondNum = upSecondPhloemParallelNumDB.begin();
@@ -270,7 +270,7 @@ void rsPhloemDB::UpAppendCenterRadiusDB()
 	int layer;
 	double temp;
 
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendCenterRadiusDB" << endl;
 
 	for (itVecHalf = upAppendVerticalLengthHalfDB.begin(), itVec = upAppendVerticalLengthDB.begin(), i = 0;
@@ -305,7 +305,7 @@ void rsPhloemDB::UpFirstSecondAppendParallelRadianTotalDB()
 	double tempFirst;
 	double tempSecond;
 
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpFirstSecondAppendParallelRadianTotalDB" << endl;
 	for (itVec = interIntersectionRadianDB.begin(), itVecFirst = upFirstPhloemParallelRadianTotalDB.begin(),
 		itVecSecond = upSecondPhloemParallelRadianTotalDB.begin();
@@ -334,7 +334,7 @@ void rsPhloemDB::UpAppendParallelRadianTotalRatioDB()
 					  double(2) / double(3)
 	};
 	int i;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendParallelRadianTotalRatioDB" << endl;
 	for (i = 0; i != 3; i++)
 	{
@@ -362,18 +362,18 @@ void rsPhloemDB::UpFirstSecondAppendParallelStartAndEndRadianTotalDB()
 	double tempSecondStart;
 	double tempFirstEnd;
 	double tempSecondEnd;
-	double ratioFirst;
-	double ratioSecond;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	int ratioFirst;
+	int ratioSecond;
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpFirstSecondAppendParallelStartAndEndRadianTotalDB" << endl;
 	for (itVecFirst = upFirstAppendParallelRadianTotalDB.begin(),
 		itVecSecond = upSecondAppendParallelRadianTotalDB.begin();
 		itVecFirst != upFirstAppendParallelRadianTotalDB.end();
 		itVecFirst++, itVecSecond++)
 	{  //srand(( rand()% (rand()% 1000) ) );
-		ratioFirst = rand() % 3 + 1;
+		ratioFirst = rand() % 3;
 		//srand(( rand()% (rand()% 1000) ) );
-		ratioSecond = rand() % 3 + 1;
+		ratioSecond = rand() % 3;
 		fout << "ratioFirst: " << ratioFirst << "  ratioSecond: " << ratioSecond << endl;
 		tempFirstStart = *itVecFirst * upAppendParallelStartAndEndRadianTotalRatioDB[ratioFirst];
 		tempFirstEnd = *itVecFirst - tempFirstStart;
@@ -406,7 +406,7 @@ void rsPhloemDB::UpAppendParallelRadianTotal()
 	int i;
 	int rep;
 
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendParallelRadianTotal" << endl;
 	fout << "Start" << endl;
 	/// Start;
@@ -471,7 +471,7 @@ void rsPhloemDB::UpAppendParallelLengthTotalDB()
 	double tempEnd;
 	int i;
 
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendParallelLengthTotalDB" << endl;
 
 	for (itMapRadius = upAppendCenterRadiusDB.begin(),
@@ -540,7 +540,7 @@ void rsPhloemDB::UpAppendParallelLengthThresholdDB(double setUpAppendParallelLen
 	vector<double>::iterator itVecFirst;
 	vector<double>::iterator itVecSecond;
 	double temp;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendParallelLengthThresholdDB" << endl;
 	for (itVecFirst = upFirstParallelLengthTotalDB.begin(),
 		itVecSecond = upSecondParallelLengthTotalDB.begin();
@@ -577,7 +577,7 @@ void rsPhloemDB::UpAppendParallelNumDB()
 	int intNumEnd;
 	int i;
 
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendParallelNumDB" << endl;
 
 	for (itVecThreshold = upAppendParallelLengthThresholdDB.begin(),
@@ -744,7 +744,7 @@ void rsPhloemDB::UpAppendParallelCenterRadianDB()
 	int j;
 	int k;
 	int num;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendParallelCenterRadianDB" << endl;
 	fout << "Start" << endl;
 	/// Start;
@@ -849,7 +849,7 @@ void rsPhloemDB::UpAppendParallelCenterRotateAngleDB()
 	int i;
 	int j;
 	int k;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendParallelCenterRotateAngleDB" << endl;
 	/// Start;
 	fout << "Start" << endl;
@@ -935,7 +935,7 @@ void rsPhloemDB::UpAppendCellXYDB()
 	int i;
 	int j;
 	int k;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendCellXYDB" << endl;
 	fout << "Start" << endl;
 	/// Start;
@@ -1054,7 +1054,7 @@ void rsPhloemDB::UpAppendObjectHeightAndZPositionDB(int sliceNum)
 	int iRingNum;
 	int cellNum;
 	int sliceTempNum;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendObjectHeightAndZPositionDB" << endl;
 	/// Start;
 	fout << "Start" << endl;
@@ -1222,7 +1222,7 @@ void rsPhloemDB::UpPhloemParallelLengthSegmentDB(double variationRatio)
 	vector<double> upSecondPhloemParallelLengthSegment;
 	vector<double> upSecondPhloemParallelLengthSegmentAdd;
 	int i;
-	ofstream fout("CalculateRandom.txt", ios::app);
+	ofstream fout(getFolderName() + "CalculateRandom.txt", ios::app);
 	fout << "UpPhloemParallelLengthSegmentDB" << endl;
 	/// First;
 	fout << "First" << endl;
@@ -1352,7 +1352,7 @@ void rsPhloemDB::UpPhloemParallelRadianSegmentDB()
 	double temp;
 	double tempAdd;
 	int i;
-	ofstream fout("CalculateRandom.txt", ios::app);
+	ofstream fout(getFolderName() + "CalculateRandom.txt", ios::app);
 	fout << "UpPhloemParallelRadianSegmentDB" << endl;
 	/// First;
 	fout << "First" << endl;
@@ -1439,7 +1439,7 @@ void rsPhloemDB::UpPhloemParallelCenterRadianDB()
 
 	double temp;
 	int i;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpPhloemParallelCenterRadianDB" << endl;
 	/// First;
 	fout << "First" << endl;
@@ -1504,7 +1504,7 @@ void rsPhloemDB::UpPhloemParallelCenterRotateAngleDB()
 	double tempAngle;
 	int i;
 	int j = 0;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpPhloemParallelCenterRotateAngleDB" << endl;
 	/// First;
 	fout << "First" << endl;
@@ -1575,7 +1575,7 @@ void rsPhloemDB::UpPhloemCellXYDB()
 	double tempY;
 	int i;
 	int j;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpPhloemCellXYDB" << endl;
 	fout << "First" << endl;
 	/// First;
@@ -1650,7 +1650,7 @@ void rsPhloemDB::UpPhloemObjectHeightAndZPositionDB(int sliceNum)
 	int i;
 	int cellNum;
 	int sliceTempNum;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpPhloemObjectHeightAndZPositionDB" << endl;
 	/// First;
 	fout << "First" << endl;
@@ -1743,9 +1743,6 @@ void rsPhloemDB::InitUpCell
 	int sliceNum,
 	double initZPosition,
 	int vectorNum,
-	int setUResolution,
-	int setVResolution,
-	int setWResolution,
 	double variationRatio
 )
 {
@@ -1805,7 +1802,7 @@ void rsPhloemDB::InitUpCell
 
 	/////////////////// Phloem ////////////////////////////
 
-	ofstream fout("CalculateRandom.txt", ios::app);
+	ofstream fout(getFolderName() + "CalculateRandom.txt", ios::app);
 	fout << "Phloem" << endl;
 
 	UpPhloemParallelLengthTotalDB();
@@ -1830,7 +1827,7 @@ void rsPhloemDB::InitUpCell
 
 	MapRGB();
 
-	SetSuperEllipsoidResolution(setUResolution, setVResolution, setWResolution);
+	SetSuperEllipsoidResolution();
 }
 
 /****************************************************************************************************************
@@ -1851,7 +1848,7 @@ void rsPhloemDB::DownVerticalLengthTotalDB(rsPXBoundaryDB* RsPXBoundaryDB)
 {
 	vector<double>::iterator itVec;
 	double temp;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownVerticalLengthTotalDB" << endl;
 	for (itVec = upVerticalLengthTotalDB.begin();
 		itVec != upVerticalLengthTotalDB.end();
@@ -1878,7 +1875,7 @@ void rsPhloemDB::DownFirstSecondVerticalLengthDB()
 	vector<double>::iterator itVec;
 	double tempFirst;
 	double tempSecond;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownFirstSecondVerticalLengthDB" << endl;
 	for (itVec = downVerticalLengthTotalDB.begin();
 		itVec != downVerticalLengthTotalDB.end();
@@ -1986,7 +1983,7 @@ void rsPhloemDB::DownFirstSecondParallelLengthTotalDB()
 	double tempFirst;
 	double tempSecond;
 
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownFirstSecondParallelLengthTotalDB" << endl;
 	for (itVec = interIntersectionRadianDB.begin(),
 		itVecFirst = downFirstCenterRadiusDB.begin(),
@@ -2017,7 +2014,7 @@ void rsPhloemDB::DownFirstCellNumDB()
 	vector<double>::iterator itVecThreshold;
 	int num;
 
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownFirstCellNumDB" << endl;
 	for (itVecTotal = downFirstParallelLengthTotalDB.begin(),
 		itVecThreshold = downFirstParallelLengthThresholdDB.begin();
@@ -2048,7 +2045,7 @@ void rsPhloemDB::DownFirstParallelLengthDB(double variationRatio)
 	vector<double> downFirstParallelLength;
 	vector<double> downFirstParallelLengthAdd;
 	int i;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownFirstParallelLengthDB" << endl;
 
 	for (itVecLengthTotal = downFirstParallelLengthTotalDB.begin(),
@@ -2129,7 +2126,7 @@ void rsPhloemDB::DownFirstParallelRadianDivideDB()
 	double temp;
 	double tempAdd;
 	int i;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownFirstParallelRadianDivideDB" << endl;
 
 	for (itMap = downFirstParallelLengthDB.begin(),
@@ -2180,7 +2177,7 @@ void rsPhloemDB::DownFirstParallelCenterRadianDB()
 
 	double temp;
 	int i;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownFirstParallelCenterRadianDB" << endl;
 	for (itMapRadianDivideAdd = downFirstParallelRadianDivideAddDB.begin(),
 		itMapRadianDivide = downFirstParallelRadianDivideDB.begin(),
@@ -2218,7 +2215,7 @@ void rsPhloemDB::DownFirstParallelRotateAngleDB()
 	double tempAngle;
 	int i;
 	int j = 0;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "DownFirstParallelRotateAngleDB" << endl;
 
 	for (itMap = downFirstParallelCenterRadianDB.begin(), i = 0;
@@ -2263,7 +2260,7 @@ void rsPhloemDB::DownFirstCellXYDB()
 	double tempY;
 	int i;
 	int j;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpPhloemCellXYDB" << endl;
 
 	for (itMap = downFirstParallelCenterRadianDB.begin(),
@@ -2313,7 +2310,7 @@ void rsPhloemDB::DownFirstObjectHeightAndZPositionDB(int sliceNum)
 	int i;
 	int cellNum;
 	int sliceTempNum;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "DownFirstObjectHeightAndZPositionDB" << endl;
 
 	for (i = 0, itMap = downFirstCellXDB.begin();
@@ -2369,7 +2366,7 @@ void rsPhloemDB::DownSecondParallelLengthTotalAverage()
 	double temp;
 	double sum = 0;
 	int i = 0;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownSecondParallelLengthTotalAverage" << endl;
 	for (itVec = downSecondParallelLengthTotalDB.begin();
 		itVec != downSecondParallelLengthTotalDB.end();
@@ -2395,7 +2392,7 @@ void rsPhloemDB::DownSecondParallelCellNum()
 {
 	vector<double>::iterator itVec;
 	int temp;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownSecondParallelCellNum" << endl;
 	for (itVec = downSecondParallelLengthTotalDB.begin();
 		itVec != downSecondParallelLengthTotalDB.end();
@@ -2468,7 +2465,7 @@ void rsPhloemDB::DownSecondParallelLengthRatioDB()
 	vector<int>::iterator itVec;
 	int i;
 	vector<double> downSecondParallelLengthRatio;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownSecondParallelLengthRatioDB" << endl;
 	for (itVec = downSecondParallelCellNumDB.begin(), i = 0;
 		itVec != downSecondParallelCellNumDB.end();
@@ -2570,7 +2567,7 @@ void rsPhloemDB::DownSecondParallelLengthAddDB()
 	double tempSum;
 	double sum;
 	int i;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownSecondParallelLengthAddDB" << endl;
 	for (itMap = downSecondParallelLengthDB.begin(), i = 0, temp = 0, tempSum = 0, sum = 0;
 		itMap != downSecondParallelLengthDB.end();
@@ -2620,7 +2617,7 @@ void rsPhloemDB::DownSecondParallelRadianSegmentDB()
 	double temp;
 	double tempAdd;
 	int i;
-	ofstream fout("CalculateRandom.txt", ios::app);
+	ofstream fout(getFolderName() + "CalculateRandom.txt", ios::app);
 	fout << "DownFirstParallelRadianDivideDB" << endl;
 
 	for (itMap = downSecondParallelLengthDB.begin(),
@@ -2671,7 +2668,7 @@ void rsPhloemDB::DownSecondParallelCenterRadianDB()
 
 	double temp;
 	int i;
-	ofstream fout("downCell.txt", ios::app);
+	ofstream fout(getFolderName() + "downCell.txt", ios::app);
 	fout << "DownSecondParallelCenterRadianDB" << endl;
 	for (itMapRadianSegmentAdd = downSecondParallelRadianSegmentAddDB.begin(),
 		itMapRadianSegment = downSecondParallelRadianSegmentDB.begin(),
@@ -2711,7 +2708,7 @@ void rsPhloemDB::DownSecondParallelRotateAngleDB()
 	double tempAngle;
 	int i;
 	int j = 0;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "DownSecondParallelRotateAngleDB" << endl;
 
 	for (itMap = downSecondParallelCenterRadianDB.begin(), i = 0;
@@ -2756,7 +2753,7 @@ void rsPhloemDB::DownSecondCellXYDB()
 	double tempY;
 	int i;
 	int j;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "DownSecondCellXYDB" << endl;
 
 	for (itMap = downSecondParallelCenterRadianDB.begin(),
@@ -2806,7 +2803,7 @@ void rsPhloemDB::DownSecondObjectHeightAndZPositionDB(int sliceNum)
 	int i;
 	int cellNum;
 	int sliceTempNum;
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "DownSecondObjectHeightAndZPositionDB" << endl;
 
 	for (i = 0, itMap = downSecondCellXDB.begin();

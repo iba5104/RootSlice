@@ -1,4 +1,5 @@
 #include "rsPXBoundaryVisual.h"
+#include "globals.h"
 
 /////////////////////////////////////////////// PXBoundaryCellVisual ///////////////////////////////////////////
 void rsPXBoundaryVisual::BoundaryCellVisual
@@ -18,14 +19,16 @@ void rsPXBoundaryVisual::BoundaryCellVisual
 
 	int PXBoundaryCellNum = 0;
 
-	ofstream fout("staticNum.txt", ios::app);
+	ofstream fout(getFolderName() + "staticNum.txt", ios::app);
 
 	/// Create vtkAppendPolyData and vtkXMLPolyDataWriter pointer outside the loop;
 	vtkSmartPointer<vtkAppendPolyData> append =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("PXBoundary.vtp");
+	string flName = getFolderName() + "PXBoundary.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("PXBoundary.vtp");
 
 	/// Right Up;
 

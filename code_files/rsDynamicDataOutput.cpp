@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include "rsDynamicDataOutput.h"
 
 void rsDynamicDataOutput::SetRenderer( vtkSmartPointer<vtkRenderer> renL )
@@ -13,26 +14,24 @@ void rsDynamicDataOutput::SetRenderer( vtkSmartPointer<vtkRenderer> renL )
 
 void rsDynamicDataOutput::InitEpiCortexEndoAllDB
 (
-   int setUResolution,
-   int setVResolution,
-   int setWResolution,
-   double baseRadius,
-   double thickness,
-   double totalHeight,
+    /// All objects;
+    globals cortical,
+    globals stele,
+    globals metaXylem,
+    globals protoXylem,
+    globals phloem,
+    globals epidermis,
+    globals endodermis,
+    globals exodermis,
+    globals sclerenchyma,
+    globals pericycle,
+    globals surfaceFlux,
+    vector<globals> nutrients,
+
    /// Cortical;
    vector<double> corticalAddRadiusInputData,
    vector<int> corticalCellNumInputData,
-   int corticalAddRadiusDBSelectInput,
-
-   int corticalCellNumSelectInput,
    int corticalSliceNum,
-   double initZPosition,
-   int vectorNum,
-   double variationRatioCotical,
-   int cortexLayerNum,
-   double corticalCellMultiplyRatio,
-   double corticalCellAddRadiusMinInput,
-   double cortexRadiusInput,
    /// RCA;
    double rcaRatioInput,
    int rcaNumInput,
@@ -41,63 +40,62 @@ void rsDynamicDataOutput::InitEpiCortexEndoAllDB
    double gapAngleBetweenRcaRatio,
    double variationRatioRca,
 
-   /// Pure Cortical Cell;
-   double gapCellWallInput,
+   /// Plasma Membrane
+   double plasmaMembraneWidth,
 
-   /// Cortical Vacuole;
-   double gapCytoTonoInput,
+    /// Sclerenchyma
+    int sclerenSliceNum,
+    double sclerenAddRadiusData,
 
    /// Epi;
    int epidermisSliceNum,
    double epidermisAddRadiusData,
-//   int epidermisCellNum,
-   double variationRatioDermis,
 
    /// Endo;
    int endodermisSliceNum,
    double endodermisAddRadiusData,
-//   int endodermisCellNum,
+
+   /// Pericycle
+   int pericycleSliceNum,
+   double pericycleAddRadiusData,
 
    /// OutXMLVtpFileName;
    const char* CorticalXMLVtpFileNameInput,
    const char* CorticalVacuoleXMLVtpFileNameInput,
+   const char* CorticalPlasmaMembraneVtpFileNameInput,
+   const char* SclerenXMLVtpFileNameInput,
    const char* EpidermisXMLVtpFileNameInput,
    const char* EndodermisXMLVtpFileNameInput,
    const char* ApoplastXMLVtpFileNameInput,
    const char* SymplastXMLVtpFileNameInput,
+   const char* PericycXMLVtpFileNameInput,
 
    /// DataOutputName;
    const char* dataOutputNameInput,
 
-   /// Others
-   vtkSmartPointer<vtkRenderer> renL
-   
-
+    //Other
+    vtkSmartPointer<vtkRenderer> renL
 )
 
-{  setUResolution = 12;
-   setVResolution = 12;
-   setWResolution = 12;
-
+{  
    /*************************************
    CorticalDB
    **************************************/
    rsSourceCorticalDB *RsSourceCorticalDB = new rsSourceCorticalDB;
 
+   double minRadius = *min_element(cortical.cellDiameter.begin(), cortical.cellDiameter.end())/2.0;
+
    RsSourceCorticalDB -> RandomHeightDB( totalHeight, corticalSliceNum, initZPosition, vectorNum );
    RsSourceCorticalDB -> InitAllDB ( baseRadius,
-                                     cortexLayerNum,
+                                     cortical.numFiles,
                                      corticalCellMultiplyRatio,
-                                     corticalCellAddRadiusMinInput,
+                                     minRadius,
                                      cortexRadiusInput,
                                      corticalAddRadiusDBSelectInput,
                                      corticalAddRadiusInputData,
                                      corticalCellNumInputData,
                                      corticalCellNumSelectInput,
-                                     variationRatioCotical,
-                                     setUResolution,
-                                     setVResolution,
-                                     setWResolution,
+                                     cortical.variationRatio,
                                      corticalSliceNum );
 
 //////////////////////////////////// RCA ////////////////////////////////////
@@ -118,38 +116,41 @@ void rsDynamicDataOutput::InitEpiCortexEndoAllDB
 //////////////////////////////////// RCA ///////////////////////////////////////
 
    /// pure cortical cell;
-   RsSourceCorticalDB -> InitPureCellDB( gapCellWallInput );
+   RsSourceCorticalDB -> InitPureCellDB( cortical.gapCellWall );
    /// cortical vacuole
 //   cout << "CorticalDB - Vacuole" << endl;
-   RsSourceCorticalDB -> InitVacuoleDB( gapCytoTonoInput );
+   RsSourceCorticalDB -> InitVacuoleDB( cortical.gapCytoTono );
    /////////////////////////////////// Vacuole ///////////////////////////////
 
    //////////////////////// OutputXMLVtpFileName ///////////////////////////
    RsSourceCorticalDB -> OutputXMLVtpFileName
    ( CorticalXMLVtpFileNameInput,
-     CorticalVacuoleXMLVtpFileNameInput );
+     CorticalVacuoleXMLVtpFileNameInput,
+     CorticalPlasmaMembraneVtpFileNameInput );
+
+//////////////////////////////////// Sclerenchyma  /////////////////////////////////////////
 
    /*************************************
-   Cortical visualization
+   SclerenchymaDB
    **************************************/
-   RsSourceCorticalDB->RGBTime( 6 );
-   RsSourceCorticalDB->RGBStart( 2 );
-   ///
-   rsSourceCorticalVisual *RsSourceCorticalVisual = new rsSourceCorticalVisual;
-   RsSourceCorticalDB->SetObjectOpacity( 0.8 );
+    double sclerenBaseRadius;
+    sclerenBaseRadius = RsSourceCorticalDB->boundaryRadius;
 
+    rsSourceDermisDB* RsSourceSclerenDB = new rsSourceDermisDB;
 
+    RsSourceSclerenDB->SetObjectXYZRadiusRatio(1.1);
 
-//   /// Cortical vacuole;
-cout << "CorticalDB - VacuoleVisual" << endl;
- RsSourceCorticalVisual -> VacuoleVisual( RsSourceCorticalDB, renL );
-
-//   /// Cortical cell;
-cout << "CorticalDB - CorticalVisual" << endl;
-RsSourceCorticalVisual -> CorticalVisual( RsSourceCorticalDB, renL );
-delete RsSourceCorticalVisual;
-cout << "CorticalDB - Finish" << endl;
-
+    RsSourceSclerenDB->RandomHeightDB(totalHeight, sclerenSliceNum, initZPosition, vectorNum);
+    RsSourceSclerenDB->InitAllDB(SclerenXMLVtpFileNameInput,
+                                 type_scleren,
+                                 sclerenchyma.cellDiameter,
+                                 sclerenBaseRadius,
+                                 sclerenchyma.variationRatio,
+                                 sclerenSliceNum,
+                                 sclerenchyma.numFiles);
+    RsSourceSclerenDB->SetObjectOpacity();
+    RsSourceSclerenDB->InitPureCellDB(sclerenchyma.gapCellWall);
+    RsSourceSclerenDB->InitVacuoleDB(sclerenchyma.gapCytoTono);
 
 //////////////////////////////////// Epidermis  /////////////////////////////////////////
 
@@ -159,36 +160,24 @@ cout << "CorticalDB - Finish" << endl;
 //   cout << "EpidermisDB" << endl;
    /// boundaryRadius = epidermisBaseRadiusDB;
    double epidermisBaseRadius;
-   epidermisBaseRadius = RsSourceCorticalDB -> boundaryRadius;
+   epidermisBaseRadius = sclerenBaseRadius + (sclerenAddRadiusData * sclerenchyma.numFiles);
 
-   rsSourceEpidermisDB *RsSourceEpidermisDB = new rsSourceEpidermisDB;
+   rsSourceDermisDB *RsSourceEpidermisDB = new rsSourceDermisDB;
 
 
    RsSourceEpidermisDB->SetObjectXYZRadiusRatio( 1.1 );
 
    RsSourceEpidermisDB->RandomHeightDB( totalHeight, epidermisSliceNum, initZPosition, vectorNum );
    RsSourceEpidermisDB -> InitAllDB (EpidermisXMLVtpFileNameInput,
-                                     epidermisAddRadiusData,
+                                     type_epi,
+                                     epidermis.cellDiameter,
                                      epidermisBaseRadius,
-//                                     epidermisCellNum,
-                                     variationRatioDermis,
-                                     setUResolution,
-                                     setVResolution,
-                                     setWResolution,
-                                     epidermisSliceNum );
+                                     epidermis.variationRatio,
+                                     epidermisSliceNum, 1 );
 
    RsSourceEpidermisDB->SetObjectOpacity();
-
-   /************************************
-   Epidermis Visualization;
-   *************************************/
-   RsSourceEpidermisDB->RGBTime( 2 );
-   RsSourceEpidermisDB->RGBStart( 4 );
-
-rsSourceEpidermisVisual *RsSourceEpidermisVisual = new rsSourceEpidermisVisual;
-RsSourceEpidermisVisual->EpidermisVisual( RsSourceEpidermisDB, renL );
-//   // delete Viusal;
-//   delete RsSourceEpidermisVisual;
+   RsSourceEpidermisDB->InitPureCellDB(epidermis.gapCellWall);
+   RsSourceEpidermisDB->InitVacuoleDB(epidermis.gapCytoTono);
 
 //////////////////////////////////// Endodermis  /////////////////////////////////////////
    /*************************************
@@ -199,33 +188,20 @@ RsSourceEpidermisVisual->EpidermisVisual( RsSourceEpidermisDB, renL );
    double endodermisBaseRadius;
    endodermisBaseRadius = baseRadius - endodermisAddRadiusData;
 
-   rsSourceEpidermisDB *RsSourceEndodermisDB = new rsSourceEpidermisDB;
+   rsSourceDermisDB *RsSourceEndodermisDB = new rsSourceDermisDB;
 
    RsSourceEndodermisDB->SetObjectXYZRadiusRatio( 1 );
    RsSourceEndodermisDB->RandomHeightDB( totalHeight, endodermisSliceNum, initZPosition, vectorNum );
    RsSourceEndodermisDB -> InitAllDB (EndodermisXMLVtpFileNameInput,
-                                      endodermisAddRadiusData,
+                                      type_endo,
+                                      endodermis.cellDiameter,
                                       endodermisBaseRadius,
-//                                      endodermisCellNum,
-                                      variationRatioDermis,
-                                      setUResolution,
-                                      setVResolution,
-                                      setWResolution,
-                                      endodermisSliceNum );
+                                      endodermis.variationRatio,
+                                      endodermisSliceNum, 1 );
 
    RsSourceEndodermisDB->SetObjectOpacity();
-
-   /************************************
-   Endodermis Visualization;
-   *************************************/
-   RsSourceEndodermisDB->RGBTime( 2 );
-   RsSourceEndodermisDB->RGBStart( 4 );
-
-rsSourceEpidermisVisual *RsSourceEndodermisVisual = new rsSourceEpidermisVisual;
-RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
-//   // delete visual;
-//   delete RsSourceEndodermisVisual;
-
+   RsSourceEndodermisDB->InitPureCellDB(endodermis.gapCellWall);
+   RsSourceEndodermisDB->InitVacuoleDB(endodermis.gapCytoTono);
 
 ////////////////////////////////////////////// Water Path ////////////////////////////////////////////////
 
@@ -242,24 +218,279 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
     RsSourceEndodermisDB
    );
 
-//   rsEpiCortexEndoWaterPathDBVisual *RsEpiCortexEndoWaterPathDBVisual = new rsEpiCortexEndoWaterPathDBVisual;
-//   RsEpiCortexEndoWaterPathDBVisual -> ApoplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
-//   RsEpiCortexEndoWaterPathDBVisual -> SymplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
+   rsEpiCortexEndoWaterPathDBVisual *RsEpiCortexEndoWaterPathDBVisual = new rsEpiCortexEndoWaterPathDBVisual;
+   RsEpiCortexEndoWaterPathDBVisual -> ApoplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
+   RsEpiCortexEndoWaterPathDBVisual -> SymplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
+   
+   RsEpiCortexEndoWaterPathDBVisual -> ApoplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB, surfaceFlux);
+   RsEpiCortexEndoWaterPathDBVisual -> SymplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB, surfaceFlux );
 
-//RsEpiCortexEndoWaterPathDBVisual -> ApoplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB );
-//RsEpiCortexEndoWaterPathDBVisual -> SymplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB );
+ //////////////////////////////////// Pericycle  /////////////////////////////////////////
+      /*************************************
+      PericycleDB
+      **************************************/
+   double pericycleBaseRadius;
+   pericycleBaseRadius = endodermisBaseRadius - pericycleAddRadiusData;
+
+   rsSourceDermisDB* RsSourcePericycleDB = new rsSourceDermisDB;
+
+   RsSourcePericycleDB->SetObjectXYZRadiusRatio(1);
+   RsSourcePericycleDB->RandomHeightDB(totalHeight, pericycleSliceNum, initZPosition, vectorNum);
+   RsSourcePericycleDB->InitAllDB(PericycXMLVtpFileNameInput,
+                                  type_peri,
+                                  pericycle.cellDiameter,
+                                  pericycleBaseRadius,
+                                  pericycle.variationRatio,
+                                  pericycleSliceNum, 1);
+
+   RsSourcePericycleDB->SetObjectOpacity();
+   RsSourcePericycleDB->InitPureCellDB(pericycle.gapCellWall);
+   RsSourcePericycleDB->InitVacuoleDB(pericycle.gapCytoTono);
+
+   rsPXCoreDB* RsPXCoreDB = new rsPXCoreDB;
+   rsMXBoundaryOutDB* RSMXBoundaryOutDB = new rsMXBoundaryOutDB;
+   rsSteleInnerDB* RsSteleInnerDB = new rsSteleInnerDB;
+   rsPXBoundaryDB* RsPXBoundaryDB = new rsPXBoundaryDB;
+   rsPhloemDB* RsPhloemDB = new rsPhloemDB;
+
+   InitInnertructure(stele, metaXylem, protoXylem, phloem, pericycleBaseRadius, renL, 
+       RsPXCoreDB, RSMXBoundaryOutDB, RsSteleInnerDB, RsPXBoundaryDB, RsPhloemDB);
+
+   //////////////////////////////////////// Visualization //////////////////////////////////////////////
+   string timePrefix = "";
+   vector<double> result_cortical;
+   vector<double> result_epi;
+   vector<double> result_endo;
+   vector<double> result_scleren;
+   vector<double> result_peri;
+   /************************************
+       Epidermis
+       *************************************/
+
+   RsSourceEpidermisDB->RGBTime(2);
+   RsSourceEpidermisDB->RGBStart(4);
+
+   rsSourceDermisVisual* RsSourceEpidermisVisual = new rsSourceDermisVisual;
+   RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 0, result_epi, timePrefix);
+   RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 1, result_epi, timePrefix);
+   RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 2, result_epi, timePrefix);
+   //   // delete Viusal;
+   //   delete RsSourceEpidermisVisual;
 
 
-//////////////////////////////////////// DataOutput /////////////////////////////////////////////////
-   rsDataOutput *RsDataOutput = new rsDataOutput;
+   /************************************
+   Sclerenchyma
+   *************************************/
+   RsSourceSclerenDB->RGBTime(2);
+   RsSourceSclerenDB->RGBStart(4);
+
+   rsSourceDermisVisual* RsSourceSclerenVisual = new rsSourceDermisVisual;
+   RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 0, result_scleren, timePrefix);
+   RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 1, result_scleren, timePrefix);
+   RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 2, result_scleren, timePrefix);
+
+   /*************************************
+   Cortical
+   **************************************/
+   RsSourceCorticalDB->RGBTime(6);
+   RsSourceCorticalDB->RGBStart(2);
+   ///
+   rsSourceCorticalVisual* RsSourceCorticalVisual = new rsSourceCorticalVisual;
+
+   //   /// Cortical vacuole;
+   cout << "CorticalDB - VacuoleVisual" << endl;
+   RsSourceCorticalVisual->VacuoleVisual(RsSourceCorticalDB, renL, result_cortical, timePrefix);
+
+   cout << "CorticalDB - Plasma Membrane Visual" << endl;
+   RsSourceCorticalVisual->CorticalPlasmaMembraneVisual(RsSourceCorticalDB, renL, result_cortical, timePrefix);
+
+   //   /// Cortical cell;
+   cout << "CorticalDB - CorticalVisual" << endl;
+   RsSourceCorticalVisual->CorticalVisual(RsSourceCorticalDB, renL, result_cortical, timePrefix);
+   delete RsSourceCorticalVisual;
+   cout << "CorticalDB - Finish" << endl;
+
+   /************************************
+   Endodermis
+   *************************************/
+   RsSourceEndodermisDB->RGBTime(2);
+   RsSourceEndodermisDB->RGBStart(4);
+
+   rsSourceDermisVisual* RsSourceEndodermisVisual = new rsSourceDermisVisual;
+   RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 0, result_epi, timePrefix);
+   RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 1, result_epi, timePrefix);
+   RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2, result_epi, timePrefix);
+   //   // delete visual;
+   //   delete RsSourceEndodermisVisual;
+   /************************************
+   Pericycle
+   *************************************/
+   RsSourcePericycleDB->RGBTime(2);
+   RsSourcePericycleDB->RGBStart(4);
+
+   rsSourceDermisVisual* RsSourcePericycleVisual = new rsSourceDermisVisual;
+   RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 0, result_peri, timePrefix);
+   RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 1, result_peri, timePrefix);
+   RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 2, result_peri, timePrefix);
+
+   //////////////////////////////////////// DataOutput /////////////////////////////////////////////////
+   rsDataOutput* RsDataOutput = new rsDataOutput;
    string outputName = "dataOutput";
 
-   RsDataOutput -> DataOutputName( dataOutputNameInput );
-   RsDataOutput -> CorticalDataOutputCalculate( baseRadius, totalHeight, RsSourceCorticalDB );
-   RsDataOutput -> RcaDataOutputCalculate( RsRcaDB );
-   RsDataOutput -> NutrientAndMitochondriaCalculate();
-   RsDataOutput -> PathLengthDataOutputCalculate( RsEpiCortexEndoWaterPathDB );
-   RsDataOutput -> AllDataOutput( baseRadius, totalHeight );
+   RsDataOutput->DataOutputName(dataOutputNameInput);
+   RsDataOutput->CorticalDataOutputCalculate(RsSourceCorticalDB);
+   RsDataOutput->DermisDataOutputCalculate(RsSourceEndodermisDB);
+   RsDataOutput->DermisDataOutputCalculate(RsSourceEpidermisDB);
+   RsDataOutput->DermisDataOutputCalculate(RsSourceSclerenDB);
+   RsDataOutput->DermisDataOutputCalculate(RsSourcePericycleDB);
+   RsDataOutput->PXDataOutputCalculate(RsPXCoreDB);   
+   RsDataOutput->MXBoundaryDataOutputCalculate(RSMXBoundaryOutDB);
+   RsDataOutput->SteleDataOutputCalculate(RsSteleInnerDB);
+   RsDataOutput->PXBoundaryDataOutputCalculate(RsPXBoundaryDB);
+   RsDataOutput->PhloemDataOutputCalculate(RsPhloemDB);
+   RsDataOutput->RcaDataOutputCalculate(RsRcaDB);
+   RsDataOutput->NutrientAndMitochondriaCalculate();
+   RsDataOutput->PathLengthDataOutputCalculate(RsEpiCortexEndoWaterPathDB);
+   RsDataOutput->AllDataOutput(baseRadius, totalHeight);
+
+ //////////////////////////////// VISUALISATIONS AND FLUX ////////////////////////////////
+
+   /************************************
+   Call fluxEqns on all DBs
+   ************************************/
+   rsBaseFunctions* RsBaseFunctions = new rsBaseFunctions;
+   RsBaseFunctions->CombineAllDBs(RsSourceCorticalDB, 4, RsSourceEpidermisDB, RsSourceSclerenDB, RsSourceEndodermisDB, RsSourcePericycleDB);
+   
+   /*
+   ofstream allcellsout(getfoldername() + "allcells.csv", ios::app);
+   allcellsout << "id,type,centerdistance,radius,x,y,neighbour" << endl;
+   for (int cntr = 0; cntr < rsbasefunctions->allcells.size(); cntr++) {
+       ostringstream nbrs;
+       copy(rsbasefunctions->allcells[cntr].neighbours.begin(), rsbasefunctions->allcells[cntr].neighbours.end(), ostream_iterator<int>(nbrs, ","));
+       allcellsout << rsbasefunctions->allcells[cntr].id << "," << rsbasefunctions->allcells[cntr].type << 
+           "," << rsbasefunctions->allcells[cntr].distancecenter << "," << rsbasefunctions->allcells[cntr].radius << "," <<
+           rsbasefunctions->allcells[cntr].x << "," << rsbasefunctions->allcells[cntr].y << "," << nbrs.str() << endl;
+   }
+   allcellsout.close();
+   */
+
+   map<double, vector<double>> result;
+   double ringRadius = RsSourceEpidermisDB->circleRadiusDB.back();
+   double epiExternalSurfaceArea = (2 * M_PI * ringRadius * RsSourceEpidermisDB->objectHeightDB[0][0][0]) / RsSourceEpidermisDB->EpidermisCellNumCalculated;
+   fluxEqns* FluxEqns = new fluxEqns;
+   for (int nutriCntr = 0; nutriCntr < nutrients.size(); nutriCntr++) {
+       globals curNutrient = nutrients[nutriCntr];
+       if (curNutrient.nutriName == "Phosphorous") {
+           FluxEqns->cyto_pi(curNutrient, RsBaseFunctions->allCells, epiExternalSurfaceArea, result);
+           ofstream phosOut(getFolderName() + "phosphorous.csv", ios::app);
+           phosOut << "Time,Concentrations for each cell" << endl;
+           for (auto const& pair : result) {
+               ostringstream concentrations;
+               copy(pair.second.begin(), pair.second.end(), ostream_iterator<double>(concentrations, ","));
+               phosOut << pair.first << "," << concentrations.str() << endl;
+           }
+           phosOut.close();
+       }
+   }
+   for (auto const& pair : result) {
+       timePrefix = "time_" + to_string(pair.first);
+       result_cortical;
+       result_epi;
+       result_endo;
+       result_scleren;
+       result_peri;
+       if (pair.second.size() == RsBaseFunctions->allCells.size()) {
+           for (int cntr = 0; cntr < pair.second.size(); cntr++) {
+               if (RsBaseFunctions->allCells[cntr].type == type_cortical) {
+                   result_cortical.push_back(pair.second[cntr]);
+               }
+               if (RsBaseFunctions->allCells[cntr].type == type_epi) {
+                   result_epi.push_back(pair.second[cntr]);
+               }
+               if (RsBaseFunctions->allCells[cntr].type == type_endo) {
+                   result_endo.push_back(pair.second[cntr]);
+               }
+               if (RsBaseFunctions->allCells[cntr].type == type_peri) {
+                   result_peri.push_back(pair.second[cntr]);
+               }
+               if (RsBaseFunctions->allCells[cntr].type == type_scleren) {
+                   result_scleren.push_back(pair.second[cntr]);
+               }
+           }
+       }
+       else {
+           cout << "flux output length mismatch with number of cells." << endl;
+       }
+       /************************************
+       Epidermis
+       *************************************/
+
+       RsSourceEpidermisDB->RGBTime(2);
+       RsSourceEpidermisDB->RGBStart(4);
+
+       rsSourceDermisVisual* RsSourceEpidermisVisual = new rsSourceDermisVisual;
+       RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 0, result_epi, timePrefix);
+       RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 1, result_epi, timePrefix);
+       RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 2, result_epi, timePrefix);
+       //   // delete Viusal;
+       //   delete RsSourceEpidermisVisual;
+
+
+       /************************************
+       Sclerenchyma
+       *************************************/
+       RsSourceSclerenDB->RGBTime(2);
+       RsSourceSclerenDB->RGBStart(4);
+
+       rsSourceDermisVisual* RsSourceSclerenVisual = new rsSourceDermisVisual;
+       RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 0, result_scleren, timePrefix);
+       RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 1, result_scleren, timePrefix);
+       RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 2, result_scleren, timePrefix);
+
+       /*************************************
+       Cortical
+       **************************************/
+       RsSourceCorticalDB->RGBTime(6);
+       RsSourceCorticalDB->RGBStart(2);
+       ///
+       rsSourceCorticalVisual* RsSourceCorticalVisual = new rsSourceCorticalVisual;
+
+       //   /// Cortical vacuole;
+       cout << "CorticalDB - VacuoleVisual" << endl;
+       RsSourceCorticalVisual->VacuoleVisual(RsSourceCorticalDB, renL, result_cortical, timePrefix);
+
+       cout << "CorticalDB - Plasma Membrane Visual" << endl;
+       RsSourceCorticalVisual->CorticalPlasmaMembraneVisual(RsSourceCorticalDB, renL, result_cortical, timePrefix);
+
+       //   /// Cortical cell;
+       cout << "CorticalDB - CorticalVisual" << endl;
+       RsSourceCorticalVisual->CorticalVisual(RsSourceCorticalDB, renL, result_cortical, timePrefix);
+       delete RsSourceCorticalVisual;
+       cout << "CorticalDB - Finish" << endl;
+
+       /************************************
+       Endodermis
+       *************************************/
+       RsSourceEndodermisDB->RGBTime(2);
+       RsSourceEndodermisDB->RGBStart(4);
+
+       rsSourceDermisVisual* RsSourceEndodermisVisual = new rsSourceDermisVisual;
+       RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 0, result_epi, timePrefix);
+       RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 1, result_epi, timePrefix);
+       RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2, result_epi, timePrefix);
+       //   // delete visual;
+       //   delete RsSourceEndodermisVisual;
+       /************************************
+       Pericycle
+       *************************************/
+       RsSourcePericycleDB->RGBTime(2);
+       RsSourcePericycleDB->RGBStart(4);
+
+       rsSourceDermisVisual* RsSourcePericycleVisual = new rsSourceDermisVisual;
+       RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 0, result_peri, timePrefix);
+       RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 1, result_peri, timePrefix);
+       RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 2, result_peri, timePrefix);
+   }
 
 /// Delete Database;
    delete RsSourceCorticalDB;
@@ -270,6 +501,9 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
 
    delete RsSourceEndodermisDB;
    RsSourceEndodermisDB = NULL;
+
+   delete RsSourcePericycleDB;
+   RsSourcePericycleDB = NULL;
 
    delete RsRcaDB;
    RsRcaDB = NULL;
@@ -285,107 +519,113 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
 /// InitEpiCortexEndoNonRCADB;
 void rsDynamicDataOutput::InitEpiCortexEndoNonRCADB
 (
-   int setUResolution,
-   int setVResolution,
-   int setWResolution,
-   double baseRadius,
-   double thickness,
-   double totalHeight,
-   /// Cortical;
+   /// All objects;
+   globals cortical,
+   globals stele,
+   globals metaXylem,
+   globals protoXylem,
+   globals phloem,
+   globals epidermis,
+   globals endodermis,
+   globals exodermis,
+   globals sclerenchyma,
+   globals pericycle,
+   globals surfaceFlux, 
+   vector<globals> nutrients,
+
+   /// Cortical specific;
    vector<double> corticalAddRadiusInputData,
+
    vector<int> corticalCellNumInputData,
-   int corticalAddRadiusDBSelectInput,
 
-   int corticalCellNumSelectInput,
+   
    int corticalSliceNum,
-   double initZPosition,
-   int vectorNum,
-   double variationRatioCotical,
-   int cortexLayerNum,
-   double corticalCellMultiplyRatio,
-   double corticalCellAddRadiusMinInput,
-   double cortexRadiusInput,
 
-   /// Pure Cortical Cell;
-   double gapCellWallInput,
+   /// Sclerenchyma
+   int sclerenSliceNum,
 
-   /// Cortical Vacuole;
-   double gapCytoTono,
+
+   double sclerenAddRadiusData,
 
    /// Epi;
    int epidermisSliceNum,
+
+
    double epidermisAddRadiusData,
-//   int epidermisCellNum,
-   double variationRatioDermis,
 
    /// Endo;
    int endodermisSliceNum,
    double endodermisAddRadiusData,
-//   int endodermisCellNum,
+
+    //   int endodermisCellNum,
+
+    /// Pericycle
+    int pericycleSliceNum,
+
+
+   double pericycleAddRadiusData,
 
    /// OutXMLVtpFileName;
    const char* CorticalXMLVtpFileNameInput,
+
    const char* CorticalVacuoleXMLVtpFileNameInput,
+
+   const char* CorticalPlasmaMembraneVtpFileNameInput,
+
+   const char* SclerenXMLVtpFileNameInput,
+
    const char* EpidermisXMLVtpFileNameInput,
+
    const char* EndodermisXMLVtpFileNameInput,
+
    const char* ApoplastXMLVtpFileNameInput,
+
    const char* SymplastXMLVtpFileNameInput,
 
-   /// DataOutputName;
-   const char* dataOutputNameInput,
 
-   /// Others
-   vtkSmartPointer<vtkRenderer> renL,
-    /// Stele 
+   const char* PericycXMLVtpFileNameInput,
 
-    double variationRatio,
-    int sliceNum,
-    double steleInnestCellRadiusInput,
-    int steleInnerLayerNumInput,
-    /// metaxylem 
-
-    double setUpVecticalLengthThresholdRatio,
-    double innerTangentRingRadiusRatioTemp,
-    int setInterVerticalNum
+    /// DataOutputName;
+   const char* dataOutputNameInput, //Other
+    vtkSmartPointer<vtkRenderer> renL
 )
 
-{  setUResolution = 12;
-   setVResolution = 12;
-   setWResolution = 12;
-
+{  
    /*************************************
    CorticalDB
    **************************************/
    rsSourceCorticalDB *RsSourceCorticalDB = new rsSourceCorticalDB;
 
+   double minRadius = *min_element(cortical.cellDiameter.begin(), cortical.cellDiameter.end()) / 2.0;
+
    RsSourceCorticalDB -> RandomHeightDB( totalHeight, corticalSliceNum, initZPosition, vectorNum );
    RsSourceCorticalDB -> InitAllDB ( baseRadius,
-                                     cortexLayerNum,
+                                     cortical.numFiles,
                                      corticalCellMultiplyRatio,
-                                     corticalCellAddRadiusMinInput,
+                                     minRadius,
                                      cortexRadiusInput,
                                      corticalAddRadiusDBSelectInput,
                                      corticalAddRadiusInputData,
                                      corticalCellNumInputData,
                                      corticalCellNumSelectInput,
-                                     variationRatioCotical,
-                                     setUResolution,
-                                     setVResolution,
-                                     setWResolution,
+                                     cortical.variationRatio,
                                      corticalSliceNum );
 
-      /// pure cortical cell;
-   RsSourceCorticalDB -> InitPureCellDB( gapCellWallInput );
+      /// pure cortical cell - plasma membrane ?;
+   RsSourceCorticalDB -> InitPureCellDB( cortical.gapCellWall );
    /// cortical vacuole
 //   cout << "CorticalDB - Vacuole" << endl;
-   RsSourceCorticalDB -> InitVacuoleDB( gapCytoTono );
+   RsSourceCorticalDB -> InitVacuoleDB( cortical.gapCytoTono );
    /////////////////////////////////// Vacuole ///////////////////////////////
 
    //////////////////////// OutputXMLVtpFileName ///////////////////////////
    RsSourceCorticalDB -> OutputXMLVtpFileName
    ( CorticalXMLVtpFileNameInput,
-     CorticalVacuoleXMLVtpFileNameInput );
+     CorticalVacuoleXMLVtpFileNameInput,
+     CorticalPlasmaMembraneVtpFileNameInput );
 
+   vector<double> result;
+   string timePrefix = "time_";
    /*************************************
    Cortical visualization
    **************************************/
@@ -399,14 +639,53 @@ void rsDynamicDataOutput::InitEpiCortexEndoNonRCADB
 
 //   /// Cortical vacuole;
 cout << "CorticalDB - VacuoleVisual" << endl;
-RsSourceCorticalVisual -> VacuoleVisual( RsSourceCorticalDB, renL );
+RsSourceCorticalVisual -> VacuoleVisual( RsSourceCorticalDB, renL, result, timePrefix);
+
+cout << "CorticalDB - Plasma Membrane Visual" << endl;
+RsSourceCorticalVisual->CorticalPlasmaMembraneVisual(RsSourceCorticalDB, renL, result, timePrefix);
 
    /// Cortical cell;
 cout << "CorticalDB - CorticalVisual" << endl;
-RsSourceCorticalVisual -> CorticalVisual( RsSourceCorticalDB, renL );
+RsSourceCorticalVisual -> CorticalVisual( RsSourceCorticalDB, renL, result, timePrefix);
 //   delete RsSourceCorticalVisual;
 //   cout << "CorticalDB - Finish" << endl;
 
+//////////////////////////////////// Sclerenchyma  /////////////////////////////////////////
+
+   /*************************************
+   SclerenchymaDB
+   **************************************/
+   double sclerenBaseRadius;
+   sclerenBaseRadius = RsSourceCorticalDB->boundaryRadius;
+   
+   rsSourceDermisDB* RsSourceSclerenDB = new rsSourceDermisDB;
+   
+   RsSourceSclerenDB->SetObjectXYZRadiusRatio(1.1);
+   
+   RsSourceSclerenDB->RandomHeightDB(totalHeight, sclerenSliceNum, initZPosition, vectorNum);
+   //for (int fileCount = 0; fileCount < sclerenchyma.numFiles; fileCount++) {
+       //sclerenBaseRadius += sclerenAddRadiusData * fileCount;
+       RsSourceSclerenDB->InitAllDB(SclerenXMLVtpFileNameInput,
+           type_scleren,
+           sclerenchyma.cellDiameter,
+           sclerenBaseRadius,
+           sclerenchyma.variationRatio,
+           sclerenSliceNum, 1 );
+       RsSourceSclerenDB->SetObjectOpacity();
+       RsSourceSclerenDB->InitPureCellDB(sclerenchyma.gapCellWall);
+       RsSourceSclerenDB->InitVacuoleDB(sclerenchyma.gapCytoTono);
+
+       /************************************
+       Sclerenchyma Visualization;
+       *************************************/
+       RsSourceSclerenDB->RGBTime(2);
+       RsSourceSclerenDB->RGBStart(4);
+
+       rsSourceDermisVisual* RsSourceSclerenVisual = new rsSourceDermisVisual;
+       RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 0, result, timePrefix);
+       RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 1, result, timePrefix);
+       RsSourceSclerenVisual->EpidermisVisual(RsSourceSclerenDB, renL, 2, result, timePrefix);
+   //}
 
 //////////////////////////////////// Epidermis  /////////////////////////////////////////
 
@@ -416,25 +695,25 @@ RsSourceCorticalVisual -> CorticalVisual( RsSourceCorticalDB, renL );
 //   cout << "EpidermisDB" << endl;
    /// boundaryRadius = epidermisBaseRadiusDB;
    double epidermisBaseRadius;
-   epidermisBaseRadius = RsSourceCorticalDB -> boundaryRadius;
+   epidermisBaseRadius = sclerenBaseRadius + accumulate(RsSourceSclerenDB->circleRadiusDB.begin(), RsSourceSclerenDB->circleRadiusDB.end(), 0.0);
 
-   rsSourceEpidermisDB *RsSourceEpidermisDB = new rsSourceEpidermisDB;
+   rsSourceDermisDB *RsSourceEpidermisDB = new rsSourceDermisDB;
 
 
    RsSourceEpidermisDB->SetObjectXYZRadiusRatio( 1.1 );
 
    RsSourceEpidermisDB->RandomHeightDB( totalHeight, epidermisSliceNum, initZPosition, vectorNum );
    RsSourceEpidermisDB -> InitAllDB (EpidermisXMLVtpFileNameInput,
-                                     epidermisAddRadiusData,
+                                     type_epi,
+                                     epidermis.cellDiameter,
                                      epidermisBaseRadius,
-//                                     epidermisCellNum,
-                                     variationRatioDermis,
-                                     setUResolution,
-                                     setVResolution,
-                                     setWResolution,
-                                     epidermisSliceNum );
+                                     //                                     epidermisCellNum,
+                                     epidermis.variationRatio,
+                                     epidermisSliceNum, 1 );
 
    RsSourceEpidermisDB->SetObjectOpacity();
+   RsSourceEpidermisDB->InitPureCellDB(epidermis.gapCellWall);
+   RsSourceEpidermisDB->InitVacuoleDB(epidermis.gapCytoTono);
 
    /************************************
    Epidermis Visualization;
@@ -442,8 +721,10 @@ RsSourceCorticalVisual -> CorticalVisual( RsSourceCorticalDB, renL );
    RsSourceEpidermisDB->RGBTime( 2 );
    RsSourceEpidermisDB->RGBStart( 4 );
 
-rsSourceEpidermisVisual *RsSourceEpidermisVisual = new rsSourceEpidermisVisual;
-RsSourceEpidermisVisual->EpidermisVisual( RsSourceEpidermisDB, renL );
+rsSourceDermisVisual *RsSourceEpidermisVisual = new rsSourceDermisVisual;
+RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 0, result, timePrefix);
+RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 1, result, timePrefix);
+RsSourceEpidermisVisual->EpidermisVisual(RsSourceEpidermisDB, renL, 2, result, timePrefix);
 //   // delete Viusal;
 //   delete RsSourceEpidermisVisual;
 
@@ -456,21 +737,20 @@ RsSourceEpidermisVisual->EpidermisVisual( RsSourceEpidermisDB, renL );
    double endodermisBaseRadius;
    endodermisBaseRadius = baseRadius - endodermisAddRadiusData;
 
-   rsSourceEpidermisDB *RsSourceEndodermisDB = new rsSourceEpidermisDB;
+   rsSourceDermisDB *RsSourceEndodermisDB = new rsSourceDermisDB;
 
    RsSourceEndodermisDB->SetObjectXYZRadiusRatio( 1 );
    RsSourceEndodermisDB->RandomHeightDB( totalHeight, endodermisSliceNum, initZPosition, vectorNum );
    RsSourceEndodermisDB -> InitAllDB (EndodermisXMLVtpFileNameInput,
-                                      endodermisAddRadiusData,
+                                      type_endo,
+                                      endodermis.cellDiameter,
                                       endodermisBaseRadius,
-//                                      endodermisCellNum,
-                                      variationRatioDermis,
-                                      setUResolution,
-                                      setVResolution,
-                                      setWResolution,
-                                      endodermisSliceNum );
+                                      endodermis.variationRatio,
+                                      endodermisSliceNum, 1 );
 
    RsSourceEndodermisDB->SetObjectOpacity();
+   RsSourceEndodermisDB->InitPureCellDB(endodermis.gapCellWall);
+   RsSourceEndodermisDB->InitVacuoleDB(endodermis.gapCytoTono);
 
    /************************************
    Endodermis Visualization;
@@ -478,8 +758,10 @@ RsSourceEpidermisVisual->EpidermisVisual( RsSourceEpidermisDB, renL );
    RsSourceEndodermisDB->RGBTime( 2 );
    RsSourceEndodermisDB->RGBStart( 4 );
 
-rsSourceEpidermisVisual *RsSourceEndodermisVisual = new rsSourceEpidermisVisual;
-RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
+rsSourceDermisVisual *RsSourceEndodermisVisual = new rsSourceDermisVisual;
+RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL, 0, result, timePrefix);
+RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 1, result, timePrefix);
+RsSourceEndodermisVisual->EpidermisVisual(RsSourceEndodermisDB, renL, 2, result, timePrefix);
 //   // delete visual;
 //   delete RsSourceEndodermisVisual;
 
@@ -499,86 +781,62 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
     RsSourceEndodermisDB
    );
 
-//   rsEpiCortexEndoWaterPathDBVisual *RsEpiCortexEndoWaterPathDBVisual = new rsEpiCortexEndoWaterPathDBVisual;
-//   RsEpiCortexEndoWaterPathDBVisual -> ApoplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
-//   RsEpiCortexEndoWaterPathDBVisual -> SymplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
+// Check what happens on uncommenting - Sankalp
+   rsEpiCortexEndoWaterPathDBVisual *RsEpiCortexEndoWaterPathDBVisual = new rsEpiCortexEndoWaterPathDBVisual;
+   RsEpiCortexEndoWaterPathDBVisual -> ApoplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
+   RsEpiCortexEndoWaterPathDBVisual -> SymplastTubeXMLVtp( RsEpiCortexEndoWaterPathDB );
+   
+   RsEpiCortexEndoWaterPathDBVisual -> ApoplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB, surfaceFlux );
+   RsEpiCortexEndoWaterPathDBVisual -> SymplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB, surfaceFlux );
 
-//RsEpiCortexEndoWaterPathDBVisual -> ApoplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB );
-//RsEpiCortexEndoWaterPathDBVisual -> SymplastTriangleStripXMLVtp( RsEpiCortexEndoWaterPathDB );
-   //////////////////////////////////// Stele Jagdeep 2-3-2021  /////////////////////////////////////////
-   /*************************************
-   SteleDB
-   **************************************/
-   cout << "SteleDB" << endl;
+ //////////////////////////////////// Pericycle  /////////////////////////////////////////
+      /*************************************
+      PericycleDB
+      **************************************/
+   double pericycleBaseRadius;
+   pericycleBaseRadius = endodermisBaseRadius - pericycleAddRadiusData;
 
-   rsMXBoundaryOutDB * RSMXBoundaryOutDB = new rsMXBoundaryOutDB;
-   rsSteleInnerDB* RsSteleInnerDB = new rsSteleInnerDB;
+   rsSourceDermisDB* RsSourcePericycleDB = new rsSourceDermisDB;
 
-   RSMXBoundaryOutDB->SetObjectXYZRadiusRatio(1);
+   RsSourcePericycleDB->SetObjectXYZRadiusRatio(1);
+   RsSourcePericycleDB->RandomHeightDB(totalHeight, pericycleSliceNum, initZPosition, vectorNum);
+   RsSourcePericycleDB->InitAllDB(PericycXMLVtpFileNameInput,
+                                  type_peri,
+                                  pericycle.cellDiameter,
+                                  pericycleBaseRadius,
+                                  pericycle.variationRatio,
+                                  pericycleSliceNum, 1);
 
-   //RsSourceEndodermisDB->RandomHeightDB(totalHeight, endodermisSliceNum, initZPosition, vectorNum);
-
-    RsSteleInnerDB->InitAllDB(RSMXBoundaryOutDB,
-        steleInnestCellRadiusInput,
-        steleInnerLayerNumInput,
-        totalHeight,
-        initZPosition,
-        vectorNum,
-        variationRatio,
-        setUResolution,
-        setVResolution,
-        setWResolution,
-        sliceNum);
-
-   RsSteleInnerDB ->SetObjectOpacity();
-
+   RsSourcePericycleDB->SetObjectOpacity();
+   RsSourcePericycleDB->InitPureCellDB(pericycle.gapCellWall);
+   RsSourcePericycleDB->InitVacuoleDB(pericycle.gapCytoTono);
 
    /************************************
-   stele Visualization;
+   Pericycle Visualization;
    *************************************/
-   RsSteleInnerDB->RGBTime(2);
-   RsSteleInnerDB->RGBStart(4);
+   RsSourcePericycleDB->RGBTime(2);
+   RsSourcePericycleDB->RGBStart(4);
 
-   rsSteleInnerVisual *RsSteleInnerVisualDB = new rsSteleInnerVisual;
-   RsSteleInnerVisualDB->SteleInnerVisual(RsSteleInnerDB, renL);
+   rsSourceDermisVisual* RsSourcePericycleVisual = new rsSourceDermisVisual;
+   RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 0, result, timePrefix);
+   RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 1, result, timePrefix);
+   RsSourcePericycleVisual->EpidermisVisual(RsSourcePericycleDB, renL, 2, result, timePrefix);
 
-   /// center cell visualization 
-   RsSteleInnerVisualDB->SteleInnestVisual(RsSteleInnerDB, renL);
-   
-   /***********************************
-   Metaxylemboundary out*************** Jgdp - 2/5/2021*/
-   rsMXBoundaryOutDB* RsMXBoundaryOutDB = new rsMXBoundaryOutDB;
-   RsMXBoundaryOutDB->InitBoundaryUpDB(setUpVecticalLengthThresholdRatio, variationRatio, sliceNum);
-   //RsMXBoundaryOutDB->InitBoundaryInterDB(innerTangentRingRadiusRatioTemp, setInterVerticalNum, variationRatio, sliceNum);
+   rsPXCoreDB* RsPXCoreDB = new rsPXCoreDB;
+   rsMXBoundaryOutDB* RSMXBoundaryOutDB = new rsMXBoundaryOutDB;
+   rsSteleInnerDB* RsSteleInnerDB = new rsSteleInnerDB;
+   rsPXBoundaryDB* RsPXBoundaryDB = new rsPXBoundaryDB;
+   rsPhloemDB* RsPhloemDB = new rsPhloemDB;
 
-
-   /// Metaxylem visualization
-   rsMXBoundaryOutVisual* RsMXBoundaryOutVisualDB = new rsMXBoundaryOutVisual;
-
-//vtk Error ~Sankalp
-   RsMXBoundaryOutVisualDB->MXBoundaryInterCellVisual(RsMXBoundaryOutDB, renL);
-   RsMXBoundaryOutVisualDB->MXBoundaryUpCellVisual(RsMXBoundaryOutDB, renL);
-   
-   /***********************************
-   rsMXBoundaryDB*************** Jgdp - 2/5/2021*/
-   //rsMXBoundaryDB* RsMXBoundaryDB = new rsMXBoundaryDB;
-   //RsMXBoundaryDB -> InitBoundaryCell
-   //void rsMXBoundaryDB::InitBoundaryCell
-   //(int dotNum,
-     //  int setUpRowNum,
-       //int setDownRowNum,
-       //int sliceNum)
-       
-   //   // delete visual;
-   //   delete RsSourceEndodermisVisual;
-
+   InitInnertructure(stele, metaXylem, protoXylem, phloem, pericycleBaseRadius, renL,
+       RsPXCoreDB, RSMXBoundaryOutDB, RsSteleInnerDB, RsPXBoundaryDB, RsPhloemDB);
 
 //////////////////////////////////////// DataOutput /////////////////////////////////////////////////
    rsDataOutput *RsDataOutput = new rsDataOutput;
    string outputName = "dataOutput";
 
    RsDataOutput -> DataOutputName( dataOutputNameInput );
-   RsDataOutput -> CorticalDataOutputCalculate( baseRadius, totalHeight, RsSourceCorticalDB );
+   RsDataOutput -> CorticalDataOutputCalculate( RsSourceCorticalDB );
    RsDataOutput -> NonRcaDataOutput();
    RsDataOutput -> NutrientAndMitochondriaCalculate();
    RsDataOutput -> PathLengthDataOutputCalculate( RsEpiCortexEndoWaterPathDB );
@@ -594,6 +852,9 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
    delete RsSourceEndodermisDB;
    RsSourceEndodermisDB = NULL;
 
+   delete RsSourcePericycleDB;
+   RsSourcePericycleDB = NULL;
+
 //   delete RsRcaDB;
 //   RsRcaDB = NULL;
 
@@ -602,9 +863,6 @@ RsSourceEndodermisVisual->EpidermisVisual( RsSourceEndodermisDB, renL );
 
    delete RsDataOutput;
    RsDataOutput = NULL;
-
-   delete RsSteleInnerDB;
-   RsSteleInnerDB = NULL;
 }
 
 //////////////////////////////////////////  Render  ////////////////////////////////////////////
@@ -677,4 +935,199 @@ void rsDynamicDataOutput::RenderTogether( vtkSmartPointer<vtkRenderer> renL )
    image->SetQuality( 100 );
    image->Write();
 
+}
+
+void rsDynamicDataOutput::InitInnertructure(
+    globals stele,
+    globals metaXylem,
+    globals protoXylem,
+    globals phloem,
+
+    double pericycleBaseRadius,
+
+    vtkSmartPointer<vtkRenderer> renL,
+
+    rsPXCoreDB* &RsPXCoreDB,
+    rsMXBoundaryOutDB* &RSMXBoundaryOutDB,
+    rsSteleInnerDB* &RsSteleInnerDB,
+    rsPXBoundaryDB* &RsPXBoundaryDB,
+    rsPhloemDB* &RsPhloemDB
+) {
+    /*************************************
+   PXCore
+   *************************************/
+    cout << "XylemOuterRing" << endl;
+
+    RsPXCoreDB = new rsPXCoreDB;
+    int protoXylemSliceNum = protoXylem.minSlice + (rand() % (protoXylem.maxSlice - protoXylem.minSlice + 1));
+    /*RsPXCoreDB->RandomHeightDB(totalHeight, protoXylemSliceNum, initZPosition, vectorNum);
+    RsPXCoreDB->InitXylemOutRing(pericycleBaseRadius,
+        protoXylem.gapRadius,
+        protoXylem.num,
+        protoXylem.averageRingRadius,
+        protoXylem.variationRatio,
+        protoXylem.surroundingCellRingNum,
+        protoXylem.surroundingCellRingRadius,
+        protoXylemSliceNum);
+    RsPXCoreDB->InitPXSamll();*/
+
+
+    /*************************************
+    PXBoundaryDB
+    **************************************/
+    RsPXBoundaryDB = new rsPXBoundaryDB;
+
+    RsPXBoundaryDB->RandomHeightDB(totalHeight, protoXylemSliceNum, initZPosition, vectorNum);
+    RsPXBoundaryDB->InitXylemOutRing(pericycleBaseRadius,
+        protoXylem.gapRadius,
+        protoXylem.num,
+        protoXylem.averageRingRadius,
+        protoXylem.variationRatio,
+        protoXylem.surroundingCellRingNum,
+        protoXylem.surroundingCellRingRadius,
+        protoXylemSliceNum);
+    RsPXBoundaryDB->InitPXSamll();
+    RsPXCoreDB = RsPXBoundaryDB;
+    RsPXBoundaryDB->InitBoundaryCell
+    (RsPXCoreDB,
+        metaXylem.dotNum,
+        metaXylem.setUpRowNum,
+        metaXylem.setDownRowNum,
+        protoXylemSliceNum);
+
+    /*************************************
+    MetaXylem
+    *************************************/
+    cout << "rsMXBoundaryOutDB" << endl;
+
+    RSMXBoundaryOutDB = new rsMXBoundaryOutDB;
+    int metaXylemSliceNum = metaXylem.minSlice + (rand() % (metaXylem.maxSlice - metaXylem.minSlice + 1));
+    RSMXBoundaryOutDB->RandomHeightDB(totalHeight, metaXylemSliceNum, initZPosition, vectorNum);
+    RSMXBoundaryOutDB->InitXylemOutRing(RsPXCoreDB,
+        metaXylem.num,
+        metaXylem.averageRingRadius,
+        metaXylem.variationRatio,
+        metaXylem.surroundingCellRingNum,
+        protoXylem.surroundingCellRingNum,
+        protoXylem.surroundingCellRingRadius,
+        metaXylem.maxRingRadius,
+        metaXylem.numFiles,
+        metaXylem.eachRingNum,
+        metaXylemSliceNum);
+    RSMXBoundaryOutDB->InitBoundaryCell(metaXylem.dotNum, metaXylem.setUpRowNum, metaXylem.setDownRowNum, metaXylemSliceNum);
+    RSMXBoundaryOutDB->InitBoundaryInterDB(
+        metaXylem.tangentRingRadiusRatio,
+        metaXylem.steleCellNumBetween,
+        metaXylem.variationRatio,
+        metaXylemSliceNum);
+    RSMXBoundaryOutDB->InitBoundaryUpDB(
+        metaXylem.verticalLengthThresholdRatio,
+        metaXylem.variationRatio,
+        metaXylemSliceNum);
+
+    //////////////////////////////////// Stele Jagdeep 2-3-2021  /////////////////////////////////////////
+    /*************************************
+    SteleDB
+    **************************************/
+    cout << "SteleDB" << endl;
+
+    RsSteleInnerDB = new rsSteleInnerDB;
+
+    RSMXBoundaryOutDB->SetObjectXYZRadiusRatio(1);
+
+    //RsSourceEndodermisDB->RandomHeightDB(totalHeight, endodermisSliceNum, initZPosition, vectorNum);
+    int steleSliceNum = stele.minSlice + (rand() % (stele.maxSlice - stele.minSlice + 1));
+    RsSteleInnerDB->InitAllDB(RSMXBoundaryOutDB,
+        stele.innestCellDiameter / 2.0,
+        stele.innerLayerNum,
+        totalHeight,
+        initZPosition,
+        vectorNum,
+        stele.variationRatio,
+        steleSliceNum);
+
+    RsSteleInnerDB->SetObjectOpacity();
+
+    /*************************************
+    Phloem
+    **************************************/
+    RsPhloemDB = new rsPhloemDB;
+    RsPhloemDB->InitUpCell(
+        RsPXBoundaryDB,
+        phloem.setUpAppendParallelLengthThresholdRatio,
+        totalHeight,
+        protoXylemSliceNum,
+        initZPosition,
+        vectorNum,
+        protoXylem.variationRatio);
+    RsPhloemDB->InitDownCell(RsPXBoundaryDB, protoXylem.variationRatio, protoXylemSliceNum);
+
+    /************************************
+    PXCore Visualization;
+    *************************************/
+    RsPXCoreDB->RGBTime(2);
+    RsPXCoreDB->RGBStart(4);
+
+    rsPXCoreVisual* RsPXCoreVisualDB = new rsPXCoreVisual;
+    RsPXCoreVisualDB->PXCoreVisual(RsPXBoundaryDB, renL);
+    RsPXCoreVisualDB->PXCenterRingVisual(RsPXBoundaryDB, renL);
+    RsPXCoreVisualDB->PXSmallVisual(RsPXBoundaryDB, renL);
+
+    /************************************
+    PXBoundary Visualization;
+    *************************************/
+    RsPXBoundaryDB->RGBTime(2);
+    RsPXBoundaryDB->RGBStart(4);
+
+    rsPXBoundaryVisual* RsPXBoundaryVisualDB = new rsPXBoundaryVisual;
+    RsPXBoundaryVisualDB->BoundaryCellVisual(RsPXBoundaryDB, renL);
+
+    /************************************
+    MXCore Visualization;
+    *************************************/
+    RSMXBoundaryOutDB->RGBTime(2);
+    RSMXBoundaryOutDB->RGBStart(4);
+
+    rsMXCoreVisual* RsMXCoreVisualDB = new rsMXCoreVisual;
+    RsMXCoreVisualDB->MXCenterRingVisual(RSMXBoundaryOutDB, renL);
+    RsMXCoreVisualDB->MXVisual(RSMXBoundaryOutDB, renL);
+
+    /************************************
+    MXBoundary Visualization;
+    *************************************/
+    RSMXBoundaryOutDB->RGBTime(2);
+    RSMXBoundaryOutDB->RGBStart(4);
+
+    rsMXBoundaryVisual* RsMXBoundaryVisualDB = new rsMXBoundaryVisual;
+    RsMXBoundaryVisualDB->MXBoundaryCellVisual(RSMXBoundaryOutDB, renL);
+
+    /************************************
+    MXBoundaryOut Visualization;
+    *************************************/
+    rsMXBoundaryOutVisual* RsMXBoundaryOutVisualDB = new rsMXBoundaryOutVisual;
+    RsMXBoundaryOutVisualDB->MXBoundaryInterCellVisual(RSMXBoundaryOutDB, renL);
+    RsMXBoundaryOutVisualDB->MXBoundaryUpCellVisual(RSMXBoundaryOutDB, renL);
+
+    /*************************************
+    Phloem Visualization
+    **************************************/
+    rsPhloemVisual* RsPhloemVisualDB = new rsPhloemVisual;
+    RsPhloemVisualDB->DownCellVisual(RsPhloemDB, renL);
+    RsPhloemVisualDB->UpAppendCellVisual(RsPhloemDB, renL);
+    RsPhloemVisualDB->UpPhloemCellVisual(RsPhloemDB, renL);
+
+    /************************************
+    stele Visualization;
+    *************************************/
+    RsSteleInnerDB->RGBTime(2);
+    RsSteleInnerDB->RGBStart(4);
+
+    rsSteleInnerVisual* RsSteleInnerVisualDB = new rsSteleInnerVisual;
+    RsSteleInnerVisualDB->SteleInnerVisual(RsSteleInnerDB, renL);
+
+    /// center cell visualization 
+    RsSteleInnerVisualDB->SteleInnestVisual(RsSteleInnerDB, renL);
+
+    delete RsSteleInnerDB;
+    RsSteleInnerDB = NULL;
 }

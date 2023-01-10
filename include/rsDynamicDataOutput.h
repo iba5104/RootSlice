@@ -25,8 +25,8 @@
 
 #include "rsDataOutput.h"
 
-#include "rsSourceEpidermisDB.h"
-#include "rsSourceEpidermisVisual.h"
+#include "rsSourceDermisDB.h"
+#include "rsSourceDermisVisual.h"
 
 #include "rsEpiCortexEndoWaterPathDB.h"
 #include "rsEpiCortexEndoWaterPathDBVisual.h"
@@ -45,8 +45,11 @@
 
 #include "rsSteleInnerDB.h"
 #include "rsSteleInnerVisual.h"
+#include "fluxEqns.h"
+#include "globals.h"
+#include "resources.h"
 
-class rsDynamicDataOutput
+class rsDynamicDataOutput : public globals
 {
 public:
 
@@ -54,26 +57,24 @@ public:
 
    void InitEpiCortexEndoAllDB
    (
-      int setUResolution,
-      int setVResolution,
-      int setWResolution,
-      double baseRadius,
-      double thickness,
-      double totalHeight,
+       /// All objects;
+       globals cortical,
+       globals stele,
+       globals metaXylem,
+       globals protoXylem,
+       globals phloem,
+       globals epidermis,
+       globals endodermis,
+       globals exodermis,
+       globals sclerenchyma,
+       globals pericycle,
+       globals surfaceFlux,
+       vector<globals> nutrients,
+
       /// Cortical;
       vector<double> corticalAddRadiusInputData,
       vector<int> corticalCellNumInputData,
-      int corticalAddRadiusDBSelectInput,
-
-      int corticalCellNumSelectInput,
       int corticalSliceNum,
-      double initZPosition,
-      int vectorNum,
-      double variationRatioCotical,
-      int cortexLayerNum,
-      double corticalCellMultiplyRatio,
-      double corticalCellAddRadiusMinInput,
-      double cortexRadiusInput,
       /// RCA;
       double rcaRatioInput,
       int rcaNumInput,
@@ -82,104 +83,117 @@ public:
       double gapAngleBetweenRcaRatio,
       double variationRatioRca,
 
-      /// Pure Cortical Cell;
-      double gapCellWallInput,
+      /// Plasma Membrane
+      double plasmaMembraneWidth,
 
-      /// Cortical Vacuole;
-      double gapCytoTono,
+       /// Sclerenchyma
+       int sclerenSliceNum,
+       double sclerenAddRadiusData,
 
       /// Epi;
       int epidermisSliceNum,
       double epidermisAddRadiusData,
-//      int epidermisCellNum,
-      double variationRatioDermis,
 
       /// Endo;
       int endodermisSliceNum,
       double endodermisAddRadiusData,
-//      int endodermisCellNum,
-
+      
+      // Pericycle
+      int pericycleSliceNum,
+      double pericycleAddRadiusData,
 
       /// OutXMLVtpFileName;
       const char* CorticalXMLVtpFileNameInput,
       const char* CorticalVacuoleXMLVtpFileNameInput,
+      const char* CorticalPlasmaMembraneVtpFileNameInput,
+      const char* SclerenXMLVtpFileNameInput,
       const char* EpidermisXMLVtpFileNameInput,
       const char* EndodermisXMLVtpFileNameInput,
       const char* ApoplastXMLVtpFileNameInput,
       const char* SymplastXMLVtpFileNameInput,
+      const char* PericycXMLVtpFileNameInput,
 
       /// DataOutputName;
       const char* dataOutputNameInput,
 
-      /// Others
-      vtkSmartPointer<vtkRenderer> renL
+       //Other
+       vtkSmartPointer<vtkRenderer> renL
    );
 
 
    void InitEpiCortexEndoNonRCADB
    (
-      int setUResolution,
-      int setVResolution,
-      int setWResolution,
-      double baseRadius,
-      double thickness,
-      double totalHeight,
-      /// Cortical;
+       /// All objects;
+      globals cortical,
+      globals stele,
+      globals metaXylem,
+      globals protoXylem,
+      globals phloem,
+      globals epidermis,
+      globals endodermis,
+      globals exodermis,
+      globals sclerenchyma,
+      globals pericycle,
+      globals surfaceFlux,
+      vector<globals> nutrients,
+
+      /// Cortical specific;
       vector<double> corticalAddRadiusInputData,
       vector<int> corticalCellNumInputData,
-      int corticalAddRadiusDBSelectInput,
 
-      int corticalCellNumSelectInput,
       int corticalSliceNum,
-      double initZPosition,
-      int vectorNum,
-      double variationRatioCotical,
-      int cortexLayerNum,
-      double corticalCellMultiplyRatio,
-      double corticalCellAddRadiusMinInput,
-      double cortexRadiusInput,
 
-      /// Pure Cortical Cell;
-      double gapCellWallInput,
+      /// Sclerenchyma
+      int sclerenSliceNum,
 
-      /// Cortical Vacuole;
-      double gapCytoTono,
+      double sclerenAddRadiusData,
 
       /// Epi;
       int epidermisSliceNum,
       double epidermisAddRadiusData,
-//      int epidermisCellNum,
-      double variationRatioDermis,
 
       /// Endo;
       int endodermisSliceNum,
       double endodermisAddRadiusData,
-//      int endodermisCellNum,
+
+       // Pericycle
+       int pericycleSliceNum,
+       double pericycleAddRadiusData,
 
       /// OutXMLVtpFileName;
       const char* CorticalXMLVtpFileNameInput,
       const char* CorticalVacuoleXMLVtpFileNameInput,
+      const char* CorticalPlasmaMembraneVtpFileNameInput,
+      const char* SclerenXMLVtpFileNameInput,
       const char* EpidermisXMLVtpFileNameInput,
       const char* EndodermisXMLVtpFileNameInput,
       const char* ApoplastXMLVtpFileNameInput,
       const char* SymplastXMLVtpFileNameInput,
+      const char* PericycXMLVtpFileNameInput,
 
-      /// DataOutputName;
-      const char* dataOutputNameInput,
-
-      /// Others
-      vtkSmartPointer<vtkRenderer> renL,
-       double variationRatio,
-       int sliceNum,
-       double steleInnestCellRadiusInput,
-       int steleInnerLayerNumInput,
-       double setUpVecticalLengthThresholdRatio,
-       double innerTangentRingRadiusRatioTemp,
-       int setInterVerticalNum
+       /// DataOutputName;
+      const char* dataOutputNameInput, //Other
+       vtkSmartPointer<vtkRenderer> renL
    );
 
-
    void RenderTogether( vtkSmartPointer<vtkRenderer> renL );
+
+   void InitInnertructure(
+       globals stele,
+       globals metaXylem,
+       globals protoXylem,
+       globals phloem,
+
+       double pericycleBaseRadius,
+
+       vtkSmartPointer<vtkRenderer> renL,
+
+       rsPXCoreDB* &RsPXCoreDB,
+       rsMXBoundaryOutDB* &RSMXBoundaryOutDB,
+       rsSteleInnerDB* &RsSteleInnerDB,
+       rsPXBoundaryDB* &RsPXBoundaryDB,
+       rsPhloemDB* &RsPhloemDB
+   );
 
 };
 

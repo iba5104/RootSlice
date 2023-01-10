@@ -1,4 +1,5 @@
 #include "rsSteleInnerVisual.h"
+#include "globals.h"
 
 void rsSteleInnerVisual::SteleInnerVisual
 (rsSteleInnerDB* RsSteleInnerDB,
@@ -18,9 +19,11 @@ void rsSteleInnerVisual::SteleInnerVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("SteleInnerCell.vtp");
+	string flName = getFolderName() + "SteleInnerCell.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("SteleInnerCell.vtp");
 
-	ofstream fout("Stele.txt", ios::app);
+	ofstream fout(getFolderName() + "Stele.txt", ios::app);
 
 	for (iRingNum = 0, itMap = RsSteleInnerDB->objectHeightDB.begin();
 		itMap != RsSteleInnerDB->objectHeightDB.end();
@@ -139,9 +142,11 @@ void rsSteleInnerVisual::SteleInnestVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("SteleInnestCell.vtp");
+	string flName = getFolderName() + "SteleInnestCell.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("SteleInnestCell.vtp");
 
-	ofstream fout("Stele.txt", ios::app);
+	ofstream fout(getFolderName() + "Stele.txt", ios::app);
 
 	for (sliceTempNum = 0, itVec = RsSteleInnerDB->steleInnestObjectHeightDB.begin();
 		itVec != RsSteleInnerDB->steleInnestObjectHeightDB.end();

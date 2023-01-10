@@ -18,11 +18,12 @@
 //#include "vtkProperty.h"
 #include <math.h>
 
+#include "globals.h"
 #include "vtkSmartPointer.h"
 
 using namespace std;
 
-class rsMXCoreVisual
+class rsMXCoreVisual : public globals
 {
 public:
 

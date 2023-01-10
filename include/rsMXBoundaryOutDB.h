@@ -12,12 +12,14 @@ public:
 
    double innerRingRadius;
    void InnerRingRadius( double innerTangentRingRadiusRatioTemp );
+   void SetInnerRingRadius(double setInnerRingRadius);
 
    double interVerticalNum;
    void InterVerticalNum( int setInterVerticalNum );
 
    double interVerticalLengthTotal;
    void InterVerticalLengthTotal();
+   void CalculateInterVerticalLengthTotal(double maxRadius);
 
    double interVerticalLengthAverage;
    void InterVerticalLengthAverage();
@@ -37,8 +39,15 @@ public:
    vector<double> interIntersectionRadianDB;
    void InterRadianStartAndEndDB();
 
-   map<int, vector<double> > interParallelPerimeterDB;
+   map<int, vector<double>> interParallelPerimeterDB;
    void InterParallelPerimeterDB();
+
+   void DicotInterRadian(int rIdx, int numIter);
+   void DicotInterRadianDB();
+
+   map<int, vector<double>> interRadianStartDicot;
+   map<int, vector<double>> interIntersectionRadianDicot;
+   void DicotInterRadianAndParallelPerimeterDB();
 
    map<int, vector<double> > interParallelNumDB;
    void InterParallelNumDB();

@@ -160,7 +160,8 @@ public:
 
 /// Initialize Boundary Cells
    void InitBoundaryCell
-   ( int dotNum,
+   ( 
+     int dotNum,
      int setUpRowNum,
      int setDownRowNum,
      int sliceNum );

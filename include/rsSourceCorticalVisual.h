@@ -1,6 +1,7 @@
 #ifndef RSSOURCECORTICALVISUAL_H_INCLUDED
 #define RSSOURCECORTICALVISUAL_H_INCLUDED
 
+#include "globals.h"
 #include "rsSourceCorticalDB.h"
 #include "rsBaseGeometry.h"
 
@@ -38,11 +39,18 @@ public:
 
    void CorticalVisual
    ( rsSourceCorticalDB *CorticalDB,
-     vtkSmartPointer<vtkRenderer> renL );
+     vtkSmartPointer<vtkRenderer> renL,
+       vector<double> result, string filePrefix);
 
    void VacuoleVisual
    ( rsSourceCorticalDB *CorticalDB,
-     vtkSmartPointer<vtkRenderer> renL );
+     vtkSmartPointer<vtkRenderer> renL,
+       vector<double> result, string filePrefix);
+
+   void CorticalPlasmaMembraneVisual
+   ( rsSourceCorticalDB* CorticalDB,
+     vtkSmartPointer<vtkRenderer> renL,
+       vector<double> result, string filePrefix);
 
 };
 

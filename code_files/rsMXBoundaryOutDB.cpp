@@ -25,6 +25,13 @@ double innerRingRadius;
 void rsMXBoundaryOutDB::InnerRingRadius(double innerTangentRingRadiusRatioTemp)
 {
 	innerRingRadius = innerTangentRingRadiusRatioTemp * tangentRingRadius;
+	if (type_dicot)
+		innerRingRadius = (noCentreMX) ? 0.0 : boundaryRadiusDB[0];
+}
+
+void rsMXBoundaryOutDB::SetInnerRingRadius(double setInnerRingRadius)
+{
+	innerRingRadius = setInnerRingRadius;
 }
 
 /********************************************************************
@@ -56,6 +63,11 @@ void rsMXBoundaryOutDB::InterVerticalLengthTotal()
 	interVerticalLengthTotal = boundaryMXPXRingRadiusDeliver - innerRingRadius;
 }
 
+void rsMXBoundaryOutDB::CalculateInterVerticalLengthTotal(double maxRadius)
+{
+	interVerticalLengthTotal = maxRadius - innerRingRadius;
+}
+
 /** \brief interVerticalLengthAverage
  *
  * \param double interVerticalLengthTotal;
@@ -74,11 +86,20 @@ vector<double> interVerticalLengthAddDB;
 void rsMXBoundaryOutDB::InterVerticalLengthDB(double variationRatio)
 {  //ofstream fout("a.txt",ios::app);
    //fout << "InterVerticalLengthDB" << endl;
-	RandomRatioButSameSumAndNumber(interVerticalLengthDB,
-		interVerticalLengthAddDB,
+	vector<double> interVerticalLengthTemp;
+	vector<double> interVerticalLengthAddTemp;
+	
+	RandomRatioButSameSumAndNumber(interVerticalLengthTemp,
+		interVerticalLengthAddTemp,
 		interVerticalLengthTotal,
 		interVerticalNum,
 		variationRatio);
+
+	for (double var1 : interVerticalLengthTemp)
+		interVerticalLengthDB.push_back(var1);
+	for (double var1 : interVerticalLengthAddTemp)
+		interVerticalLengthAddDB.push_back(var1);
+	
 	//   fout << "interVerticalLengthTotal: " << interVerticalLengthTotal << "  interVerticalNum: " << interVerticalNum
 	//        << "  randomRange: " << randomRange << endl;
 }
@@ -219,9 +240,120 @@ void rsMXBoundaryOutDB::InterParallelPerimeterDB()
 			itVecRadius != interVerticalCenterRadiusDB.end();
 			itVecRadius++, j++)
 		{
-			temp = 2.0 * M_PI * (*itVecRadius) * ((*itVecRadian) / (2.0 * M_PI));
+			temp = (*itVecRadius) * (*itVecRadian);
 			interParallelPerimeter.push_back(temp);
 			//         fout << "i: " << i << "  j: " << j << "  "<< temp << endl;
+		}
+		interParallelPerimeterDB.insert(pair<int, vector<double> >(i, interParallelPerimeter));
+	}
+}
+
+void rsMXBoundaryOutDB::DicotInterRadian(int rIdx, int numIter)
+{
+	int prev = interRadianEndDB.size();
+
+	for (int i = 0; i < numIter; i++)
+	{
+		interRadianStartDB.push_back(boundaryRadianEndDB[rIdx+i]);
+		double endVal = boundaryRadianStartDB[rIdx + i];
+		if (endVal < 0)
+			endVal += 2 * M_PI;
+		interRadianEndDB.push_back(endVal);
+	}
+	rotate(interRadianEndDB.begin()+prev, interRadianEndDB.begin() + 1+prev, interRadianEndDB.end());
+}
+
+void rsMXBoundaryOutDB::DicotInterRadianDB()
+{
+	vector<double>::iterator itVecInterStart;
+	vector<double>::iterator itVecInterEnd;
+	double temp;
+
+	for (itVecInterEnd = interRadianEndDB.begin(), itVecInterStart = interRadianStartDB.begin();
+		itVecInterEnd != interRadianEndDB.end();
+		itVecInterEnd++, itVecInterStart++)
+	{
+		temp = *itVecInterEnd - *itVecInterStart;
+		interIntersectionRadianDB.push_back(temp);
+	}
+}
+
+void rsMXBoundaryOutDB::DicotInterRadianAndParallelPerimeterDB()
+{
+	vector<double> radianDiff;
+	vector<double> radianStartTemp;
+
+	vector<double>::iterator itVecInterStart;
+	vector<double>::iterator itVecInterEnd;
+	double temp;
+	//int numSections = *max_element(eachRingMXNum.begin(), eachRingMXNum.end());
+	int start_pos = 0;
+
+	for (int i = 0; i < eachRingMXNum.size(); i++)
+	{
+		radianDiff.clear();
+		radianStartTemp.clear();
+		for (int j = 0; j < eachRingMXNum[i]; j++)
+		{
+			int startIdx = (i == 0) ? j : (j + (i * eachRingMXNum[i-1]));
+			int endIdx = (j == (eachRingMXNum[i] - 1)) ? 0 : (startIdx + 1);
+			double startVal = boundaryRadianEndDB[startIdx];
+			double endVal = boundaryRadianStartDB[endIdx];
+			if (endVal < 0)
+				endVal += 2 * M_PI;
+			double diffTemp = endVal - startVal;
+			if (diffTemp < 0)
+				diffTemp = 0;
+			radianDiff.push_back(diffTemp);
+			radianStartTemp.push_back(startVal);
+		}
+		/*if (j < numSections) {
+			int end_pos = j + start_pos + eachRingMXNum[i];
+			int nextI = ((i + 1) < eachRingMXNum.size()) ? (i + 1) : 0;
+			if (j >= eachRingMXNum[nextI])
+				end_pos--;
+			if (end_pos >= boundaryRadianStartDB.size())
+				end_pos = j + 1;
+			double startVal = boundaryRadianEndDB[start_pos + j - 1];
+			double endVal = boundaryRadianStartDB[end_pos];
+			if (endVal < 0)
+				endVal += 2 * M_PI;
+			double diffTemp = endVal - startVal;
+			radianDiff.push_back(diffTemp);
+			radianStartTemp.push_back(startVal);
+		}*/
+		interIntersectionRadianDicot.insert(pair<int, vector<double> >(i, radianDiff));
+		interRadianStartDicot.insert(pair<int, vector<double>>(i, radianStartTemp));
+	}
+
+	map<int, vector<double>>::iterator itMapRadian;
+	vector<double>::iterator itVecRadian;
+	vector<double>::iterator itVecRadius;
+	vector<double>::iterator itVec;
+	vector<double> interParallelPerimeter;
+	int i = 0;
+	
+	for (itMapRadian = interIntersectionRadianDicot.begin(), i = 0;
+		itMapRadian != interIntersectionRadianDicot.end();
+		itMapRadian++, i++)
+	{
+		interParallelPerimeter.clear();
+		itVecRadius = interVerticalCenterRadiusDB.begin();
+		int sectionCount = ceil(interVerticalCenterRadiusDB.size() / mxRingNum);
+		for (itVecRadian = (*itMapRadian).second.begin();
+			itVecRadian != (*itMapRadian).second.end();
+			itVecRadian++)
+		{
+			int j = 0;
+			while (j < sectionCount)
+			{
+				if (interParallelPerimeter.size() == interVerticalCenterRadiusDB.size())
+					break;
+				temp = (*itVecRadius) * (*itVecRadian);
+				interParallelPerimeter.push_back(temp);
+				itVecRadius++;
+				j++;
+			}
 		}
 		interParallelPerimeterDB.insert(pair<int, vector<double> >(i, interParallelPerimeter));
 	}
@@ -305,7 +437,10 @@ void rsMXBoundaryOutDB::InterParallelLengthDB()
 			itVecPerimeter != (*itMapPerimeter).second.end();
 			itVecPerimeter++, itVecNum++, j++)
 		{
-			temp = *itVecPerimeter / *itVecNum;
+			if (*itVecNum == 0)
+				temp = 0;
+			else
+				temp = *itVecPerimeter / *itVecNum;
 			interParallelLength.push_back(temp);
 			//         fout << "i: " << i << "  j: " << j
 			//              << "  temp: " << temp << "  interParallelPerimeterDB: " << *itVecPerimeter
@@ -359,6 +494,7 @@ void rsMXBoundaryOutDB::InterParallelRadianDivideDB()
 {
 	map<int, vector<double> >::iterator  itMapNum;
 	vector<double>::iterator itVecNum;
+	map<int, vector<double>>::iterator itMapRadian;
 	vector<double>::iterator itVecRadian;
 	vector<double> interIntersectionRadianDivide;
 	double temp;
@@ -366,23 +502,52 @@ void rsMXBoundaryOutDB::InterParallelRadianDivideDB()
 	int j;
 	//   ofstream fout("a.txt",ios::app);
 	//   fout << "InterParallelRadianDivideDB" << endl;
-	for (itMapNum = interParallelNumDB.begin(), itVecRadian = interIntersectionRadianDB.begin(), i = 0;
-		itMapNum != interParallelNumDB.end();
-		itMapNum++, itVecRadian++, i++)
-	{
-		interIntersectionRadianDivide.clear();
-		for (itVecNum = (*itMapNum).second.begin(), j = 0;
-			itVecNum != (*itMapNum).second.end();
-			itVecNum++, j++)
+	//if (type_dicot)
+	//{
+	//	for (itMapNum = interParallelNumDB.begin(), itMapRadian = interIntersectionRadianDicot.begin(), i = 0;
+	//		itMapNum != interParallelNumDB.end();
+	//		itMapNum++, itMapRadian++, i++)
+	//	{
+	//		interIntersectionRadianDivide.clear();
+	//		for (itVecNum = (*itMapNum).second.begin(), itVecRadian = (*itMapRadian).second.begin(), j = 0;
+	//			itVecNum != (*itMapNum).second.end();
+	//			itVecNum++)
+	//		{
+	//			temp = *itVecRadian / *itVecNum;
+	//			interIntersectionRadianDivide.push_back(temp);
+	//			j++;
+	//			if (j == (*itMapRadian).second.size())
+	//			{
+	//				itVecRadian++;
+	//				j = 0;
+	//			}
+	//			//         fout << "i: " << i << "  j: " << j
+	//			//              << "  temp: " << temp << endl;
+	//			//         fout << "interIntersectionRadianDB: " << *itVecRadian << "  interParallelNumDB: " << *itVecNum << endl;
+	//		}
+	//		interIntersectionRadianDivideDB.insert(pair<int, vector<double> >(i, interIntersectionRadianDivide));
+	//	}
+	//}
+	//else
+	//{
+		for (itMapNum = interParallelNumDB.begin(), itVecRadian = interIntersectionRadianDB.begin(), i = 0;
+			itMapNum != interParallelNumDB.end();
+			itMapNum++, itVecRadian++, i++)
 		{
-			temp = *itVecRadian / *itVecNum;
-			interIntersectionRadianDivide.push_back(temp);
-			//         fout << "i: " << i << "  j: " << j
-			//              << "  temp: " << temp << endl;
-			//         fout << "interIntersectionRadianDB: " << *itVecRadian << "  interParallelNumDB: " << *itVecNum << endl;
+			interIntersectionRadianDivide.clear();
+			for (itVecNum = (*itMapNum).second.begin(), j = 0;
+				itVecNum != (*itMapNum).second.end();
+				itVecNum++, j++)
+			{
+				temp = *itVecRadian / *itVecNum;
+				interIntersectionRadianDivide.push_back(temp);
+				//         fout << "i: " << i << "  j: " << j
+				//              << "  temp: " << temp << endl;
+				//         fout << "interIntersectionRadianDB: " << *itVecRadian << "  interParallelNumDB: " << *itVecNum << endl;
+			}
+			interIntersectionRadianDivideDB.insert(pair<int, vector<double> >(i, interIntersectionRadianDivide));
 		}
-		interIntersectionRadianDivideDB.insert(pair<int, vector<double> >(i, interIntersectionRadianDivide));
-	}
+	//}
 }
 /** \brief interParallelCenterRadianDB
  *
@@ -396,6 +561,7 @@ void rsMXBoundaryOutDB::InterParallelRadianDivideDB()
 map<int, vector<vector<double> > > interCellCenterRadianDB;
 void rsMXBoundaryOutDB::InterCellCenterRadianDB()
 {
+	map<int, vector<double>>::iterator itMapRadianStart;
 	vector<double>::iterator itVecRadianStart;
 	map<int, vector<double> >::iterator  itMapNum;
 	vector<double>::iterator itVecNum;
@@ -411,44 +577,91 @@ void rsMXBoundaryOutDB::InterCellCenterRadianDB()
 	int j;
 	int k;
 	int num;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "InterCellCenterRadianDB" << endl;
-	for (itMapNum = interParallelNumDB.begin(), itVecRadianStart = interRadianStartDB.begin(),
-		itMapRadianDivide = interIntersectionRadianDivideDB.begin(), i = 0;
-		itMapNum != interParallelNumDB.end();
-		itMapNum++, itVecRadianStart++, itMapRadianDivide++, i++)
-	{
-		interCellCenterRadianVec2.clear();
-		for (itVecNum = (*itMapNum).second.begin(), itVecRadianDivide = (*itMapRadianDivide).second.begin(), j = 0;
-			itVecNum != (*itMapNum).second.end();
-			itVecNum++, itVecRadianDivide++, j++)
+	//if (type_dicot)
+	//{
+	//	for (itMapNum = interParallelNumDB.begin(), itMapRadianStart = interRadianStartDicot.begin(),
+	//			itMapRadianDivide = interIntersectionRadianDivideDB.begin(), i = 0;
+	//		itMapNum != interParallelNumDB.end(); itMapNum++, itMapRadianStart++, itMapRadianDivide++, i++)
+	//	{
+	//		interCellCenterRadianVec2.clear();
+	//		for (itVecNum = (*itMapNum).second.begin(), itVecRadianStart = (*itMapRadianStart).second.begin(),
+	//				itVecRadianDivide = (*itMapRadianDivide).second.begin(), j = 0;
+	//			itVecNum != (*itMapNum).second.end(); itVecNum++, itVecRadianDivide++)
+	//		{
+	//			interCellCenterRadianVec1.clear();
+	//			sum = 0;
+	//			tempSum = 0;
+	//			for (num = 0, k = 0; num != *itVecNum; num++, k++)
+	//			{
+	//				if (num == 0)
+	//				{
+	//					tempSum = 0;
+	//					sum = tempSum + *itVecRadianDivide / 2;
+	//					temp = *itVecRadianStart + sum;
+	//					interCellCenterRadianVec1.push_back(temp);
+	//				}
+	//				else
+	//				{
+	//					tempSum += *itVecRadianDivide;
+	//					sum = tempSum + *itVecRadianDivide / 2;
+	//					temp = *itVecRadianStart + sum;
+	//					interCellCenterRadianVec1.push_back(temp);
+	//				}
+	//				//            fout << "i: " << i << "  j: " << j << "  k: " << k <<
+	//				//                 "  temp: " << temp << endl;
+	//			}
+	//			j++;
+	//			if (j == (*itMapRadianStart).second.size())
+	//			{
+	//				itVecRadianStart++;
+	//				j = 0;
+	//			}
+	//			interCellCenterRadianVec2.push_back(interCellCenterRadianVec1);
+	//		}
+	//		interCellCenterRadianDB.insert(pair<int, vector<vector<double> > >(i, interCellCenterRadianVec2));
+	//	}
+	//}
+	//else
+	//{
+		for (itMapNum = interParallelNumDB.begin(), itVecRadianStart = interRadianStartDB.begin(),
+			itMapRadianDivide = interIntersectionRadianDivideDB.begin(), i = 0;
+			itMapNum != interParallelNumDB.end();
+			itMapNum++, itVecRadianStart++, itMapRadianDivide++, i++)
 		{
-			interCellCenterRadianVec1.clear();
-			sum = 0;
-			tempSum = 0;
-			for (num = 0, k = 0; num != *itVecNum; num++, k++)
+			interCellCenterRadianVec2.clear();
+			for (itVecNum = (*itMapNum).second.begin(), itVecRadianDivide = (*itMapRadianDivide).second.begin(), j = 0;
+				itVecNum != (*itMapNum).second.end();
+				itVecNum++, itVecRadianDivide++, j++)
 			{
-				if (num == 0)
+				interCellCenterRadianVec1.clear();
+				sum = 0;
+				tempSum = 0;
+				for (num = 0, k = 0; num != *itVecNum; num++, k++)
 				{
-					tempSum = 0;
-					sum = tempSum + *itVecRadianDivide / 2;
-					temp = *itVecRadianStart + sum;
-					interCellCenterRadianVec1.push_back(temp);
+					if (num == 0)
+					{
+						tempSum = 0;
+						sum = tempSum + *itVecRadianDivide / 2;
+						temp = *itVecRadianStart + sum;
+						interCellCenterRadianVec1.push_back(temp);
+					}
+					else
+					{
+						tempSum += *itVecRadianDivide;
+						sum = tempSum + *itVecRadianDivide / 2;
+						temp = *itVecRadianStart + sum;
+						interCellCenterRadianVec1.push_back(temp);
+					}
+					//            fout << "i: " << i << "  j: " << j << "  k: " << k <<
+					//                 "  temp: " << temp << endl;
 				}
-				else
-				{
-					tempSum += *itVecRadianDivide;
-					sum = tempSum + *itVecRadianDivide / 2;
-					temp = *itVecRadianStart + sum;
-					interCellCenterRadianVec1.push_back(temp);
-				}
-				//            fout << "i: " << i << "  j: " << j << "  k: " << k <<
-				//                 "  temp: " << temp << endl;
+				interCellCenterRadianVec2.push_back(interCellCenterRadianVec1);
 			}
-			interCellCenterRadianVec2.push_back(interCellCenterRadianVec1);
+			interCellCenterRadianDB.insert(pair<int, vector<vector<double> > >(i, interCellCenterRadianVec2));
 		}
-		interCellCenterRadianDB.insert(pair<int, vector<vector<double> > >(i, interCellCenterRadianVec2));
-	}
+	//}
 }
 /** \brief interParallelCenterRotateAngleDB
  *
@@ -636,45 +849,90 @@ void rsMXBoundaryOutDB::InterCellObjectHeightAndZPositionDB(int sliceNum)
 }
 
 void rsMXBoundaryOutDB::InitBoundaryInterDB
-(double innerTangentRingRadiusRatioTemp,
+(	double innerTangentRingRadiusRatioTemp,
 	int setInterVerticalNum,
 	double variationRatio,
 	int sliceNum)
 {
-	TangentRingRadius();
+	if (type_dicot)
+	{
+		InterVerticalNum(setInterVerticalNum);
 
-	InnerRingRadius(innerTangentRingRadiusRatioTemp);
+		double maxRadius = boundaryMXPXRingRadiusDeliver;
+		int mxNumSum = 0;
+		for (int i = 0, j = mxRingNum - 1; i < mxRingNum; i++, j--)
+		{
+			int rIdx = boundaryRadiusDB.size() - mxNumSum - 1;
+			mxNumSum += eachRingMXNum[j];
+			double setInnerR = maxRadius - boundaryRadiusDB[rIdx] * 2;
+			SetInnerRingRadius(setInnerR);
 
-	InterVerticalNum(setInterVerticalNum);
+			CalculateInterVerticalLengthTotal(maxRadius);
+			maxRadius -= setInnerR;
 
-	InterVerticalLengthTotal();
+			InterVerticalLengthAverage();
 
-	InterVerticalLengthAverage();
+			InterVerticalLengthDB(variationRatio);
 
-	InterVerticalLengthDB(variationRatio);
+			DicotInterRadian(boundaryRadiusDB.size() - mxNumSum, eachRingMXNum[j]);
+		}
+		InterVerticalLengthHalfDB();
+		InterVerticalCenterRadiusDB();
+		DicotInterRadianDB();
+		InterParallelPerimeterDB();
 
-	InterVerticalLengthHalfDB();
+		InterParallelNumDB();
 
-	InterVerticalCenterRadiusDB();
+		InterParallelLengthDB();
+		InterParallelLengthHalfDB();
 
-	InterRadianStartAndEndDB();
+		InterParallelRadianDivideDB();
 
-	InterParallelPerimeterDB();
+		InterCellCenterRadianDB();
 
-	InterParallelNumDB();
+		InterCellCenterRotateAngleDB();
 
-	InterParallelLengthDB();
-	InterParallelLengthHalfDB();
+		InterCellXYDB();
 
-	InterParallelRadianDivideDB();
+		InterCellObjectHeightAndZPositionDB(sliceNum);
+	}
+	else
+	{
+		TangentRingRadius();
 
-	InterCellCenterRadianDB();
+		InnerRingRadius(innerTangentRingRadiusRatioTemp);
 
-	InterCellCenterRotateAngleDB();
+		InterVerticalNum(setInterVerticalNum);
 
-	InterCellXYDB();
+		InterVerticalLengthTotal();
 
-	InterCellObjectHeightAndZPositionDB(sliceNum);
+		InterVerticalLengthAverage();
+
+		InterVerticalLengthDB(variationRatio);
+
+		InterVerticalLengthHalfDB();
+
+		InterVerticalCenterRadiusDB();
+		
+		InterRadianStartAndEndDB();
+		
+		InterParallelPerimeterDB();
+		
+		InterParallelNumDB();
+
+		InterParallelLengthDB();
+		InterParallelLengthHalfDB();
+
+		InterParallelRadianDivideDB();
+
+		InterCellCenterRadianDB();
+
+		InterCellCenterRotateAngleDB();
+
+		InterCellXYDB();
+
+		InterCellObjectHeightAndZPositionDB(sliceNum);
+	}
 }
 
 
@@ -697,11 +955,13 @@ void rsMXBoundaryOutDB::UpVerticalLengthTotalDB()
 {
 	vector<double>::iterator itVec;
 	double temp;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpVerticalLengthTotalDB" << endl;
 	for (itVec = boundaryRadiusDB.begin(); itVec != boundaryRadiusDB.end(); itVec++)
 	{
 		temp = boundaryMXPXRingRadiusDeliver - innerRingRadius - (*itVec) * 2;
+		if (type_dicot)
+			temp = 0;
 		upVerticalLengthTotalDB.push_back(temp);
 		fout << "temp: " << temp << endl;
 	}
@@ -736,6 +996,8 @@ void rsMXBoundaryOutDB::UpVerticalNum()
 {
 	vector<double>::iterator itVec;
 	int num;
+	if (upVecticalLengthThreshold == 0)
+		upVecticalLengthThreshold = 1;
 	//ofstream fout("a.txt",ios::app);
 	//cout << "upVerticalNum" << endl;
 	for (itVec = upVerticalLengthTotalDB.begin(); itVec != upVerticalLengthTotalDB.end(); itVec++)
@@ -764,7 +1026,7 @@ void rsMXBoundaryOutDB::UpVerticalLengthAverageDB()
 	vector<double>::iterator itVec;
 	vector<double>::iterator itVecNum;
 	double temp;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpVerticalLengthAverageDB" << endl;
 	for (itVec = upVerticalLengthTotalDB.begin(), itVecNum = upVerticalNum.begin();
 		itVec != upVerticalLengthTotalDB.end();
@@ -798,11 +1060,18 @@ void rsMXBoundaryOutDB::UpVerticalLengthDB(double variationRatio)
 		itVec++, itVecNum++, i++)
 	{  //cout << "UpVerticalLengthDB: " << "  i: " << i << endl;
 	   //cout << "upVerticalLengthTotalDB: " << *itVec << "  upVerticalNum: " << *itVecNum << endl;
-		RandomRatioButSameSumAndNumber(upVerticalLength,
+		SameSumAndNumberAndRatio(
+			upVerticalLength,
 			upVerticalLengthAdd,
 			*itVec,
 			*itVecNum,
-			variationRatio);
+			variationRatio
+		);
+//		RandomRatioButSameSumAndNumber(upVerticalLength,
+//			upVerticalLengthAdd,
+//			*itVec,
+//			*itVecNum,
+//			variationRatio);
 		upVerticalLengthDB.insert(pair<int, vector<double> >(i, upVerticalLength));
 		upVerticalLengthAddDB.insert(pair<int, vector<double> >(i, upVerticalLengthAdd));
 	}
@@ -823,7 +1092,7 @@ void rsMXBoundaryOutDB::UpVerticalLengthHalfDB()
 	vector<double> upVerticalLengthHalf;
 	double temp;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpVerticalLengthHalfDB" << endl;
 	for (itMap = upVerticalLengthDB.begin(), i = 0;
 		itMap != upVerticalLengthDB.end();
@@ -863,7 +1132,7 @@ void rsMXBoundaryOutDB::UpVerticalCenterRadiusDB()
 	vector<double> upVerticalCenterRadius;
 	double temp;
 	int i;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpVerticalLengthHalfDB" << endl;
 	for (itMap = upVerticalLengthDB.begin(), itMapAdd = upVerticalLengthAddDB.begin(), i = 0;
 		itMap != upVerticalLengthDB.end();
@@ -903,7 +1172,7 @@ void rsMXBoundaryOutDB::UpParallelPerimeterDB()
 	int i;
 	int j;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpParallelPerimeterDB" << endl;
 	for (itMapRadius = upVerticalCenterRadiusDB.begin(), itVecRadian = boundaryCentralRadianDB.begin(), i = 0;
 		itMapRadius != upVerticalCenterRadiusDB.end();
@@ -943,7 +1212,7 @@ void rsMXBoundaryOutDB::UpParallelNumDB()
 	int i;
 	int j;
 
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpParallelNumDB" << endl;
 	for (itMapPerimeter = upParallelPerimeterDB.begin(), itMapLength = upVerticalLengthDB.begin(), i = 0;
 		itMapPerimeter != upParallelPerimeterDB.end();
@@ -954,6 +1223,14 @@ void rsMXBoundaryOutDB::UpParallelNumDB()
 			itVecPerimeter != (*itMapPerimeter).second.end();
 			itVecPerimeter++, itVecLength++, j++)
 		{
+			if (*itVecLength == 0)
+			{
+				intNum = 0;
+				upParallelNum.push_back(intNum);
+				fout << "i: " << i << "  j: " << j <<
+					"  intNum: " << intNum << endl;
+				continue;
+			}
 			doubleNum = *itVecPerimeter / *itVecLength;
 			if (doubleNum < 1)
 			{
@@ -990,7 +1267,7 @@ void rsMXBoundaryOutDB::UpParallelLengthDB()
 	double temp;
 	int i;
 	int j;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpParallelLengthDB" << endl;
 	for (itMapPerimeter = upParallelPerimeterDB.begin(), itMapNum = upParallelNumDB.begin(), i = 0;
 		itMapPerimeter != upParallelPerimeterDB.end();
@@ -1060,7 +1337,7 @@ void rsMXBoundaryOutDB::UpParallelRadianDivideDB()
 	double temp;
 	int i;
 	int j;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpParallelRadianDivideDB" << endl;
 	for (itMapNum = upParallelNumDB.begin(), itVecRadian = boundaryCentralRadianDB.begin(), i = 0;
 		itMapNum != upParallelNumDB.end();
@@ -1108,7 +1385,7 @@ void rsMXBoundaryOutDB::UpCellCenterRadianDB()
 	int j;
 	int k;
 	int num;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpCellCenterRadianDB" << endl;
 	for (itMapNum = upParallelNumDB.begin(), itVecRadianStart = boundaryRadianStartDB.begin(),
 		itMapRadianDivide = upIntersectionRadianDivideDB.begin(), i = 0;
@@ -1218,7 +1495,7 @@ void rsMXBoundaryOutDB::UpCellXYDB()
 	int i;
 	int j;
 	int k;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpCellXYDB" << endl;
 	for (itMap = upCellCenterRadianDB.begin(), itMapCenterRadius = upVerticalCenterRadiusDB.begin(), i = 0;
 		itMap != upCellCenterRadianDB.end();
@@ -1285,7 +1562,7 @@ void rsMXBoundaryOutDB::UpCellObjectHeightAndZPositionDB(int sliceNum)
 	int iRingNum;
 	int cellNum;
 	int sliceTempNum;
-	ofstream fout("a.txt", ios::app);
+	ofstream fout(getFolderName() + "a.txt", ios::app);
 	fout << "UpCellObjectHeightAndZPositionDB" << endl;
 
 	for (i = 0, itMap = upCellXDB.begin();
@@ -1337,7 +1614,8 @@ void rsMXBoundaryOutDB::UpCellObjectHeightAndZPositionDB(int sliceNum)
 }
 
 void rsMXBoundaryOutDB::InitBoundaryUpDB
-(double setUpVecticalLengthThresholdRatio,
+(
+	double setUpVecticalLengthThresholdRatio,
 	double variationRatio,
 	int sliceNum)
 {

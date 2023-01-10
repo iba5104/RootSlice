@@ -5,8 +5,13 @@
 #include "rsRcaDB.h"
 #include "rsEpiCortexEndoWaterPathDB.h"
 #include <sstream>
+#include "globals.h"
+#include <rsPXBoundaryDB.h>
+#include <rsMXBoundaryOutDB.h>
+#include <rsPhloemDB.h>
+#include <rsSteleInnerDB.h>
 
-class rsDataOutput
+class rsDataOutput : public globals
 {
 
 public:
@@ -16,7 +21,6 @@ public:
 
    double steleRadius;
    double cortexHeight;
-   double totalHeight;// Jagdeep 12-2-2020
    double dlete;
 
    int corticalRingNum;
@@ -48,9 +52,15 @@ public:
 
    
    void CorticalDataOutputCalculate
-   ( double baseRadius,
-     double totalHeight,
-     rsSourceCorticalDB *RsSourceCorticalDB );
+   ( rsSourceCorticalDB *RsSourceCorticalDB );
+
+   void DermisDataOutputCalculate(rsSourceDermisDB* RsSourceDermisDB);
+   void PXDataOutputCalculate(rsPXCoreDB* RsPXCoreDB);
+   void MXDataOutputCalculate(rsMXCoreDB* RsMXCoreDB);
+   void MXBoundaryDataOutputCalculate(rsMXBoundaryOutDB* RSMXBoundaryOutDB);
+   void SteleDataOutputCalculate(rsSteleInnerDB* RsSteleInnerDB);
+   void PXBoundaryDataOutputCalculate(rsPXBoundaryDB* RsPXBoundaryDB);
+   void PhloemDataOutputCalculate(rsPhloemDB* RsPhloemDB);
 
    /// RCA;
    double rcaRatioInput;

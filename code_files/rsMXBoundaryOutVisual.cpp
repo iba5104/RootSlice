@@ -1,4 +1,5 @@
 #include "rsMXBoundaryOutVisual.h"
+#include "globals.h"
 
 
 /////////////////////////////////////////////// MXBoundaryInterCellVisual ///////////////////////////////////////////
@@ -19,15 +20,16 @@ void rsMXBoundaryOutVisual::MXBoundaryInterCellVisual
 
 	int MXBoundaryOutCellNum = 0;
 
-	ofstream fout("staticNum.txt", ios::app);
+	ofstream fout(getFolderName() + "staticNum.txt", ios::app);
 
 	/// Create vtkAppendPolyData and vtkXMLPolyDataWriter pointer outside the loop;
 	vtkSmartPointer<vtkAppendPolyData> append =
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-
-	writer->SetFileName("MXBoundaryInterCell.vtp");
+	string flName = getFolderName() + "MXBoundaryInterCell.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("MXBoundaryInterCell.vtp");
 
 	for (itMap = RsMXBoundaryOutDB->interCellObjectHeightDB.begin(), i = 0;
 		itMap != RsMXBoundaryOutDB->interCellObjectHeightDB.end();
@@ -185,9 +187,11 @@ void rsMXBoundaryOutVisual::MXBoundaryUpCellVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("MXBoundaryUpCell.vtp");
+	string flName = getFolderName() + "MXBoundaryUpCell.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("MXBoundaryUpCell.vtp");
 
-	ofstream fout("staticNum.txt", ios::app);
+	ofstream fout(getFolderName() + "staticNum.txt", ios::app);
 
 	for (itMap = RsMXBoundaryOutDB->upCellObjectHeightDB.begin(), i = 0;
 		itMap != RsMXBoundaryOutDB->upCellObjectHeightDB.end();

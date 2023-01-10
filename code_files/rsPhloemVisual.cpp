@@ -1,4 +1,5 @@
 #include "rsPhloemVisual.h"
+#include "globals.h"
 
 /////////////////////////////////////////////// UpAppendCellVisual ///////////////////////////////////////////
 void rsPhloemVisual::UpAppendCellVisual
@@ -19,7 +20,7 @@ void rsPhloemVisual::UpAppendCellVisual
 	int PhloemAppendCellNum = 0;
 
 	//ofstream fout("staticNum.txt",ios::app);
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpAppendCellVisual" << endl;
 
 	/// Create vtkAppendPolyData and vtkXMLPolyDataWriter pointer outside the loop;
@@ -27,7 +28,9 @@ void rsPhloemVisual::UpAppendCellVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("UpPhloemAppendCell.vtp");
+	string flName = getFolderName() + "UpPhloemAppendCell.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("UpPhloemAppendCell.vtp");
 
 	/// UpAppendCellVisual - Start;
 	fout << "UpAppendCellVisual - Start" << endl;
@@ -316,10 +319,12 @@ void rsPhloemVisual::UpPhloemCellVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("UpPhloemCell.vtp");
+	string flName = getFolderName() + "UpPhloemCell.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("UpPhloemCell.vtp");
 
 	//ofstream fout("staticNum.txt",ios::app);
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "UpPhloemCellVisual" << endl;
 	/// Phloem - First;
 	fout << "First" << endl;
@@ -602,10 +607,12 @@ void rsPhloemVisual::DownCellVisual
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("PhloemDownCell.vtp");
+	string flName = getFolderName() + "PhloemDownCell.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("PhloemDownCell.vtp");
 
 
-	ofstream fout("phloemUpAppendCell.txt", ios::app);
+	ofstream fout(getFolderName() + "phloemUpAppendCell.txt", ios::app);
 	fout << "DownCellVisual" << endl;
 
 	/// downFirst;

@@ -4,8 +4,9 @@
 #include "rsSourceCorticalVisual.h"
 #include "rsSteleInnerDB.h"
 #include "rsBaseGeometry.h"
+#include "globals.h"
 
-class rsSteleInnerVisual
+class rsSteleInnerVisual : public globals
 {
 public:
 

@@ -1,9 +1,10 @@
 #ifndef RSPXBOUNDARYVISUAL_H_INCLUDED
 #define RSPXBOUNDARYVISUAL_H_INCLUDED
 
+#include "globals.h"
 #include "rsPXCoreVisual.h"
 
-class rsPXBoundaryVisual
+class rsPXBoundaryVisual : public globals
 {
 public:
 

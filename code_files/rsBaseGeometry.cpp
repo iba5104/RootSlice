@@ -4,7 +4,7 @@
 using namespace std;
 
 /// Set SuperEllipsoid Resolution;
-void rsBaseGeometry::SetSuperEllipsoidResolution(int setUResolution, int setVResolution, int setWResolution)
+void rsBaseGeometry::SetSuperEllipsoidResolution()
 {
 	uResolution = setUResolution;
 	vResolution = setVResolution;
@@ -308,11 +308,11 @@ void rsBaseGeometry::RandomRatioButSameSumAndNumber
 	double sum = 0;
 	double temp = 0;
 
-
 	/** New */
 	//double standardTotalLength = 2000;
 	double standardTotalLength = int(totalLength);
 	int variationLength;
+	vector<int> randomVals;
 	vector<double> ratioDB;
 	vector<double> ratioAddDB;
 
@@ -342,7 +342,7 @@ void rsBaseGeometry::RandomRatioButSameSumAndNumber
 	//   fout << "aveLength: " << aveLength << endl;
 
 	srand((unsigned)time(NULL));
-	while (sum != standardTotalLength)
+	/*while (sum != standardTotalLength)
 	{
 		ratioDB.clear();
 		ratioAddDB.clear();
@@ -355,6 +355,26 @@ void rsBaseGeometry::RandomRatioButSameSumAndNumber
 			ratioDB.push_back(temp / standardTotalLength);
 			ratioAddDB.push_back((sum - temp) / standardTotalLength);
 		}
+	}*/
+	//Sankalp - Hopefully a faster way:
+	ratioDB.clear();
+	ratioAddDB.clear();
+	sum = 0;
+
+	for (int i = 0; i < cellNum; i++)
+	{
+		temp = (rand() % variationLength) + round(aveLength - variationLength / 2);
+		sum += temp;
+		randomVals.push_back(temp);
+	}
+	double mulCoeff = standardTotalLength / sum;
+	sum = 0;
+	for (int i = 0; i < cellNum; i++)
+	{
+		temp = randomVals[i] * mulCoeff;
+		sum += temp;
+		ratioDB.push_back(temp / standardTotalLength);
+		ratioAddDB.push_back((sum - temp) / standardTotalLength);
 	}
 	vector<double>::iterator itVec;
 	vector<double>::iterator itVecAdd;
@@ -457,9 +477,12 @@ void rsBaseGeometry::RandomRatioButSameSumAndNumber
 
 /** \brief SameSumAndNumberAndRatio
  *
- * \param
- * \param
- * \return
+ * \param vector<double>& circleSegmentLength
+ * \param vector<double>& circleSegmentLengthAdd
+ * \param double& circleSegmentLengthSum
+ * \param double circlePerimeter
+ * \param int *itVecCellNum
+ * \param double variationRatio
  *
  */
 void rsBaseGeometry::SameSumAndNumberAndRatio
@@ -613,7 +636,7 @@ void rsBaseGeometry::NonRandomHeight
 			zPositionSum += ((longitudeSegmentHeight[i] + longitudeSegmentHeight[i - 1]) / 2);
 			longitudeZPositionAdd.push_back(zPositionSum + initZPosition);
 		}
-		ofstream fout("Zposition.txt", ios::app);
+		ofstream fout(getFolderName() + "Zposition.txt", ios::app);
 		fout << "loop" << endl;
 		fout << "longitudeSegmentHeight = " << longitudeSegmentHeight.back() << endl;
 		fout << "longtiudeZpositionAdd   " << longitudeZPositionAdd.back() << endl;
@@ -647,14 +670,14 @@ void rsBaseGeometry::RandomHeight
 
 	/// Initialize input;
 	roundLength = round(totalHeight);
-	lengthTemp = roundLength * 100;
+	lengthTemp = roundLength * 100.0;
 	aveLength = round(lengthTemp / sliceNum);
 	/// define the range of random data generate, the bigger the smaller range;
 	randomRange = 1;
 	rangeLength = round(aveLength / randomRange);
 
 	//srand ( time(NULL) );
-	srand((rand() % (rand() % 1000)));
+	srand((rand() % ((rand() % 1000)+1)));
 	//srand((unsigned)time(NULL));
 	while (sum != roundLength)
 	{

@@ -4,6 +4,7 @@
 #include "rsBaseGeometry.h"
 #include "rsSourceCorticalDB.h"
 #include "rsMXBoundaryOutDB.h"
+#include "globals.h"
 
 class rsSteleInnerDB : public rsBaseGeometry
 {
@@ -59,9 +60,6 @@ public:
                     double initZPosition,
                     int vectorNum,
                     double variationRatio,
-                    int setUResolution,
-                    int setVResolution,
-                    int setWResolution,
                     int sliceNum );
 
 };

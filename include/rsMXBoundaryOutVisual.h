@@ -1,9 +1,10 @@
 #ifndef RSMXBOUNDARYOUTVISUAL_H_INCLUDED
 #define RSMXBOUNDARYOUTVISUAL_H_INCLUDED
 
+#include "globals.h"
 #include "rsMXCoreVisual.h"
 
-class rsMXBoundaryOutVisual
+class rsMXBoundaryOutVisual : public globals
 {
 public:
 

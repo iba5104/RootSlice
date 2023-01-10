@@ -1,6 +1,9 @@
+#include "globals.h"
 #include "rsEpiCortexEndoWaterPathDBVisual.h"
 
-void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB)
+void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(
+	rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB,
+	globals surfaceFlux)
 {  /// declare iterator;
 	map<int, vector<double> >::iterator itMapX;
 	map<int, vector<double> >::iterator itMapY;
@@ -16,8 +19,9 @@ void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(rsEpiCortexEn
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("ApoplastTriangleStripXML.vtp");
-
+	string flName = getFolderName() + "ApoplastTriangleStripXML.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("ApoplastTriangleStripXML.vtp");
 
 	/// cout << circleSegmentLengthDB;
 	for (itMapX = RsEpiCortexEndoWaterPathDB->epiCortexEndoApoplastTriangleStripXDB.begin(),
@@ -95,7 +99,9 @@ void rsEpiCortexEndoWaterPathDBVisual::ApoplastTriangleStripXMLVtp(rsEpiCortexEn
 }
 
 
-void rsEpiCortexEndoWaterPathDBVisual::SymplastTriangleStripXMLVtp(rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB)
+void rsEpiCortexEndoWaterPathDBVisual::SymplastTriangleStripXMLVtp(
+	rsEpiCortexEndoWaterPathDB* RsEpiCortexEndoWaterPathDB,
+	globals surfaceFlux)
 {  /// declare iterator;
 	map<int, vector<double> >::iterator itMapX;
 	map<int, vector<double> >::iterator itMapY;
@@ -111,7 +117,9 @@ void rsEpiCortexEndoWaterPathDBVisual::SymplastTriangleStripXMLVtp(rsEpiCortexEn
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName("SymplastTriangleStripXML.vtp");
+	string flName = getFolderName() + "SymplastTriangleStripXML.vtp";
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector("SymplastTriangleStripXML.vtp");
 
 
 	/// cout << circleSegmentLengthDB;
@@ -156,11 +164,27 @@ void rsEpiCortexEndoWaterPathDBVisual::SymplastTriangleStripXMLVtp(rsEpiCortexEn
 		scalars->SetName("Color");
 		int numSequence;
 
+		fluxEqns* FluxEqns = new fluxEqns;
+//		FluxEqns->flowRate(
+//			surfaceFlux.hydraulicConductance,
+//			surfaceFlux.reflectionCoeffecient,
+//			surfaceFlux.waterPressureDiff,
+//			surfaceFlux.osmoticPressureDiff
+//		);
+
 		/// Add scalar to point;
 		for (numSequence = 0; numSequence < pointNum; numSequence++)
 		{
+			double waterFluxSurface = FluxEqns->waterFlux(
+				surfaceFlux.radialConductivity,
+				surfaceFlux.pressurePotentialSurface * (1.0 - ((double)numSequence/ (double)pointNum)),
+				surfaceFlux.pressurePotentialXylem,
+				surfaceFlux.effectiveReflectionCoefficient,
+				surfaceFlux.osmoticPotentialSurface,
+				surfaceFlux.osmoticPotentialXylem
+			);
 			scalars->InsertTuple1
-			(numSequence, 0.7);
+			(numSequence, waterFluxSurface);
 		}
 		polydata->GetPointData()->SetScalars(scalars);
 
@@ -204,7 +228,9 @@ void rsEpiCortexEndoWaterPathDBVisual::ApoplastTubeXMLVtp(rsEpiCortexEndoWaterPa
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName(RsEpiCortexEndoWaterPathDB->ApoplastXMLVtpFileName);
+	string flName = getFolderName() + RsEpiCortexEndoWaterPathDB->ApoplastXMLVtpFileName;
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector(RsEpiCortexEndoWaterPathDB->ApoplastXMLVtpFileName);
 
 
 	/// cout << circleSegmentLengthDB;
@@ -329,8 +355,9 @@ void rsEpiCortexEndoWaterPathDBVisual::SymplastTubeXMLVtp(rsEpiCortexEndoWaterPa
 		vtkSmartPointer<vtkAppendPolyData>::New();
 	vtkSmartPointer<vtkXMLPolyDataWriter> writer =
 		vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-	writer->SetFileName(RsEpiCortexEndoWaterPathDB->SymplastXMLVtpFileName);
-
+	string flName = getFolderName() + RsEpiCortexEndoWaterPathDB->SymplastXMLVtpFileName;
+	writer->SetFileName(flName.c_str());
+	addToFileNamesVector(RsEpiCortexEndoWaterPathDB->SymplastXMLVtpFileName);
 
 	/// cout << circleSegmentLengthDB;
 	for (itMapX = RsEpiCortexEndoWaterPathDB->epiCortexEndoSymplastXDB.begin(),

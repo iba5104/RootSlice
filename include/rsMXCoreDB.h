@@ -2,6 +2,7 @@
 #define RSMXCoreDB_H_INCLUDED
 
 #include "rsBaseGeometryMX.h"
+#include "globals.h"
 
 /*************************************************
 // Need to input:
@@ -13,7 +14,7 @@ eachRingMaxOutRingAddRadius = 3
 eachRingMaxOutRingCellNum = 20
 **************************************************/
 
-class rsMXCoreDB : public rsBaseGeometryMX
+class rsMXCoreDB : public rsBaseGeometryMX, public globals
 {
 public:
 
@@ -91,9 +92,9 @@ public:
       double xylemMaxOutRingNum,
       double xylemMaxOutRingCellNum,
       double xylemMaxOutRingAddRadius,
-      int setUResolution,
-      int setVResolution,
-      int setWResolution,
+      double setMaxRadius,
+      int setmxRingNum,
+      vector<int> eachRingNum,
       int sliceNum );
 
 };
