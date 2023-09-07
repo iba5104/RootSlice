@@ -27,6 +27,7 @@ public:
    int corticalTotalCellNum;
    double gapCellWall;
    double gapCytoTono;
+   double plasmMemThick;
 
    double cortexThickness;
    double corticalInnermostCellDiameter;

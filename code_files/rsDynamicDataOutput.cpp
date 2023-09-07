@@ -96,7 +96,8 @@ void rsDynamicDataOutput::InitEpiCortexEndoAllDB
                                      corticalCellNumInputData,
                                      corticalCellNumSelectInput,
                                      cortical.variationRatio,
-                                     corticalSliceNum );
+                                     corticalSliceNum,
+                                     cortical.plasmaMembraneThickness );
 
 //////////////////////////////////// RCA ////////////////////////////////////
 
@@ -609,7 +610,8 @@ void rsDynamicDataOutput::InitEpiCortexEndoNonRCADB
                                      corticalCellNumInputData,
                                      corticalCellNumSelectInput,
                                      cortical.variationRatio,
-                                     corticalSliceNum );
+                                     corticalSliceNum,
+                                     cortical.plasmaMembraneThickness);
 
       /// pure cortical cell - plasma membrane ?;
    RsSourceCorticalDB -> InitPureCellDB( cortical.gapCellWall );

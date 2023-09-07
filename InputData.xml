@@ -1,91 +1,136 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Main name="PlantName" type="dicot" height="300">
+<!--Name is used for output file naming, type defines the root type: whether monocot or dicot
+	height is total height of the root segment to be simulated
+	baseRadius is the basic input parameter which defines the radius of the inner most cortical file of the cylindrival root segment modelled
+	baseRadius can take comma separated values as input for multiple simulations-->
+<Main name="Lateral_root_final" type="monocot" height="75">
+	<!--Header for cortical cell type with cell parameter units and variation ratio for deviation of cell radius-->
     <Cortical unit="um" variationRatio="0.2">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
-		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<!-- Base radius defined as child in cortical -->
+		<BaseRadius>120</BaseRadius>
+		<!--Number of cell slices in longitudnal direction: Each cell will have a random number of slices between [min,max]-->
+		<Slices min=3 max=3 />
+		<!--Cortical cell wall thickness-->
+		<CellwallWidth>0.1</CellwallWidth>
+		<!--plasma membrane width-->
+		<PlasmaMembraneWidth>0.01</PlasmaMembraneWidth>
+		<!--distance from tonoplast to plasma membrane, 0.2 um is standard-->
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<BaseRadius>200</BaseRadius>
-		<Thickness>200</Thickness>
+		<!--Cell diameter of the inner most cell file (actual value*2, example if you want 8 um diameter then give 16 as an input)
+			Can take comma separated values as input; diameter of cells in each cortical file-->
 		<CellDiameter>20</CellDiameter>
+		<!-- Number of cortical cell files: This can take in comma separated values for multiple model-->
 		<NumFiles>8</NumFiles>
-		<RCARatio min=0.3 max=0.3 step=0.1 />
+		<!-- Root cortical aerenchyma ratio: Each value from 'min' to 'max' is looped over for multiple models-->
+		<RCARatio min=0.0 max=0.0 step=0.2 />
 	</Cortical>
+	<!--Header for stele cell type with cell parameter units and variation ratio for deviation of cell radius-->
 	<Stele unit="um" variationRatio="0.2">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
+		<!--Number of cell slices in longitudnal direction: Each cell will have a random number of slices between [min,max]-->
+		<Slices min=3 max=3 />
+		<!--Stele cell wall thickness-->
+		<CellwallWidth>0.1</CellwallWidth>
+		<!--plasma membrane width-->
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
+		<!--distance from tonoplast to plasma membrane, 0.2 um is standard-->
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<InnestCellDiameer>0</InnestCellDiameer>
-		<InnerLayerNum>0</InnerLayerNum>
+		<!--diameter of the stele cell at the center of root segment for monocot root-->
+		<InnestCellDiameer>5</InnestCellDiameer>
+		<!--Number of layers of stele cells around the center most stele cell-->
+		<InnerLayerNum>10</InnerLayerNum>
 	</Stele>
-	<MetaXylem unit="um" variationRatio="0.2">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
+	<MetaXylem unit="um" variationRatio="0.1">
+		<Slices min=3 max=3 />
+		<CellwallWidth>0.1</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<VerticalLengthThresholdRatio>0.1</VerticalLengthThresholdRatio>
-		<TangentRingRadiusRatio>0.1</TangentRingRadiusRatio>
-		<SteleCellNumBetween>5</SteleCellNumBetween>
-		<MXRings>4</MXRings>
-		<MXNumEachRing>7,6,4,4</MXNumEachRing>
-		<MXNum>21</MXNum>
-		<MXAverageRingRadius>12</MXAverageRingRadius>
-		<MXMaxRingRadius>14</MXMaxRingRadius>
-		<SurroundingCellRingNum>1</SurroundingCellRingNum>
-		<BoundaryDotNum>10</BoundaryDotNum>
+		<!--This is used to calculate the threshold radius of a single stele cell between pith and inner boundary of metaxylem in monocot
+			In turn that defines the number of stele cells between pith and inner boundary of metaxylem-->
+		<VerticalLengthThresholdRatio>0.5</VerticalLengthThresholdRatio>
+		<!--This defines the pith radius as fraction of distance from center to outer metaxylem boundary in monocot
+			The stele cells run tangent to metaxylem tubes-->
+		<TangentRingRadiusRatio>0.9</TangentRingRadiusRatio>
+		<!--This defines the number of stele cell layers from pith (monocot) or center most xylem (dicot) to populate the volume between
+			metaxylem tubes in each layer. 
+			In monocot this is from pith to outer boundary of metaxylem. In dicot between each layer of metaxylem tubes-->
+		<SteleCellNumBetween>25</SteleCellNumBetween>
+		<!--For Dicot: number of layers of metaxylem tubes. Can be removed for monocot-->
+		<MXLayers>1</MXLayers>
+		<!--For Dicot: number of metaxylem tubes in each layer. Can be removed for monocot-->
+		<MXNumEachLayer>4,4,4,4</MXNumEachLayer>
+		<!--Total number of metaxylem. For monocot, they are placed equidistant in single layer.
+			For dicot, this number is one more than the sum of MXNumEachLayer-->
+		<MXNum>4</MXNum>
+		<!--For Monocot: average radius of metaxylem tubes. Each tube has radius in range of average*[1 - variationRatio/2, 1+variationRatio/2)-->
+		<MXAverageRingRadius>10</MXAverageRingRadius>
+		<!--For Dicot: This defines the maximum radius of the xylem tube, generally for the tube at the center-->
+		<MXMaxRingRadius>10</MXMaxRingRadius>
+		<!--Number of cell layers surrounding each metaxylem tube-->
+		<SurroundingCellRingNum>2</SurroundingCellRingNum>
+		<!--Number of cells in each layer surrounding the metaxylem tube-->
+		<BoundaryDotNum>25</BoundaryDotNum>
+		<!--Stele cells in the gaps between surrounding cell layers and tangent cells-->
 		<BoundaryUpRowNum>5</BoundaryUpRowNum>
 		<BoundaryDownRowNum>5</BoundaryDownRowNum>
 	</MetaXylem>
-	<ProtoXylem unit="um" variationRatio="0.6">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
+	<ProtoXylem unit="um" variationRatio="0.1">
+		<Slices min=3 max=3 />
+		<CellwallWidth>0.5</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<GapRadius>10</GapRadius>
+		<!--This is the distance between pericycle inner boundary and protoxylem outer boundary-->
+		<GapRadius>5</GapRadius>
+		<!--Number of protoxylem-->
 		<PXNum>4</PXNum>
-		<PXAverageRingRadius>10</PXAverageRingRadius>
-		<SurroundingCellRingNum>10</SurroundingCellRingNum>
+		<!--Average radius of protoxylem tubes. Each protoxylem has radius in range of average*[1 - variationRatio/2, 1+variationRatio/2)-->
+		<PXAverageRingRadius>5</PXAverageRingRadius>
+		<!--Number of cell layers surrounding each protoxylem tube-->
+		<SurroundingCellRingNum>20</SurroundingCellRingNum>
+		<!--Radius of cells surrounding each protoxylem and metaxylem tube-->
 		<SurroundingCellRingRadius>5</SurroundingCellRingRadius>
 	</ProtoXylem>
 	<Phloem unit="um" variationRatio="0.2">
+		<!--Ratio of gap between protoxylem tubes that is populated by stele cells-->
 		<ParallelThresholdRatio>0.1</ParallelThresholdRatio>
+		<!--Radius of each cell that populates the gap between protoxylem tubes-->
+		<UpCellRadiusAverage>2</UpCellRadiusAverage>
 	</Phloem>
 	<Epidermis unit="um" variationRatio="0.2">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
+		<Slices min=3 max=3 />
+		<CellwallWidth>0.1</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
 		<CellDiameter>10</CellDiameter>
 		<CellNum>150</CellNum>
 	</Epidermis>
 	<Endodermis unit="um" variationRatio="0.2">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
+		<Slices min=3 max=3 />
+		<CellwallWidth>0.1</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
 		<CellDiameter>10</CellDiameter>
 	</Endodermis>
 	<Exodermis unit="um" variationRatio="0.2">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
+		<Slices min=3 max=3 />
+		<CellwallWidth>0.1</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
 		<CellDiameter>10</CellDiameter>
 	</Exodermis>
 	<Sclerenchyma unit="um" variationRatio="0.2">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
+		<Slices min=3 max=3 />
+		<CellwallWidth>0.1</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<CellDiameter>10,11</CellDiameter>
-		<NumFiles>2</NumFiles>
+		<!--Diameter of cells in each layer/file of sclerenchyma-->
+		<CellDiameter>10</CellDiameter>
+		<NumFiles>1</NumFiles>
 	</Sclerenchyma>
 	<Pericycle unit="um" variationRatio="0.2">
-		<Slices min=3 max=6 />
-		<CellwallWidth>0.48</CellwallWidth>
+		<Slices min=3 max=3 />
+		<CellwallWidth>0.1</CellwallWidth>
 		<PlasmaMembraneWidth>0.02</PlasmaMembraneWidth>
 		<InnerPlasmaMembraneTonoplastGap>0.2</InnerPlasmaMembraneTonoplastGap>
-		<CellDiameter>5</CellDiameter>
+		<CellDiameter>10</CellDiameter>
 	</Pericycle>
 </Main>

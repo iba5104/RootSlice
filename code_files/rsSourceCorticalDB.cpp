@@ -512,9 +512,11 @@ void rsSourceCorticalDB::InitAllDB(double baseRadius,
 	vector<int> corticalCellNumInputData,
 	int corticalCellNumSelectInput,
 	double variationRatio,
-	int sliceNum
+	int sliceNum,
+	double plasmaMemThicknessInput
 )
 {
+	this->plasmaMembraneThickness = plasmaMemThicknessInput;
 	SetObjectXYZRadiusRatio();
 
 	SetObjectOpacity();

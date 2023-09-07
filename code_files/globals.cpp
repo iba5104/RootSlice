@@ -48,6 +48,7 @@ string globals::getFolderName()
 
 void globals::writePVDFile(string pvdFileName)
 {
+	const char* exclude[] = { "Apoplast", "Symplast" };
 	TiXmlDocument doc;
 	TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "", "");
 	doc.LinkEndChild(decl);
@@ -61,10 +62,19 @@ void globals::writePVDFile(string pvdFileName)
 	for (int i = 0; i < numFileNames; i++)
 	{
 		const char* vtpFileName = globals::allFileNames.at(i).c_str();
-		TiXmlElement* elementDataSet = new TiXmlElement("DataSet");
-		elementCollection->LinkEndChild(elementDataSet);
-		elementDataSet->SetAttribute("part", i);
-		elementDataSet->SetAttribute("file", vtpFileName);
+		bool curNotAdd = false;
+		for (const char* ex: exclude)
+		{
+			if (std::strstr(vtpFileName, ex))
+				curNotAdd = true;
+		}
+		if (!curNotAdd)
+		{
+			TiXmlElement* elementDataSet = new TiXmlElement("DataSet");
+			elementCollection->LinkEndChild(elementDataSet);
+			elementDataSet->SetAttribute("part", i);
+			elementDataSet->SetAttribute("file", vtpFileName);
+		}
 	}
 	pvdFileName = globals::getFolderName() + pvdFileName;
 	doc.SaveFile(pvdFileName.c_str());

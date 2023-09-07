@@ -539,11 +539,8 @@ int main()
 
 				string blankSpace = " ";
 
-				string prefix = steleRadiusName + blankSpace + steleRadiusString + blankSpace
-					+ ringNumName + blankSpace + ringNumString + blankSpace
-					+ corticalInnermostCellDiameterName + blankSpace + corticalInnermostCellDiameterString + blankSpace
-					+ rca2CortexRatioName + blankSpace + rca2CortexRatioString + blankSpace
-					+ TotalHeightName + blankSpace + TotalHeightString;
+				char* prefix;
+				strftime(prefix, 40, folderFormat, startTime);
 
 				string prefixCortical = " Cortical ";
 				string prefixCorticalVacuole = " CorticalVacuole ";

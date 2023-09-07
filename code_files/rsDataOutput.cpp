@@ -30,6 +30,7 @@ void rsDataOutput::CorticalDataOutputCalculate (rsSourceCorticalDB* RsSourceCort
 
 	gapCellWall = RsSourceCorticalDB->gapCellWall;
 	gapCytoTono = RsSourceCorticalDB->gapCytoTono;
+	plasmMemThick = RsSourceCorticalDB->plasmaMembraneThickness;
 
 	steleRadius = baseRadius;
 	cortexThickness = RsSourceCorticalDB->boundaryRadius - baseRadius;
@@ -103,7 +104,7 @@ void rsDataOutput::CorticalDataOutputCalculate (rsSourceCorticalDB* RsSourceCort
 				/////Volume of cylinder
 				corticalTotalCellVolume_each_ring = M_PI * RsSourceCorticalDB->objectVerticalDB[iRingNum] *
 					RsSourceCorticalDB->objectVerticalDB[iRingNum] *
-					RsSourceCorticalDB->objectHeightDB[iRingNum][i][sliceTempNum];
+					RsSourceCorticalDB->objectHeightDB[iRingNum][i][sliceTempNum] * 2;
 			}
 		}
 		string line = to_string(iRingNum + 1) + "," + to_string(corticalTotalCellVolume_each_ring);
@@ -757,7 +758,7 @@ void rsDataOutput::AllDataOutput(double baseRadius, double totalHeight)
 	string gapCellWallName = "GapCW(um)";
 	stringstream gapCellWallSS;
 	string gapCellWallString;
-	gapCellWallSS << gapCellWall;
+	gapCellWallSS << ( gapCellWall - plasmMemThick );
 	gapCellWallSS >> gapCellWallString;
 
 	/// totalheight to string ** Jagdeep 12-2-2020

@@ -135,7 +135,8 @@ public:
                     vector<int> corticalCellNumInputData,
                     int corticalCellNumSelectInput,
                     double variationRatio,
-                    int sliceNum
+                    int sliceNum,
+                    double plasmaMemThicknessInput
                   );
 
    /// Initialize pure cell Database;
